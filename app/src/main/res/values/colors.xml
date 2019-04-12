@@ -12,4 +12,10 @@
     <color name="text_green_color">#FF00BE8A</color>
     <color name="white">#FFFFFFFF</color>
     <color name="btn_bg_gary">#FFE9E9E9</color>
+    <!--文字主体颜色-->
+    <color name="tc_main">#333333</color>
+    <!-- hint 主色-->
+    <color name="tc_hint_main">#CED2D8</color>
+
+    <color name="div">#e6e6e6</color>
 </resources>
