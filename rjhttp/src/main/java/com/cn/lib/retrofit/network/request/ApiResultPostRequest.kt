@@ -1,0 +1,55 @@
+package com.cn.lib.retrofit.network.request
+
+import com.cn.lib.retrofit.network.callback.ResultCallback
+import com.cn.lib.retrofit.network.callback.ResultCallbackProxy
+import com.cn.lib.retrofit.network.callback.ResultClazzCallProxy
+import com.cn.lib.retrofit.network.entity.ApiResultEntity
+import com.cn.lib.retrofit.network.func.ApiResultFunc
+import com.cn.lib.retrofit.network.func.RetryExceptionFunc
+import com.cn.lib.retrofit.network.subscriber.ResultCallbackSubscriber
+import com.cn.lib.retrofit.network.util.RxUtil
+
+import java.lang.reflect.Type
+
+import io.reactivex.Observable
+import io.reactivex.disposables.Disposable
+import okhttp3.ResponseBody
+
+class ApiResultPostRequest(url: String) : HttpBodyRequest<ApiResultPostRequest>(url) {
+
+    fun <T> execute(clazz: Class<T>): Observable<T> {
+        return execute(object : ResultClazzCallProxy<ApiResultEntity<T>, T>(clazz) {
+
+        })
+    }
+
+    fun <T> execute(type: Type): Observable<T> {
+        return execute(object : ResultClazzCallProxy<ApiResultEntity<T>, T>(type) {
+
+        })
+    }
+
+    fun <T> execute(proxy: ResultClazzCallProxy<out ApiResultEntity<T>, T>): Observable<T> {
+        return build().generateRequest()
+                .map(ApiResultFunc<T>(proxy.type))
+                .compose<T>(if (isSyncRequest) RxUtil._io_main_result() else RxUtil._main_result())
+                .retryWhen(RetryExceptionFunc(mRetryCount, mRetryDelay.toLong(), mRetryIncreaseDelay.toLong()))
+    }
+
+    fun <T> execute(tag: Any, callback: ResultCallback<T>): Disposable {
+        return execute(tag, ResultCallbackProxy.NEW_DEFAULT_INSTANCE(callback))
+    }
+
+    fun <T> execute(tag: Any, proxy: ResultCallbackProxy<out ApiResultEntity<T>, T>): Disposable {
+        val observable = build().generateObservable(generateRequest(), proxy)
+        return observable.subscribeWith(ResultCallbackSubscriber(tag, proxy.callback))
+    }
+
+    private fun <T> generateObservable(observable: Observable<ResponseBody>, proxy: ResultCallbackProxy<out ApiResultEntity<T>, T>): Observable<T> {
+        return observable
+                .map(ApiResultFunc<T>(proxy.getType()))
+                .compose<T>(if (isSyncRequest) RxUtil._io_main_result() else RxUtil._main_result())
+                .retryWhen(RetryExceptionFunc(mRetryCount, mRetryDelay.toLong(), mRetryIncreaseDelay.toLong()))
+    }
+
+}

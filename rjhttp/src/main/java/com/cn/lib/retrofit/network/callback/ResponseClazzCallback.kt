@@ -1,0 +1,55 @@
+package com.cn.lib.retrofit.network.callback
+
+import android.text.TextUtils
+
+import com.alibaba.fastjson.JSON
+import com.alibaba.fastjson.JSONObject
+import com.cn.lib.retrofit.network.config.ResultConfigLoader
+import com.cn.lib.retrofit.network.exception.ServerException
+
+import okhttp3.ResponseBody
+
+abstract class ResponseClazzCallback : IResponseCallback<String> {
+
+    @Throws(Exception::class)
+    override fun onTransformationResponse(body: ResponseBody): String {
+        val jsonStr = body.string()
+        if (TextUtils.isEmpty(jsonStr)) throw NullPointerException("body is null")
+        val jsonObject = JSON.parseObject(jsonStr)
+        val code = getCode(jsonObject)
+        val msg = getMessage(jsonObject)
+        val dataStr = getDataStr(jsonObject)
+        if (checkSuccess(code)) {
+            return dataStr
+        }
+        throw ServerException(code, msg)
+    }
+
+    internal abstract fun checkSuccess(code: Int): Boolean
+
+    private fun getCode(jsonObject: JSONObject): Int {
+        val codeKey = ResultConfigLoader.codeKey
+        var code = -1
+        if (jsonObject.containsKey(codeKey)) {
+            code = jsonObject.getIntValue(codeKey)
+        }
+        return code
+    }
+
+    private fun getMessage(jsonObject: JSONObject): String {
+        val msgKey = ResultConfigLoader.msgKey
+        return if (jsonObject.containsKey(msgKey)) {
+            jsonObject.getString(msgKey)
+        } else ""
+    }
+
+    private fun getDataStr(jsonObject: JSONObject): String {
+        val dataKey = ResultConfigLoader.dataKey
+        for (key in dataKey!!) {
+            if (jsonObject.containsKey(key)) {
+                return jsonObject.getString(key)
+            }
+        }
+        return ""
+    }
+}

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="iconfont">
+        <attr name="icon_font_path" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="TabIndicatorView">
+        <!-- 选中时字体的颜色 -->
+        <attr name="indicator_textColorNormal" format="color|reference" />
+        <!-- 未选中时字体的颜色 -->
+        <attr name="indicator_textColorSelected" format="color|reference" />
+        <!-- 字体离顶部的距离 -->
+        <attr name="indicator_textPaddingTop" format="dimension" />
+        <!-- 字体离底部的距离 -->
+        <attr name="indicator_textPaddingBottom" format="dimension" />
+        <!-- 选中时字体的大小 -->
+        <attr name="indicator_textSizeNormal" format="dimension" />
+        <!-- 未选中时字体的大小 -->
+        <attr name="indicator_textSizeSelected" format="dimension" />
+        <!-- 下划线的颜色 -->
+        <attr name="indicator_underlineColor" format="color|reference" />
+        <!-- 下划线的显示状态 -->
+        <attr name="indicator_underlineVisibility" format="boolean" />
+        <!-- 滑动条的高度 -->
+        <attr name="indicator_footerLineHeight" format="dimension" />
+        <!-- 滑动条的颜色 -->
+        <attr name="indicator_footerColor" format="color|reference" />
+        <!-- 滑动条的显示状态 -->
+        <attr name="indicator_footerLineVisibility" format="boolean" />
+        <!-- 滑动条所占Tab宽度的比值（2-9） -->
+        <attr name="indicator_footerLineWidthRatio" format="integer" />
+        <!-- Tab被点击时的背景颜色 -->
+        <attr name="indicator_onTouchBackgroundColor" format="color|reference" />
+        <!-- Tab选中时的背景颜色 -->
+        <attr name="indicator_tabSelectedColor" format="color|reference" />
+        <!-- Tab之间竖线的宽度 -->
+        <attr name="indicator_verticalLineWidth" format="dimension" />
+        <!-- Tab之间竖线的显示状态 -->
+        <attr name="indicator_verticalLineVisibility" format="boolean" />
+        <!-- Tab之间竖线的颜色 -->
+        <attr name="indicator_verticalLineColor" format="color|reference" />
+        <!-- Tab之间竖线高度所占总高度的比值（2-9） -->
+        <attr name="indicator_verticalLineHeightRatio" format="integer" />
+    </declare-styleable>
+</resources>

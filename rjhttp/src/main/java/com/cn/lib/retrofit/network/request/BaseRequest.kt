@@ -1,0 +1,403 @@
+package com.cn.lib.retrofit.network.request
+
+import android.content.Context
+import com.cn.lib.retrofit.network.ApiManager
+import com.cn.lib.retrofit.network.RxHttp
+import com.cn.lib.retrofit.network.entity.HttpParamEntity
+import com.cn.lib.retrofit.network.interceptor.BaseDynamicInterceptor
+import com.cn.lib.retrofit.network.interceptor.HeaderInterceptor
+import com.cn.lib.retrofit.network.util.SSLUtil
+import com.cn.lib.retrofit.network.util.Util
+import io.reactivex.Observable
+import okhttp3.*
+import retrofit2.CallAdapter
+import retrofit2.Converter
+import retrofit2.Retrofit
+import java.io.File
+import java.io.InputStream
+import java.net.Proxy
+import java.util.*
+import java.util.concurrent.TimeUnit
+import javax.net.ssl.HostnameVerifier
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.X509TrustManager
+
+abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
+    private var mCache: Cache? = null                                             //OkHttp缓存对象
+    private var mCacheFile: File? = null                                          //缓存目录
+    private var mCacheMaxSize: Long = 0                                       //最大缓存
+    private var mProxy: Proxy? = null                                             //OkHttp代理
+    private var mHostnameVerifier: HostnameVerifier? = null                       //https的全局访问规则
+    private var mConverterFactory: Converter.Factory? = null                      //Converter.Factory
+    private var mCallAdapterFactory: CallAdapter.Factory? = null                  //CallAdapter.Factory
+    private var mSslSocketFactory: SSLSocketFactory? = null                       //签名验证规则
+    private var mTrustManager: X509TrustManager? = null
+    private var mSslParams: SSLUtil.SSLParams? = null                             //https签名证书
+    private var mCookieJar: CookieJar? = null                                     //Cookie管理
+    private var mConnectionPool: ConnectionPool? = null                           //链接池管理
+    private val mHeaders = HashMap<String, String>()           //公共请求头
+    //    Map<String, String> mParameters = new HashMap<>();                //请求参数
+    //    Map<String, String> mFileMap = new HashMap<>();                   //上传文件
+    internal var mHttpParams = HttpParamEntity()      //请求参数集合
+    protected var mHttpClient: OkHttpClient? = null                                 //自定义OkHttpClient
+    private var mReadTimeout: Int = 0                                         //读超时
+    private var mWriteTimeout: Int = 0                                        //写超时
+    private var mConnectTimeout: Int = 0                                      //链接超时
+    internal var mRetryCount: Int = 0                                                  //重试次数默认3次
+    internal var mRetryDelay: Int = 0                                                  //延迟xxms重试
+    internal var mRetryIncreaseDelay: Int = 0                                          //叠加延迟
+    private val mInterceptorList = ArrayList<Interceptor>()
+    private val mNetworkInterceptorList = ArrayList<Interceptor>()
+    internal var mContext: Context
+    private var mBaseUrl: String? = null
+    private var isSign = false                                   //是否需要签名
+    private var accessToken = false                              //是否需要添加token
+    internal var isSyncRequest = true
+    private var mRetrofit: Retrofit? = null
+    private var mOkHttpClient: OkHttpClient? = null
+    internal lateinit var mApiManager: ApiManager
+    private var mHeaderInterceptor: HeaderInterceptor? = null
+
+
+    init {
+        val rxHttp = RxHttp.instance
+        this.mContext = rxHttp.getContext()
+        this.isSign = rxHttp.isSign
+        this.accessToken = rxHttp.isAccessToken
+        this.isSyncRequest = rxHttp.isSyncRequest
+        this.mRetryCount = rxHttp.retryCount
+        this.mRetryDelay = rxHttp.retryDelay
+        this.mRetryIncreaseDelay = rxHttp.retryIncreaseDelay
+        if (mBaseUrl == null && mUrl != null && (mUrl!!.startsWith("http://") || mUrl!!.startsWith("https://"))) {
+            val httpUrl = HttpUrl.parse(mUrl!!)
+            if (httpUrl != null)
+                mBaseUrl = httpUrl.url().protocol + "://" + httpUrl.url().host + "/"
+        }
+
+    }
+
+    fun baseUrl(baseUrl: String): R {
+        this.mBaseUrl = Util.checkNotNull(baseUrl, "baseUrl is null")
+        return this as R
+    }
+
+    fun isAccessToken(accessToken: Boolean): R {
+        this.accessToken = accessToken
+        return this as R
+    }
+
+    fun isSyncRequest(isSyncRequest: Boolean): R {
+        this.isSyncRequest = isSyncRequest
+        return this as R
+    }
+
+    fun cache(cache: Cache): R {
+        this.mCache = Util.checkNotNull(cache, "cache is null")
+        return this as R
+    }
+
+    fun cacheFile(cacheFile: File): R {
+        this.mCacheFile = Util.checkNotNull(cacheFile, "cacheFile is null")
+        return this as R
+    }
+
+    fun okProxy(proxy: Proxy): R {
+        this.mProxy = Util.checkNotNull(proxy, "proxy is null")
+        return this as R
+    }
+
+    fun hostnameVerifier(hostnameVerifier: HostnameVerifier): R {
+        this.mHostnameVerifier = Util.checkNotNull(hostnameVerifier, "hostnameVerifier is null")
+        return this as R
+    }
+
+    fun converterFactory(converterFactory: Converter.Factory): R {
+        this.mConverterFactory = Util.checkNotNull(converterFactory, "converterFactory is null")
+        return this as R
+    }
+
+    fun callAdapterFactory(callAdapterFactory: CallAdapter.Factory): R {
+        this.mCallAdapterFactory = Util.checkNotNull(callAdapterFactory, "callAdapterFactory is null")
+        return this as R
+    }
+
+    fun sslSocketFactory(sslSocketFactory: SSLSocketFactory): R {
+        this.mSslSocketFactory = Util.checkNotNull(sslSocketFactory, "sslSocketFactory is null")
+        return this as R
+    }
+
+    fun trustManager(trustManager: X509TrustManager): R {
+        this.mTrustManager = Util.checkNotNull(trustManager, "trustManager is null")
+        return this as R
+    }
+
+    fun cookieJar(cookieJar: CookieJar): R {
+        this.mCookieJar = Util.checkNotNull(cookieJar, "cookieJar is null")
+        return this as R
+    }
+
+    fun connectionPool(connectionPool: ConnectionPool): R {
+        this.mConnectionPool = Util.checkNotNull(connectionPool, "connectionPool is null")
+        return this as R
+    }
+
+    fun addHeader(headers: Map<String, String>): R {
+        this.mHeaders.putAll(Util.checkNotNull(headers, "headers is null"))
+        return this as R
+    }
+
+    fun addHeader(key: String, value: String): R {
+        this.mHeaders[key] = value
+        return this as R
+    }
+
+    fun removeHeader(key: String): R {
+        mHeaderInterceptor?.run {
+            remove(key)
+        }
+        return this as R
+    }
+
+    fun clearHeaders(): R {
+        mHeaderInterceptor?.run {
+            clearAll()
+        }
+        return this as R
+    }
+
+    fun param(params: Map<String, String>): R {
+        this.mHttpParams.param(Util.checkNotNull(params, "param is null"))
+        return this as R
+    }
+
+    fun param(key: String, value: String): R {
+        this.mHttpParams.param(key, value)
+        return this as R
+    }
+
+    fun httpClient(httpClient: OkHttpClient): R {
+        this.mHttpClient = Util.checkNotNull(httpClient, "OkHttpClient is null")
+        return this as R
+    }
+
+    fun readTimeOut(readTimeout: Int): R {
+        if (mReadTimeout < 0)
+            throw IllegalArgumentException("readTimeout must > 0")
+        this.mReadTimeout = readTimeout
+        return this as R
+    }
+
+    fun writeTimeOut(writeTimeout: Int): R {
+        if (mWriteTimeout < 0)
+            throw IllegalArgumentException("writeTimeout must > 0")
+        this.mWriteTimeout = writeTimeout
+        return this as R
+    }
+
+    fun connectTimeOut(connectTimeout: Int): R {
+        if (mConnectTimeout < 0)
+            throw IllegalArgumentException("connectTimeout must > 0")
+        this.mConnectTimeout = connectTimeout
+        return this as R
+    }
+
+    fun interceptorList(interceptorList: List<Interceptor>): R {
+        this.mInterceptorList.addAll(Util.checkNotNull(interceptorList, "Interceptor is null"))
+        return this as R
+    }
+
+    fun addInterceptor(interceptor: Interceptor): R {
+        this.mInterceptorList.add(Util.checkNotNull(interceptor, "Interceptor is null"))
+        return this as R
+    }
+
+    fun networkInterceptorList(networkInterceptorList: List<Interceptor>): R {
+        this.mNetworkInterceptorList.addAll(Util.checkNotNull(networkInterceptorList, "NetworkInterceptor is null"))
+        return this as R
+    }
+
+    fun addNetworkInterceptor(interceptor: Interceptor): R {
+        this.mNetworkInterceptorList.add(Util.checkNotNull(interceptor, "NetworkInterceptor is null"))
+        return this as R
+    }
+
+    fun isSign(isSign: Boolean): R {
+        this.isSign = isSign
+        return this as R
+    }
+
+    fun retryCount(mRetryCount: Int): R {
+        if (mRetryCount < 0)
+            throw IllegalArgumentException("retryIncreaseDelay must > 0")
+        this.mRetryCount = mRetryCount
+        return this as R
+    }
+
+    fun retryDelay(mRetryDelay: Int): R {
+        if (mRetryDelay < 0)
+            throw IllegalArgumentException("retryIncreaseDelay must > 0")
+        this.mRetryDelay = mRetryDelay
+        return this as R
+    }
+
+    fun retryIncreaseDelay(mRetryIncreaseDelay: Int): R {
+        if (mRetryIncreaseDelay < 0)
+            throw IllegalArgumentException("retryIncreaseDelay must > 0")
+        this.mRetryIncreaseDelay = mRetryIncreaseDelay
+        return this as R
+    }
+
+    fun certificates(vararg certificates: InputStream): R {
+        certificates(null, null, *certificates)
+        return this as R
+    }
+
+    fun certificates(bksFile: InputStream?, password: String?, vararg certificates: InputStream): R {
+        this.mSslParams = SSLUtil.getSslSocketFactory(bksFile, password, *certificates)
+        return this as R
+    }
+
+    fun cacheMaxSize(cacheMaxSize: Long): R {
+        this.mCacheMaxSize = cacheMaxSize
+        return this as R
+    }
+
+    protected fun generateOkHttpClientBuilder(): OkHttpClient.Builder {
+        if (mReadTimeout <= 0 && mWriteTimeout <= 0 && mConnectTimeout <= 0 && mSslParams == null
+                && mCookieJar == null && mCache == null && mCacheFile == null && mCacheMaxSize <= 0
+                && mInterceptorList.size == 0 && mNetworkInterceptorList.size == 0 && mProxy == null
+                && mSslSocketFactory == null && mTrustManager == null && mHostnameVerifier == null
+                && mCallAdapterFactory == null && mConverterFactory == null && mHeaders.isEmpty()) {
+            val builder = RxHttp.instance.getOkHttpClientBuilder()
+            for (interceptor in builder.interceptors()) {
+                if (interceptor is BaseDynamicInterceptor<*>) {
+                    (interceptor as BaseDynamicInterceptor<*>).sign(isSign).accessToken(accessToken)
+                }
+            }
+            return builder
+        } else {
+            val newBuilder = RxHttp.instance.okHttpClient.newBuilder()
+            if (mReadTimeout > 0) {
+                newBuilder.readTimeout(mReadTimeout.toLong(), TimeUnit.SECONDS)
+            }
+            if (mWriteTimeout > 0) {
+                newBuilder.writeTimeout(mWriteTimeout.toLong(), TimeUnit.SECONDS)
+            }
+            if (mConnectTimeout > 0) {
+                newBuilder.connectTimeout(mConnectTimeout.toLong(), TimeUnit.SECONDS)
+            }
+
+            if (mSslSocketFactory != null) {
+                if (mTrustManager == null) {
+                    newBuilder.sslSocketFactory(mSslSocketFactory!!)
+                } else {
+                    newBuilder.sslSocketFactory(mSslSocketFactory!!, mTrustManager!!)
+                }
+            } else if (mSslParams != null) {
+                newBuilder.sslSocketFactory(mSslParams!!.sSLSocketFactory!!, mSslParams!!.trustManager!!)
+            }
+            if (mHostnameVerifier != null) {
+                newBuilder.hostnameVerifier(mHostnameVerifier!!)
+            }
+            if (mCacheFile == null) {
+                mCacheFile = File(mContext!!.cacheDir, "retrofit_http_cache")
+            }
+            if (mCache == null && mCacheFile != null) {
+                mCache = Cache(mCacheFile!!, Math.max((5 * 1024 * 1024).toLong(), mCacheMaxSize))
+            }
+            if (mCache != null) {
+                newBuilder.cache(mCache)
+            }
+            if (mConnectionPool != null) {
+                newBuilder.connectionPool(mConnectionPool!!)
+            }
+            if (mProxy != null) {
+                newBuilder.proxy(mProxy)
+            }
+            if (mCookieJar != null) {
+                newBuilder.cookieJar(mCookieJar!!)
+            }
+            if (mHeaders.isEmpty()) {
+                addHeaderInterceptor(newBuilder)
+            }
+            if (mInterceptorList.size > 0) {
+                for (interceptor in mInterceptorList) {
+                    newBuilder.addInterceptor(interceptor)
+                }
+            }
+            for (interceptor in newBuilder.interceptors()) {
+                if (interceptor is BaseDynamicInterceptor<*>) {
+                    interceptor.sign(isSign).accessToken(accessToken)
+                }
+            }
+            if (mNetworkInterceptorList.size > 0) {
+                for (interceptor in mNetworkInterceptorList) {
+                    newBuilder.addNetworkInterceptor(interceptor)
+                }
+            }
+            return newBuilder
+        }
+
+    }
+
+    /**
+     * 添加请求头，并保证在拦截器的第一位，以方便后面的拦截器使用到头信息
+     */
+    private fun addHeaderInterceptor(newBuilder: OkHttpClient.Builder) {
+        mHeaderInterceptor = RxHttp.instance.baseHeaderInterceptor
+        mHeaderInterceptor?.run {
+            addHeaderMap(mHeaders)
+            return
+        }
+        if (mHeaders.size > 0) {
+            mHeaderInterceptor = HeaderInterceptor(mHeaders)
+            //将添加统一头内容的拦截器放在第一位方便后面的拦截器使用
+            if (newBuilder.interceptors().size > 0) {
+                newBuilder.interceptors().add(0, mHeaderInterceptor)
+            } else {
+                newBuilder.interceptors().add(mHeaderInterceptor)
+            }
+        }
+    }
+
+    protected fun generateRetrofitBuilder(): Retrofit.Builder {
+        val rxHttp = RxHttp.instance
+        if (mBaseUrl == null || (mBaseUrl == rxHttp.baseUrl && mConverterFactory == null
+                        && mCallAdapterFactory == null && mHttpClient == null && rxHttp.httpClient == null)) {
+            return rxHttp.retrofitBuilder
+        } else {
+            val builder = rxHttp.retrofit.newBuilder()
+            if (mBaseUrl != null) {
+                builder.baseUrl(mBaseUrl!!)
+            }
+            if (mCallAdapterFactory != null) {
+                builder.addCallAdapterFactory(mCallAdapterFactory!!)
+            }
+            if (mConverterFactory != null) {
+                builder.addConverterFactory(mConverterFactory!!)
+            }
+
+            return builder
+        }
+    }
+
+    protected fun build(): R {
+        val okHttpClientBuilder = generateOkHttpClientBuilder()
+        val retrofitBuilder = generateRetrofitBuilder()
+        if (mHttpClient != null) {
+            mOkHttpClient = mHttpClient
+        } else if (RxHttp.instance.httpClient != null) {
+            mOkHttpClient = RxHttp.instance.httpClient
+        } else {
+            mOkHttpClient = okHttpClientBuilder.build()
+        }
+        retrofitBuilder.client(mOkHttpClient!!)
+        mRetrofit = retrofitBuilder.build()
+        mApiManager = mRetrofit!!.create(ApiManager::class.java)
+        return this as R
+    }
+
+
+    protected abstract fun generateRequest(): Observable<ResponseBody>
+
+}
