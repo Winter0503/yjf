@@ -3,4 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <!--文字主体颜色-->
+    <color name="tc_main">#333333</color>
+    <!-- hint 主色-->
+    <color name="tc_hint_main">#CED2D8</color>
+
+    <color name="div">#e6e6e6</color>
 </resources>
