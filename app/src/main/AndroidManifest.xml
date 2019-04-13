@@ -3,14 +3,14 @@
     package="cn.ygyg.yjf">
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:name=".MyApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".modular.activity.RegisterActivity">
+        <activity android:name=".modular.activity.RegisterActivity" />
         <activity android:name=".modular.internet.activity.NewAccountActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
