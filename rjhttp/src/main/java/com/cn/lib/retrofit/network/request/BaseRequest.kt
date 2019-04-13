@@ -25,7 +25,7 @@ import javax.net.ssl.X509TrustManager
 abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
     private var mCache: Cache? = null                                             //OkHttp缓存对象
     private var mCacheFile: File? = null                                          //缓存目录
-    private var mCacheMaxSize: Long = 0                                       //最大缓存
+    private var mCacheMaxSize: Long = 0                                           //最大缓存
     private var mProxy: Proxy? = null                                             //OkHttp代理
     private var mHostnameVerifier: HostnameVerifier? = null                       //https的全局访问规则
     private var mConverterFactory: Converter.Factory? = null                      //Converter.Factory
@@ -35,17 +35,17 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
     private var mSslParams: SSLUtil.SSLParams? = null                             //https签名证书
     private var mCookieJar: CookieJar? = null                                     //Cookie管理
     private var mConnectionPool: ConnectionPool? = null                           //链接池管理
-    private val mHeaders = HashMap<String, String>()           //公共请求头
-    //    Map<String, String> mParameters = new HashMap<>();                //请求参数
-    //    Map<String, String> mFileMap = new HashMap<>();                   //上传文件
+    private val mHeaders = HashMap<String, String>()                              //公共请求头
+    //    Map<String, String> mParameters = new HashMap<>();                      //请求参数
+    //    Map<String, String> mFileMap = new HashMap<>();                         //上传文件
     internal var mHttpParams = HttpParamEntity()      //请求参数集合
-    protected var mHttpClient: OkHttpClient? = null                                 //自定义OkHttpClient
-    private var mReadTimeout: Int = 0                                         //读超时
-    private var mWriteTimeout: Int = 0                                        //写超时
-    private var mConnectTimeout: Int = 0                                      //链接超时
-    internal var mRetryCount: Int = 0                                                  //重试次数默认3次
-    internal var mRetryDelay: Int = 0                                                  //延迟xxms重试
-    internal var mRetryIncreaseDelay: Int = 0                                          //叠加延迟
+    protected var mHttpClient: OkHttpClient? = null                                //自定义OkHttpClient
+    private var mReadTimeout: Int = 0                                             //读超时
+    private var mWriteTimeout: Int = 0                                            //写超时
+    private var mConnectTimeout: Int = 0                                          //链接超时
+    internal var mRetryCount: Int = 0                                              //重试次数默认3次
+    internal var mRetryDelay: Int = 0                                              //延迟xxms重试
+    internal var mRetryIncreaseDelay: Int = 0                                      //叠加延迟
     private val mInterceptorList = ArrayList<Interceptor>()
     private val mNetworkInterceptorList = ArrayList<Interceptor>()
     internal var mContext: Context

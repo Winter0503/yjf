@@ -250,21 +250,17 @@ class RxHttp private constructor() {
         return this
     }
 
-    fun remove(key: String): RxHttp {
+    fun removeHeader(key: String): RxHttp {
         if (headers.containsKey(key)) {
             headers.remove(key)
         }
-        this.baseHeaderInterceptor?.let {
-            it.remove(key)
-        }
+        this.baseHeaderInterceptor?.remove(key)
         return this
     }
 
     fun clearAllHeaders(): RxHttp {
         headers.clear()
-        this.baseHeaderInterceptor?.let {
-            it.clearAll()
-        }
+        this.baseHeaderInterceptor?.clearAll()
         return this
     }
 
@@ -433,20 +429,8 @@ class RxHttp private constructor() {
         private val DEFAULT_RETRY_DELAY = 500               //默认重试延时
         private val CACHE_MAX_SIZE = (10 * 1024 * 1024).toLong()      //默认缓存大小
 
-        @Volatile
-        private var mInstance: RxHttp? = null
-
-        val instance: RxHttp
-            get() {
-                if (mInstance == null) {
-                    synchronized(RxHttp::class.java) {
-                        if (mInstance == null) {
-                            mInstance = RxHttp()
-                        }
-                    }
-                }
-                return mInstance!!
-            }
+        val INSTANCE: RxHttp by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
+            RxHttp() }
 
         fun templatePost(url: String): TemplatePostRequest {
             return TemplatePostRequest(url)

@@ -23,6 +23,9 @@ object ResultConfigLoader {
     private val errorConfig: HashMap<String, String>?
         get() = config!!.errorInfo
 
+    /**
+     * 返回消息对应的键
+     */
     val msgKey: String?
         get() = if (config == null) {
             "msg"
