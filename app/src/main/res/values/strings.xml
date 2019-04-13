@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">yjf</string>
+    <string name="app_name">云缴费</string>
     <string name="verification_code">验证码</string>
     <string name="get_verification_code">获取验证码</string>
     <string name="pwd_prompt">密码长度6-20位</string>
     <string name="phone_prompt">输入手机号码</string>
-    <string name="app_name">云缴费</string>
+
 </resources>

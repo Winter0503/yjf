@@ -1,11 +1,10 @@
 package cn.ygyg.yjf.modular.activity
 
 import android.annotation.SuppressLint
-import android.text.*
-import android.util.Log
+import android.text.InputFilter
+import android.text.InputType
 import android.view.inputmethod.EditorInfo
 import cn.ygyg.yjf.R
-
 import cn.ygyg.yjf.modular.contract.RegisterContract
 import cn.ygyg.yjf.modular.presenter.RegisterPresenter
 import cn.ygyg.yjf.util.ResourceUtil
@@ -15,11 +14,8 @@ import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Consumer
-import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.activity_register.view.*
 import java.util.concurrent.TimeUnit
 
 
@@ -54,6 +50,9 @@ class RegisterActivity : BaseMvpActivity<RegisterContract.Presenter, RegisterCon
         edit_phone.filters = arrayOf(getPhoneInputFilter())
         btn_code.setOnClickListener {
             mPresenter?.checkPhone(edit_phone.text.toString())
+        }
+        btn_agreement.setOnClickListener {
+
         }
     }
 
