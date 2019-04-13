@@ -92,7 +92,7 @@ abstract class BaseActivity : FragmentActivity(), View.OnClickListener, IBaseVie
     }
 
 
-    override fun toActivity(cls: Class<out Activity>, bundle: Bundle) {
+    override fun toActivity(cls: Class<out Activity>, bundle: Bundle?) {
         toActivity(this, cls, bundle)
     }
 

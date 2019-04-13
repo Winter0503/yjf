@@ -1,14 +1,18 @@
 package cn.ygyg.yjf.modular.activity
 
 import android.annotation.SuppressLint
+import android.text.Editable
 import android.text.InputFilter
 import android.text.InputType
+import android.text.TextWatcher
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import cn.ygyg.yjf.R
+import cn.ygyg.yjf.R.id.*
 import cn.ygyg.yjf.modular.contract.RegisterContract
 import cn.ygyg.yjf.modular.presenter.RegisterPresenter
-import cn.ygyg.yjf.util.ResourceUtil
-import cn.ygyg.yjf.util.StringUtil
+import cn.ygyg.yjf.utils.ResourceUtil
+import cn.ygyg.yjf.utils.StringUtil
 import com.cn.lib.basic.BaseMvpActivity
 import io.reactivex.Observable
 import io.reactivex.Observer
@@ -16,6 +20,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.activity_register.view.*
 import java.util.concurrent.TimeUnit
 
 
@@ -24,6 +29,10 @@ import java.util.concurrent.TimeUnit
  * Created by Admin on 2019/4/12.
  */
 class RegisterActivity : BaseMvpActivity<RegisterContract.Presenter, RegisterContract.View>(), RegisterContract.View {
+
+    private var phoneRight = false
+    private var passwordRight = false
+    private var codeRight = false
 
     override fun getContentViewResId(): Int = R.layout.activity_register
 
@@ -52,32 +61,86 @@ class RegisterActivity : BaseMvpActivity<RegisterContract.Presenter, RegisterCon
             mPresenter?.checkPhone(edit_phone.text.toString())
         }
         btn_agreement.setOnClickListener {
-
+            toActivity(UserAgreementActivity::class.java)
         }
+        edit_pwd.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {
+                passwordRight = false
+                val length = s.length
+                if (length >= 6) {
+                    val reg = "^(?![a-zA-Z]+\$)(?!\\d+\$)\\S{6,}\$"
+                    if (!StringUtil.match(reg, s.toString())) {
+                        showToast("密码设置6-20位必须包含数字和字母")
+                    } else { //当密码输入符合设定时进行校验
+                        passwordRight = true
+                    }
+                }
+                checkAllInput()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+        edit_code.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {
+                codeRight = s.length==4
+                checkAllInput()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+        })
     }
+
 
     override fun checkPhoneSuccess() {
         startCountDown()
     }
 
+    private fun checkAllInput(){
+        if (phoneRight && codeRight && passwordRight){
+            btn_register.isEnabled = true
+            btn_register.setBackgroundResource(R.mipmap.btn_selected_long)
+        }else{
+            btn_register.isEnabled = false
+            btn_register.setBackgroundResource(R.mipmap.btn_unselected_long)
+        }
+    }
+
     private fun getPhoneInputFilter(): InputFilter {
-        return InputFilter { source, _, end, dest, dStart, _ ->
+        return InputFilter { source, start, end, dest, dStart, dend ->
+            var result:String? = null
             if (dStart == 0 && "1" != source) {
-                return@InputFilter ""
+                phoneRight = false
+                result = ""
             }
             val count = end + dStart
-            if (count == 11) {
+            if (count == 11) { //当输入的长度达到11位时校验手机号
                 val str = "$dest$source"
                 if (StringUtil.checkCellPhone(str)) {
                     btn_code.isEnabled = true
                     btn_code.setTextColor(ResourceUtil.getColor(getViewContext(), R.color.text_green_color))
+                    phoneRight = true
                 } else {
+                    phoneRight = false
                     showToast("请输入正确的手机号码")
                 }
-            } else if (count > 11) {
-                return@InputFilter ""
+            } else if (count > 11) { //限定不能超过11位
+                result = ""
+            }else if(source.isEmpty() && dend > dStart){ //删除操作
+
             }
-            null
+            Log.e("TAG","======phoneRight=======$phoneRight")
+            Log.e("TAG","======source:${source} end:${end} dest:${dest} dStart:${dStart} dend:${dend} source:${source} ")
+            checkAllInput()
+            result
         }
     }
 

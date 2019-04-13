@@ -1,4 +1,4 @@
-package cn.ygyg.yjf.util
+package cn.ygyg.yjf.utils
 
 import android.content.Context
 import android.graphics.drawable.Drawable

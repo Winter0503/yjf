@@ -1,4 +1,4 @@
-package cn.ygyg.yjf.util
+package cn.ygyg.yjf.utils
 
 import android.content.Context
 import android.text.TextUtils
@@ -209,5 +209,18 @@ object StringUtil {
         return s
     }
 
+
+    /**
+     * @param regex
+     * 正则表达式字符串
+     * @param str
+     * 要匹配的字符串
+     * @return 如果str 符合 regex的正则表达式格式,返回true, 否则返回 false;
+     */
+    fun match(regex: String, str: String): Boolean {
+        val pattern = Pattern.compile(regex)
+        val matcher = pattern.matcher(str)
+        return matcher.matches()
+    }
 
 }

@@ -121,7 +121,7 @@ abstract class BaseFragment : Fragment(), IBaseView {
     }
 
     override fun getViewContext(): Context {
-        return context
+        return context!!
     }
 
     override fun showLoading(msg: String) {
@@ -148,11 +148,13 @@ abstract class BaseFragment : Fragment(), IBaseView {
     }
 
     override fun toActivity(cls: Class<out Activity>) {
-        toActivity(activity, cls, null)
+        toActivity(cls, null)
     }
 
-    override fun toActivity(cls: Class<out Activity>, bundle: Bundle) {
-        toActivity(activity, cls, bundle)
+    override fun toActivity(cls: Class<out Activity>, bundle: Bundle?) {
+        activity?.let {
+            toActivity(it, cls, bundle)
+        }
     }
 
     protected fun toActivity(context: Context, cls: Class<*>, bundle: Bundle?) {

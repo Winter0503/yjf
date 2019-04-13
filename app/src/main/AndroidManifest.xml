@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".modular.internet.activity.NewAccountActivity"></activity>
+        <activity android:name=".modular.activity.UserAgreementActivity" />
         <!--<activity android:name=".modular.activity.RegisterActivity" />-->
     </application>
 

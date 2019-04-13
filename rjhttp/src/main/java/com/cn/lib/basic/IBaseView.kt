@@ -38,7 +38,7 @@ interface IBaseView {
 
     fun toActivity(cls: Class<out Activity>)
 
-    fun toActivity(cls: Class<out Activity>, bundle: Bundle)
+    fun toActivity(cls: Class<out Activity>, bundle: Bundle?)
 
     fun toActivityForResult(context: Context, cls: Class<out Activity>, requestCode: Int)
 
