@@ -20,9 +20,10 @@
         </activity>
         <activity android:name=".modular.activity.UserAgreementActivity" />
         <activity android:name=".modular.activity.LoginActivity" />
-        <!--<activity android:name=".modular.activity.RegisterActivity" />-->
+        <!-- <activity android:name=".modular.activity.RegisterActivity" /> -->
         <!-- <activity android:name=".modular.activity.RegisterActivity" /> -->
         <activity android:name=".modular.internet.activity.NewAccountSuccessActivity" />
+        <activity android:name=".modular.internet.activity.ListSelectActivity"></activity>
     </application>
 
 </manifest>
