@@ -8,6 +8,7 @@
     <color name="text_hint_color">#FFCED2D8</color>
     <color name="line_color">#FFE6E6E6</color>
     <color name="transparent">#00000000</color>
+    <color name="text_gray_dark_color">#999999</color>
     <color name="text_gray_color">#FFCED2D8</color>
     <color name="text_green_color">#FF00BE8A</color>
     <color name="white">#FFFFFFFF</color>

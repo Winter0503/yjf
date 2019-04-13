@@ -1,7 +1,9 @@
 package cn.ygyg.yjf
 
+import android.content.Intent
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
+import cn.ygyg.yjf.modular.internet.activity.NewAccountActivity
 
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,5 +22,6 @@ class ExampleInstrumentedTest {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getTargetContext()
         assertEquals("cn.ygyg.yjf", appContext.packageName)
+        appContext.startActivity(Intent(appContext,NewAccountActivity::class.java))
     }
 }
