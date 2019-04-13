@@ -17,10 +17,43 @@
     <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:src="@mipmap/btn_selected_long" />
+        android:scaleType="fitCenter"
+        android:src="@mipmap/icon_success" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="充值帐户信息添加成功"
+        android:textColor="@color/text_color"
+        android:textSize="@dimen/ts_content" />
 
     <Space
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/to_recharge"
+        android:layout_width="275dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/text_green_color"
+        android:gravity="center"
+        android:text="立即充值"
+        android:textColor="@color/white"
+        android:textSize="@dimen/ts_btn" />
+
+    <TextView
+        android:id="@+id/back_to_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="30dp"
+        android:gravity="center"
+        android:text="暂不充值"
+        android:textColor="@color/text_gray_dark_color"
+        android:textSize="@dimen/ts_content" />
+
 </LinearLayout>

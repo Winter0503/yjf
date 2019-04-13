@@ -4,6 +4,7 @@ import android.view.View
 import cn.ygyg.yjf.R
 import cn.ygyg.yjf.modular.internet.contract.NewAccountActivityContract
 import cn.ygyg.yjf.modular.internet.helper.ConfirmAccountPopupWindow
+import cn.ygyg.yjf.modular.internet.helper.InquireAccountDialog
 import cn.ygyg.yjf.modular.internet.presenter.NewAccountActivityPresenter
 import cn.ygyg.yjf.utils.HeaderBuilder
 import com.cn.lib.basic.BaseMvpActivity
@@ -21,6 +22,7 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
             setOnConformClick(View.OnClickListener { toActivity(NewAccountSuccessActivity::class.java) })
         }
     }
+    private val dialog: InquireAccountDialog by lazy { InquireAccountDialog(this) }
 
     override fun getContentViewResId(): Int {
         return R.layout.activity_new_account
@@ -33,5 +35,6 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
 
     override fun initListener() {
         next_step.setOnClickListener { v -> popupWindow.show(v) }
+        input_account_help.setOnClickListener { dialog.show() }
     }
 }

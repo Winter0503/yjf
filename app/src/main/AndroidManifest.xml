@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".modular.activity.RegisterActivity"></activity>
+        <activity android:name=".modular.activity.RegisterActivity" />
         <activity android:name=".modular.internet.activity.NewAccountActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -19,7 +19,7 @@
         </activity>
         <activity android:name=".modular.activity.UserAgreementActivity" />
         <!-- <activity android:name=".modular.activity.RegisterActivity" /> -->
-        <activity android:name=".modular.internet.activity.NewAccountSuccessActivity"></activity>
+        <activity android:name=".modular.internet.activity.NewAccountSuccessActivity" />
     </application>
 
 </manifest>

@@ -4,18 +4,19 @@ import android.content.Context
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.PopupWindow
 import android.widget.TextView
 import cn.ygyg.yjf.R
 import com.cn.lib.util.DensityUtil
 
 class ConfirmAccountPopupWindow(context: Context) : PopupWindow(context) {
-    private lateinit var userName: TextView
-    private lateinit var payCostCompany: TextView
-    private lateinit var accountName: TextView
-    private lateinit var address: TextView
-    private lateinit var balance: TextView
-    private lateinit var confirm: TextView
+    private var userName: TextView
+    private var payCostCompany: TextView
+    private var accountName: TextView
+    private var address: TextView
+    private var balance: TextView
+    private var confirm: TextView
 
     init {
         contentView = LayoutInflater.from(context).inflate(R.layout.popup_confirm_account, null)
