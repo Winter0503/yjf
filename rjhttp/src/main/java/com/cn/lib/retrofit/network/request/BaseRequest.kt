@@ -25,7 +25,7 @@ import javax.net.ssl.X509TrustManager
 abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
     private var mCache: Cache? = null                                             //OkHttp缓存对象
     private var mCacheFile: File? = null                                          //缓存目录
-    private var mCacheMaxSize: Long = 0                                       //最大缓存
+    private var mCacheMaxSize: Long = 0                                           //最大缓存
     private var mProxy: Proxy? = null                                             //OkHttp代理
     private var mHostnameVerifier: HostnameVerifier? = null                       //https的全局访问规则
     private var mConverterFactory: Converter.Factory? = null                      //Converter.Factory
@@ -35,17 +35,17 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
     private var mSslParams: SSLUtil.SSLParams? = null                             //https签名证书
     private var mCookieJar: CookieJar? = null                                     //Cookie管理
     private var mConnectionPool: ConnectionPool? = null                           //链接池管理
-    private val mHeaders = HashMap<String, String>()           //公共请求头
-    //    Map<String, String> mParameters = new HashMap<>();                //请求参数
-    //    Map<String, String> mFileMap = new HashMap<>();                   //上传文件
+    private val mHeaders = HashMap<String, String>()                              //公共请求头
+    //    Map<String, String> mParameters = new HashMap<>();                      //请求参数
+    //    Map<String, String> mFileMap = new HashMap<>();                         //上传文件
     internal var mHttpParams = HttpParamEntity()      //请求参数集合
-    protected var mHttpClient: OkHttpClient? = null                                 //自定义OkHttpClient
-    private var mReadTimeout: Int = 0                                         //读超时
-    private var mWriteTimeout: Int = 0                                        //写超时
-    private var mConnectTimeout: Int = 0                                      //链接超时
-    internal var mRetryCount: Int = 0                                                  //重试次数默认3次
-    internal var mRetryDelay: Int = 0                                                  //延迟xxms重试
-    internal var mRetryIncreaseDelay: Int = 0                                          //叠加延迟
+    protected var mHttpClient: OkHttpClient? = null                                //自定义OkHttpClient
+    private var mReadTimeout: Int = 0                                             //读超时
+    private var mWriteTimeout: Int = 0                                            //写超时
+    private var mConnectTimeout: Int = 0                                          //链接超时
+    internal var mRetryCount: Int = 0                                              //重试次数默认3次
+    internal var mRetryDelay: Int = 0                                              //延迟xxms重试
+    internal var mRetryIncreaseDelay: Int = 0                                      //叠加延迟
     private val mInterceptorList = ArrayList<Interceptor>()
     private val mNetworkInterceptorList = ArrayList<Interceptor>()
     internal var mContext: Context
@@ -60,7 +60,7 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
 
 
     init {
-        val rxHttp = RxHttp.instance
+        val rxHttp = RxHttp.INSTANCE
         this.mContext = rxHttp.getContext()
         this.isSign = rxHttp.isSign
         this.accessToken = rxHttp.isAccessToken
@@ -268,7 +268,7 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
                 && mInterceptorList.size == 0 && mNetworkInterceptorList.size == 0 && mProxy == null
                 && mSslSocketFactory == null && mTrustManager == null && mHostnameVerifier == null
                 && mCallAdapterFactory == null && mConverterFactory == null && mHeaders.isEmpty()) {
-            val builder = RxHttp.instance.getOkHttpClientBuilder()
+            val builder = RxHttp.INSTANCE.getOkHttpClientBuilder()
             for (interceptor in builder.interceptors()) {
                 if (interceptor is BaseDynamicInterceptor<*>) {
                     (interceptor as BaseDynamicInterceptor<*>).sign(isSign).accessToken(accessToken)
@@ -276,7 +276,7 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
             }
             return builder
         } else {
-            val newBuilder = RxHttp.instance.okHttpClient.newBuilder()
+            val newBuilder = RxHttp.INSTANCE.okHttpClient.newBuilder()
             if (mReadTimeout > 0) {
                 newBuilder.readTimeout(mReadTimeout.toLong(), TimeUnit.SECONDS)
             }
@@ -344,7 +344,7 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
      * 添加请求头，并保证在拦截器的第一位，以方便后面的拦截器使用到头信息
      */
     private fun addHeaderInterceptor(newBuilder: OkHttpClient.Builder) {
-        mHeaderInterceptor = RxHttp.instance.baseHeaderInterceptor
+        mHeaderInterceptor = RxHttp.INSTANCE.baseHeaderInterceptor
         mHeaderInterceptor?.run {
             addHeaderMap(mHeaders)
             return
@@ -361,7 +361,7 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
     }
 
     protected fun generateRetrofitBuilder(): Retrofit.Builder {
-        val rxHttp = RxHttp.instance
+        val rxHttp = RxHttp.INSTANCE
         if (mBaseUrl == null || (mBaseUrl == rxHttp.baseUrl && mConverterFactory == null
                         && mCallAdapterFactory == null && mHttpClient == null && rxHttp.httpClient == null)) {
             return rxHttp.retrofitBuilder
@@ -386,8 +386,8 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
         val retrofitBuilder = generateRetrofitBuilder()
         if (mHttpClient != null) {
             mOkHttpClient = mHttpClient
-        } else if (RxHttp.instance.httpClient != null) {
-            mOkHttpClient = RxHttp.instance.httpClient
+        } else if (RxHttp.INSTANCE.httpClient != null) {
+            mOkHttpClient = RxHttp.INSTANCE.httpClient
         } else {
             mOkHttpClient = okHttpClientBuilder.build()
         }

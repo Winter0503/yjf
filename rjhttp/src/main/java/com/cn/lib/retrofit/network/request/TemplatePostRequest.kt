@@ -53,7 +53,7 @@ class TemplatePostRequest(url: String) : HttpBodyRequest<TemplatePostRequest>(ur
         val observable = build().generateObservable(generateRequest())
         return observable.compose(HandleResponseBodyTransformer(callback, tag))
                 .compose(HandleErrorTransformer())
-                .subscribeWith(RxCallbackSubscriber<T>(mContext!!, tag, callback))
+                .subscribeWith(RxCallbackSubscriber(mContext, tag, callback))
     }
 
     private fun generateObservable(observable: Observable<ResponseBody>): Observable<ResponseBody> {

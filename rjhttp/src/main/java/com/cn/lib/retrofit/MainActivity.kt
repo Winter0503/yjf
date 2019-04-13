@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.demo)
         ResultConfigLoader.init(baseContext)
-        RxHttp.instance.init(baseContext)
+        RxHttp.INSTANCE.init(baseContext)
                 .baseUrl("https://ygzk.ygego.cn/api/")
                 .isLog(true)
                 .callAdapterFactory(RxJava2CallAdapterFactory.create())

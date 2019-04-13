@@ -119,7 +119,7 @@ class ExceptionFactory {
             } else if (e is ServerException) {
                 ex = ApiThrowable(e, e.code)
                 val errorMsg = ResultConfigLoader.errorDesc(e.code)
-                if ("" == errorMsg) {
+                if ("" != errorMsg) {
                     ex.message = errorMsg
                     return ex
                 }

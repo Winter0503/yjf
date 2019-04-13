@@ -46,11 +46,9 @@ class RetryExceptionFunc : Function<Observable<out Throwable>, Observable<*>> {
             if (throwable is ApiThrowable) {
                 errCode = throwable.code
             }
-            if ((wrapper.throwable is ConnectException
-                            || wrapper.throwable is SocketTimeoutException
-                            || errCode == ExceptionFactory.ERROR.NETWORD_ERROR
-                            || errCode == ExceptionFactory.ERROR.TIMEOUT_ERROR
-                            || wrapper.throwable is TimeoutException) && wrapper.index < count + 1) { //如果超出重试次数也抛出错误，否则默认是会进入onCompleted
+            if ((wrapper.throwable is ConnectException || wrapper.throwable is SocketTimeoutException
+                    || errCode == ExceptionFactory.ERROR.NETWORD_ERROR || errCode == ExceptionFactory.ERROR.TIMEOUT_ERROR
+                    || wrapper.throwable is TimeoutException) && wrapper.index < count + 1) { //如果超出重试次数也抛出错误，否则默认是会进入onCompleted
                 Observable.timer(delay + (wrapper.index - 1) * increaseDelay, TimeUnit.MILLISECONDS)
 
             } else Observable.error(wrapper.throwable)
