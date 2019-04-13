@@ -1,4 +1,4 @@
-package cn.ygyg.yjf.base
+package cn.ygyg.yjf.utils
 
 import android.app.Activity
 import android.content.Context

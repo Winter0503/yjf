@@ -1,13 +1,37 @@
 package cn.ygyg.yjf.modular.internet.activity
 
-import android.support.v7.app.AppCompatActivity
-import android.os.Bundle
+import android.view.View
 import cn.ygyg.yjf.R
+import cn.ygyg.yjf.modular.internet.contract.NewAccountActivityContract
+import cn.ygyg.yjf.modular.internet.helper.ConfirmAccountPopupWindow
+import cn.ygyg.yjf.modular.internet.presenter.NewAccountActivityPresenter
+import cn.ygyg.yjf.utils.HeaderBuilder
+import com.cn.lib.basic.BaseMvpActivity
+import kotlinx.android.synthetic.main.activity_new_account.*
 
-class NewAccountActivity : AppCompatActivity() {
+class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter, NewAccountActivityContract.View>(),
+        NewAccountActivityContract.View {
+    override fun createPresenter(): NewAccountActivityContract.Presenter {
+        return NewAccountActivityPresenter(this)
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_new_account)
+    private val headerBuilder: HeaderBuilder by lazy { HeaderBuilder(this) }
+    private val popupWindow: ConfirmAccountPopupWindow by lazy {
+        ConfirmAccountPopupWindow(this).apply {
+            setOnConformClick(View.OnClickListener { toActivity(NewAccountSuccessActivity::class.java) })
+        }
+    }
+
+    override fun getContentViewResId(): Int {
+        return R.layout.activity_new_account
+    }
+
+    override fun initViews() {
+        headerBuilder.setLeftImageRes(R.mipmap.back)
+        headerBuilder.setTitle(R.string.activity_title_add_new_account)
+    }
+
+    override fun initListener() {
+        next_step.setOnClickListener { v -> popupWindow.show(v) }
     }
 }

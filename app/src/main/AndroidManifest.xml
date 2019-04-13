@@ -17,10 +17,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".modular.internet.activity.NewAccountActivity"></activity>
         <activity android:name=".modular.activity.UserAgreementActivity" />
         <activity android:name=".modular.activity.LoginActivity" />
         <!--<activity android:name=".modular.activity.RegisterActivity" />-->
+        <!-- <activity android:name=".modular.activity.RegisterActivity" /> -->
+        <activity android:name=".modular.internet.activity.NewAccountSuccessActivity"></activity>
     </application>
 
 </manifest>

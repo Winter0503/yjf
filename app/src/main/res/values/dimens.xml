@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="ts_title">17sp</dimen>
+    <dimen name="ts_btn">16sp</dimen>
+    <dimen name="ts_content">14sp</dimen>
 </resources>

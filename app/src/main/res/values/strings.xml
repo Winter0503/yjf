@@ -2,8 +2,21 @@
     <string name="app_name">云缴费</string>
     <string name="verification_code">验证码</string>
     <string name="get_verification_code">获取验证码</string>
-    <string name="pwd_prompt">密码长度6-20位</string>
+    <string name="pwd_prompt">密码长度6–20位</string>
     <string name="phone_prompt">输入手机号码</string>
     <string name="user_agreement">用户协议</string>
 
+    <string name="pay_cost_company">缴费单位</string>
+    <string name="pay_account">缴费户号</string>
+    <string name="hint_input_pay_account">请输入缴费户号</string>
+    <string name="input_account_help">如何查阅户号</string>
+    <string name="input_account_alert">目前仅支持物联卡表缴费</string>
+    <string name="read_and_agree_protocol">我已阅读并同意《云缴费用户协议》</string>
+    <string name="confirm_account">确认充值帐户</string>
+    <string name="close">关闭</string>
+    <string name="user_name">用户姓名</string>
+    <string name="address_msg">地址信息</string>
+    <string name="account_balance">账户余额</string>
+    <string name="confirm">确认</string>
+    <string name="activity_title_add_new_account">新增充值账户</string>
 </resources>
