@@ -28,7 +28,7 @@ import okhttp3.ResponseBody
 abstract class ResponseTemplateCallback<T> protected constructor() : ResponseCallback<T>() {
 
     init {
-        ResultConfigLoader.init(RxHttp.instance.getContext()!!)
+        ResultConfigLoader.init(RxHttp.INSTANCE.getContext()!!)
     }
 
     @Throws(Exception::class)

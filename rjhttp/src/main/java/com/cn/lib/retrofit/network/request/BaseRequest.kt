@@ -60,7 +60,7 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
 
 
     init {
-        val rxHttp = RxHttp.instance
+        val rxHttp = RxHttp.INSTANCE
         this.mContext = rxHttp.getContext()
         this.isSign = rxHttp.isSign
         this.accessToken = rxHttp.isAccessToken
@@ -268,7 +268,7 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
                 && mInterceptorList.size == 0 && mNetworkInterceptorList.size == 0 && mProxy == null
                 && mSslSocketFactory == null && mTrustManager == null && mHostnameVerifier == null
                 && mCallAdapterFactory == null && mConverterFactory == null && mHeaders.isEmpty()) {
-            val builder = RxHttp.instance.getOkHttpClientBuilder()
+            val builder = RxHttp.INSTANCE.getOkHttpClientBuilder()
             for (interceptor in builder.interceptors()) {
                 if (interceptor is BaseDynamicInterceptor<*>) {
                     (interceptor as BaseDynamicInterceptor<*>).sign(isSign).accessToken(accessToken)
@@ -276,7 +276,7 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
             }
             return builder
         } else {
-            val newBuilder = RxHttp.instance.okHttpClient.newBuilder()
+            val newBuilder = RxHttp.INSTANCE.okHttpClient.newBuilder()
             if (mReadTimeout > 0) {
                 newBuilder.readTimeout(mReadTimeout.toLong(), TimeUnit.SECONDS)
             }
@@ -344,7 +344,7 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
      * 添加请求头，并保证在拦截器的第一位，以方便后面的拦截器使用到头信息
      */
     private fun addHeaderInterceptor(newBuilder: OkHttpClient.Builder) {
-        mHeaderInterceptor = RxHttp.instance.baseHeaderInterceptor
+        mHeaderInterceptor = RxHttp.INSTANCE.baseHeaderInterceptor
         mHeaderInterceptor?.run {
             addHeaderMap(mHeaders)
             return
@@ -361,7 +361,7 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
     }
 
     protected fun generateRetrofitBuilder(): Retrofit.Builder {
-        val rxHttp = RxHttp.instance
+        val rxHttp = RxHttp.INSTANCE
         if (mBaseUrl == null || (mBaseUrl == rxHttp.baseUrl && mConverterFactory == null
                         && mCallAdapterFactory == null && mHttpClient == null && rxHttp.httpClient == null)) {
             return rxHttp.retrofitBuilder
@@ -386,8 +386,8 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
         val retrofitBuilder = generateRetrofitBuilder()
         if (mHttpClient != null) {
             mOkHttpClient = mHttpClient
-        } else if (RxHttp.instance.httpClient != null) {
-            mOkHttpClient = RxHttp.instance.httpClient
+        } else if (RxHttp.INSTANCE.httpClient != null) {
+            mOkHttpClient = RxHttp.INSTANCE.httpClient
         } else {
             mOkHttpClient = okHttpClientBuilder.build()
         }
