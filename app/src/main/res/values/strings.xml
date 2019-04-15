@@ -21,6 +21,7 @@
     <string name="confirm">确认</string>
     <string name="activity_title_add_new_account">新增充值账户</string>
     <string name="activity_title_new_account_success">添加成功</string>
+    <string name="activity_title_address_select">选择燃气公司</string>
     <string name="tab_home">首页</string>
     <string name="tab_my">我的</string>
 </resources>
