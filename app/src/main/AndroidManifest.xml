@@ -19,13 +19,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="cn.ygyg.yjf.modular.register.activity.UserAgreementActivity" />
-        <!--<activity android:name=".modular.activity.LoginActivity" />-->
-        <activity android:name="cn.ygyg.yjf.modular.register.activity.RegisterActivity" />
+        <activity android:name=".modular.register.activity.UserAgreementActivity" />
+        <activity android:name=".modular.register.activity.RegisterActivity" />
         <activity android:name=".modular.internet.activity.NewAccountSuccessActivity"/>
         <activity android:name=".modular.password.activity.ResetPasswordActivity" />
         <activity android:name=".modular.login.activity.BindingPhoneActivity" />
-        <!--<activity android:name=".modular.activity.LoginActivity" />-->
+        <activity android:name=".modular.login.activity.LoginActivity" />
+        <activity android:name=".modular.internet.activity.ListSelectActivity"/>
     </application>
 
 </manifest>
