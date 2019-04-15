@@ -1,27 +1,25 @@
-package cn.ygyg.yjf.modular.contract
+package cn.ygyg.yjf.modular.login.contract
 
 import android.text.InputFilter
 import android.text.TextWatcher
 import com.cn.lib.basic.IBasePresenter
 import com.cn.lib.basic.IBaseView
 
-/**
- * Created by Admin on 2019/4/13.
- */
-class LoginContract{
-    interface View: IBaseView{
-        fun changeLoginBtnState(state: Boolean)
+class ResetPasswordContract {
+    interface View:IBaseView{
         fun changeCodeBtnState(state: Boolean)
+        fun changeConfirmBtnState(state: Boolean)
         fun changeCodeBtnText(aLong: Long)
 
     }
 
-    interface Presenter: IBasePresenter<View>{
+    interface Presenter:IBasePresenter<View>{
+        fun getPhoneInputFilter(): InputFilter?
+        fun getVerificationCode(phone: String)
 
-        fun startCountDown()
-        fun getPhoneInputFilter(): InputFilter
         fun getCodeTextChangeListener(): TextWatcher
         fun getPasswordTextChangeListener(): TextWatcher
-        fun setLoginType(type: Int)
     }
+
+
 }

@@ -1,5 +1,6 @@
-package cn.ygyg.yjf.modular.activity
+package cn.ygyg.yjf.modular.login
 
+import android.text.InputFilter
 import android.view.View
 import cn.ygyg.yjf.R
 import cn.ygyg.yjf.modular.contract.LoginContract
@@ -44,6 +45,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
         super.initListener()
         edit_code.addTextChangedListener(mPresenter?.getPasswordTextChangeListener())
         btn_login_type.setOnClickListener {
+            edit_code.text = null
             if (loginType == 0) { //判断是否是密码登录
                 //验证码登录
                 loginType = 1
@@ -51,7 +53,8 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
                 edit_code.hint = "请输入验证码"
                 btn_retrieve_password.visibility = View.INVISIBLE
                 btn_code.visibility = View.VISIBLE
-                btn_code
+                edit_code.filters = arrayOf(InputFilter.LengthFilter(4))
+                btn_login_type.text ="密码登录"
             } else {
                 //密码登录
                 loginType = 0
@@ -59,6 +62,8 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
                 edit_code.hint = "请输入密码"
                 btn_retrieve_password.visibility = View.VISIBLE
                 btn_code.visibility = View.GONE
+                edit_code.filters = arrayOf(InputFilter.LengthFilter(20))
+                btn_login_type.text ="验证码登录"
             }
             mPresenter?.setLoginType(loginType)
         }

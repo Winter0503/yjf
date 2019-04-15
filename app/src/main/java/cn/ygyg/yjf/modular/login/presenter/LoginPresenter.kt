@@ -97,6 +97,23 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
         }
     }
 
+    override fun getCodeFilter(): InputFilter {
+        return InputFilter { source, start, end, dest, dstart, dend ->
+            if (dstart == dend && !source.isEmpty()) { //当两者相等说明是输入
+                val count = end + dstart
+                if (count == 4) {
+                    isLegalCode = true
+                    checkAllInput()
+                    return@InputFilter null
+                }
+                isLegalCode = false
+                return@InputFilter ""
+            }
+            isLegalCode = true
+            return@InputFilter null
+        }
+    }
+
     override fun getCodeTextChangeListener(): TextWatcher {
         return object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
@@ -117,7 +134,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
         return object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
                 val length = s.length
-                isLegalPassword = length > 0
+                isLegalPassword = length > 6
                 checkAllInput()
             }
 

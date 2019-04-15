@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:name=".MyApplication"
         android:theme="@style/AppTheme">
-        <activity android:name=".modular.activity.LoginActivity">
+        <activity android:name=".modular.activity.RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,6 +21,10 @@
         <!--<activity android:name=".modular.activity.LoginActivity" />-->
         <activity android:name=".modular.activity.RegisterActivity" />
         <activity android:name=".modular.internet.activity.NewAccountSuccessActivity"/>
+        <activity android:name=".modular.activity.LoginActivity" />
+        <!--<activity android:name=".modular.activity.RegisterActivity" />-->
+        <!-- <activity android:name=".modular.activity.RegisterActivity" /> -->
+        <activity android:name=".modular.internet.activity.NewAccountSuccessActivity" />
     </application>
 
 </manifest>
