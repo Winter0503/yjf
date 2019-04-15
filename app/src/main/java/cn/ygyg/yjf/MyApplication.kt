@@ -12,7 +12,7 @@ class MyApplication: Application() {
         super.onCreate()
         RxHttp.INSTANCE
                 .init(context = baseContext)
-                .baseUrl("")
+                .baseUrl("http://www.baidu.com")
                 .isLog(true)
                 .readTimeout(60 * 1000)
                 .writeTimeout(60 * 1000)
