@@ -1,11 +1,11 @@
-package cn.ygyg.yjf.modular.activity
+package cn.ygyg.yjf.modular.register.activity
 
 import android.annotation.SuppressLint
 import android.text.InputType
 import android.view.inputmethod.EditorInfo
 import cn.ygyg.yjf.R
-import cn.ygyg.yjf.modular.contract.RegisterContract
-import cn.ygyg.yjf.modular.presenter.RegisterPresenter
+import cn.ygyg.yjf.modular.register.contract.RegisterContract
+import cn.ygyg.yjf.modular.register.presenter.RegisterPresenter
 import cn.ygyg.yjf.utils.ResourceUtil
 import com.cn.lib.basic.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_register.*
@@ -23,6 +23,9 @@ class RegisterActivity : BaseMvpActivity<RegisterContract.Presenter, RegisterCon
 
     override fun initViews() {
         super.initViews()
+        edit_phone.filters = arrayOf(mPresenter?.getPhoneInputFilter())
+        edit_pwd.addTextChangedListener(mPresenter?.getPasswordTextChangeListener())
+        edit_code.addTextChangedListener(mPresenter?.getCodeTextChangeListener())
     }
 
     override fun initListener() {
@@ -39,15 +42,13 @@ class RegisterActivity : BaseMvpActivity<RegisterContract.Presenter, RegisterCon
                 btn_pwd.setImageResource(R.mipmap.pwd_close)
             }
         }
-        edit_phone.filters = arrayOf(mPresenter?.getPhoneInputFilter())
+
         btn_code.setOnClickListener {
             mPresenter?.checkPhone(edit_phone.text.toString())
         }
         btn_agreement.setOnClickListener {
             toActivity(UserAgreementActivity::class.java)
         }
-        edit_pwd.addTextChangedListener(mPresenter?.getPasswordTextChangeListener())
-        edit_code.addTextChangedListener(mPresenter?.getCodeTextChangeListener())
         btn_register.setOnClickListener {
             val phone = edit_phone.text.toString()
             val password = edit_pwd.text.toString()

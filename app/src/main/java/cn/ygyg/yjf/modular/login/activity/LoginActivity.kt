@@ -1,13 +1,18 @@
-package cn.ygyg.yjf.modular.login
+package cn.ygyg.yjf.modular.login.activity
 
+import android.content.Intent
+import android.net.Uri
 import android.text.InputFilter
 import android.view.View
 import cn.ygyg.yjf.R
-import cn.ygyg.yjf.modular.contract.LoginContract
-import cn.ygyg.yjf.modular.presenter.LoginPresenter
+import cn.ygyg.yjf.dialog.DefaultPromptDialog
+import cn.ygyg.yjf.modular.login.contract.LoginContract
+import cn.ygyg.yjf.modular.login.presenter.LoginPresenter
+import cn.ygyg.yjf.modular.password.activity.ResetPasswordActivity
 import cn.ygyg.yjf.utils.ResourceUtil
 import com.cn.lib.basic.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.activity_reset_password.*
 
 /**
  * 登录
@@ -22,13 +27,13 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
     }
 
     override fun changeCodeBtnState(state: Boolean) {
-        if (state) btn_code.text = "获取验证码"
-        btn_code.isEnabled = state
-        btn_code.setTextColor(ResourceUtil.getColor(getViewContext(), if (state) R.color.text_green_color else R.color.text_gray_color))
+        btn_login_code.text = "获取验证码"
+        btn_login_code.isEnabled = state
+        btn_login_code.setTextColor(ResourceUtil.getColor(getViewContext(), if (state) R.color.text_green_color else R.color.text_gray_color))
     }
 
     override fun changeCodeBtnText(aLong: Long) {
-        btn_code.text = "${aLong}秒后重发"
+        btn_login_code.text = "${aLong}秒后重发"
     }
 
     override fun getContentViewResId(): Int = R.layout.activity_login
@@ -39,37 +44,54 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
 
     override fun initViews() {
         super.initViews()
+        edit_login_code.addTextChangedListener(mPresenter?.getPasswordTextChangeListener())
+        edit_login_phone.filters = arrayOf(mPresenter?.getPhoneInputFilter())
     }
 
     override fun initListener() {
         super.initListener()
-        edit_code.addTextChangedListener(mPresenter?.getPasswordTextChangeListener())
         btn_login_type.setOnClickListener {
-            edit_code.text = null
+            edit_login_code.text = null
             if (loginType == 0) { //判断是否是密码登录
                 //验证码登录
                 loginType = 1
-                edit_code.addTextChangedListener(mPresenter?.getCodeTextChangeListener())
-                edit_code.hint = "请输入验证码"
+                edit_login_code.addTextChangedListener(mPresenter?.getCodeTextChangeListener())
+                edit_login_code.hint = ResourceUtil.getString(getViewContext(), R.string.verification_code)
                 btn_retrieve_password.visibility = View.INVISIBLE
-                btn_code.visibility = View.VISIBLE
-                edit_code.filters = arrayOf(InputFilter.LengthFilter(4))
+                btn_login_code.visibility = View.VISIBLE
+                edit_login_code.filters = arrayOf(InputFilter.LengthFilter(4))
                 btn_login_type.text ="密码登录"
             } else {
                 //密码登录
                 loginType = 0
-                edit_code.addTextChangedListener(mPresenter?.getPasswordTextChangeListener())
-                edit_code.hint = "请输入密码"
+                edit_login_code.addTextChangedListener(mPresenter?.getPasswordTextChangeListener())
+                edit_login_code.hint = ResourceUtil.getString(getViewContext(), R.string.input_password)
                 btn_retrieve_password.visibility = View.VISIBLE
-                btn_code.visibility = View.GONE
-                edit_code.filters = arrayOf(InputFilter.LengthFilter(20))
+                btn_login_code.visibility = View.GONE
+                edit_login_code.filters = arrayOf(InputFilter.LengthFilter(20))
                 btn_login_type.text ="验证码登录"
             }
             mPresenter?.setLoginType(loginType)
         }
-        edit_phone.filters = arrayOf(mPresenter?.getPhoneInputFilter())
-        btn_retrieve_password.setOnClickListener { //找回密码
 
+        btn_retrieve_password.setOnClickListener { //找回密码
+            DefaultPromptDialog.builder()
+                    .setAffirmText("确认")
+                    .setCancelText("取消")
+                    .setContentText("找回密码")
+                    .setContext(getViewContext())
+                    .setButtonOrientation(typeEnum = DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
+                    .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
+                        override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
+                                toActivity(ResetPasswordActivity::class.java)
+                            return super.clickPositiveButton(dialog)
+                        }
+                    })
+                    .build()
+                    .show()
+        }
+        btn_login_code.setOnClickListener {
+            mPresenter?.getVerificationCode(edit_login_phone.text.toString())
         }
 
     }

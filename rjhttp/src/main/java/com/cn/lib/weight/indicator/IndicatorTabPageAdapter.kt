@@ -42,7 +42,9 @@ class IndicatorTabPageAdapter(fm: FragmentManager, tabs: ArrayList<TabInfo>) : F
         if (tabMap.size() > 0) {
             val tab = tabMap.get(pos) ?: return null
             fragment = tab.createFragment()
-            mFragmentRelevantCallback?.initFragmentEnd(pos, fragment)
+            fragment?.let {
+                mFragmentRelevantCallback?.initFragmentEnd(pos, it)
+            }
         }
         return fragment
     }
@@ -63,6 +65,6 @@ class IndicatorTabPageAdapter(fm: FragmentManager, tabs: ArrayList<TabInfo>) : F
     }
 
     interface FragmentRelevantCallback {
-        fun initFragmentEnd(fragmentIndex: Int, fragment: Fragment?)
+        fun initFragmentEnd(fragmentIndex: Int, fragment: Fragment)
     }
 }

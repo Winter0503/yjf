@@ -1,9 +1,9 @@
-package cn.ygyg.yjf.modular.password.presenter
+package cn.ygyg.yjf.modular.login.presenter
 
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
-import cn.ygyg.yjf.modular.password.contract.ResetPasswordContract
+import cn.ygyg.yjf.modular.login.contract.BindingPhoneContract
 import cn.ygyg.yjf.utils.StringUtil
 import com.cn.lib.basic.BasePresenterImpl
 import io.reactivex.Observable
@@ -13,9 +13,8 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
-class ResetPasswordPresenter(view: ResetPasswordContract.View) : BasePresenterImpl<ResetPasswordContract.View>(view), ResetPasswordContract.Presenter {
+class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl<BindingPhoneContract.View>(view), BindingPhoneContract.Presenter {
     private var isLegalPhone: Boolean = false
-    private var isLegalPassword: Boolean = false
     private var isLegalCode: Boolean = false
     var disposable: Disposable? = null
 
@@ -72,26 +71,11 @@ class ResetPasswordPresenter(view: ResetPasswordContract.View) : BasePresenterIm
         }
     }
 
-    override fun getPasswordTextChangeListener(): TextWatcher {
-        return object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {
-                isLegalPassword = s.length >= 6//当密码位数设置大于最小值6时
-                checkAllInput()
-            }
-
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-        }
-    }
-
     /**
      * 校验所有的输入时候符合规定，符合规定时设置按钮可点击
      */
     private fun checkAllInput() {
-        mvpView?.changeConfirmBtnState(isLegalPhone && isLegalCode && isLegalPassword)
+        mvpView?.changeConfirmBtnState(isLegalPhone && isLegalCode)
     }
 
     override fun getVerificationCode(phone: String) {

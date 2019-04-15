@@ -1,4 +1,4 @@
-package cn.ygyg.yjf.modular.contract
+package cn.ygyg.yjf.modular.register.contract
 
 import android.text.InputFilter
 import android.text.TextWatcher

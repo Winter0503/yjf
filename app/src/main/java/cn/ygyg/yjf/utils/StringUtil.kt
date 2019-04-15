@@ -14,16 +14,16 @@ object StringUtil {
      * 判断输入的是否是号码
      */
     fun isPhoneNumber(num: String): Boolean {
-        var num = num
-        if (TextUtils.isEmpty(num) || num.length < 3 || num.length > 11) {
+        var phoneNumber = num
+        if (TextUtils.isEmpty(phoneNumber) || phoneNumber.length < 3 || phoneNumber.length > 11) {
             return false
         }
-        num = formatNumber(num)
-        if (!TextUtils.isEmpty(num)) {
-            if (num.startsWith("1") && num.length == 11 && checkCellPhone(num)) {
+        phoneNumber = formatNumber(phoneNumber)
+        if (!TextUtils.isEmpty(phoneNumber)) {
+            if (phoneNumber.startsWith("1") && phoneNumber.length == 11 && checkCellPhone(phoneNumber)) {
                 return true
             }
-            if (!isOrder(num) && !isSame(num)) {
+            if (!isOrder(phoneNumber) && !isSame(phoneNumber)) {
                 return true
             }
         }
@@ -74,10 +74,9 @@ object StringUtil {
      * 判断是否相同
      */
     private fun isSame(str: String): Boolean {
-        var regex = ""
         try {
             if (!TextUtils.isEmpty(str)) {
-                regex = str.substring(0, 1) + "{" + str.length + "}"
+                val regex = str.substring(0, 1) + "{" + str.length + "}"
                 return str.matches(regex.toRegex())
             }
         } catch (e: Exception) {
@@ -162,13 +161,12 @@ object StringUtil {
     fun subStringForName(arg: String, subLen: Int): String {
         val sb = StringBuffer()
         var len = 0
-        var item: String? = null
         var i = 0
         while (i < arg.length && len < subLen) {
-            item = arg.substring(i, i + 1)
+           val item = arg.substring(i, i + 1)
             sb.append(item)
             if (Pattern.matches("([/d/D]*)", item)) {
-                len = len + 2
+                len += 2
             } else {
                 len++
             }
@@ -198,15 +196,15 @@ object StringUtil {
      * 例如输入1.010 则输出1.01
      */
     fun formatZeroAndDot(s: String): String {
-        var s = s
-        if (TextUtils.isEmpty(s)) {
+        var str = s
+        if (TextUtils.isEmpty(str)) {
             return ""
         }
-        if (s.indexOf(".") > 0) {
-            s = s.replace("0+?$".toRegex(), "")//去掉多余的0
-            s = s.replace("[.]$".toRegex(), "")//如最后一位是.则去掉
+        if (str.indexOf(".") > 0) {
+            str = str.replace("0+?$".toRegex(), "")//去掉多余的0
+            str = str.replace("[.]$".toRegex(), "")//如最后一位是.则去掉
         }
-        return s
+        return str
     }
 
 

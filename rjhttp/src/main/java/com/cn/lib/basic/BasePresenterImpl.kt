@@ -35,7 +35,7 @@ open class BasePresenterImpl<V : IBaseView>(view: V) : IBasePresenter<V> {
     }
 
     override fun attachView(view: V) {
-        if (view != null && view !== this.mvpView) {
+        if (view != this.mvpView) {
             this.mvpView = view
         }
         if (this.mCompositeDisposable == null) {

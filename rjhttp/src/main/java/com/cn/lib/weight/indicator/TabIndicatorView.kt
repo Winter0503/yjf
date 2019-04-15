@@ -62,9 +62,9 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
     private var mTextSizeNormal: Int = 0
     private var mTextSizeSelected: Int = 0
 
-    private var mPaintFooterLine: Paint? = null
+    private lateinit var mPaintFooterLine: Paint
 
-    private var mPaintTabtip: Paint? = null
+    private lateinit var mPaintTabtip: Paint
 
     /**
      * 滚动条的高度
@@ -170,68 +170,43 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
 
     private fun initAttrs(context: Context, attrs: AttributeSet?) {
         mContext = context
-        val a = context.obtainStyledAttributes(attrs,
-                R.styleable.TabIndicatorView)
+        val a = context.obtainStyledAttributes(attrs, R.styleable.TabIndicatorView)
 
         // 字体颜色
-        mTextColorNormal = a
-                .getColor(R.styleable.TabIndicatorView_indicator_textColorNormal,
-                        BLACK_COLOR)
-        mTextColorSelected = a.getColor(
-                R.styleable.TabIndicatorView_indicator_textColorSelected,
-                BLACK_COLOR)
+        mTextColorNormal = a.getColor(R.styleable.TabIndicatorView_indicator_textColorNormal, BLACK_COLOR)
+        mTextColorSelected = a.getColor(R.styleable.TabIndicatorView_indicator_textColorSelected, BLACK_COLOR)
 
         // 获得滑动条的颜色
-        footerColor = a.getColor(
-                R.styleable.TabIndicatorView_indicator_footerColor, FOOTER_COLOR)
+        footerColor = a.getColor(R.styleable.TabIndicatorView_indicator_footerColor, FOOTER_COLOR)
 
         // 获得下划线的颜色
-        underlineColor = a
-                .getColor(R.styleable.TabIndicatorView_indicator_underlineColor,
-                        UNDERLINE_COLOR)
+        underlineColor = a.getColor(R.styleable.TabIndicatorView_indicator_underlineColor, UNDERLINE_COLOR)
 
         // 是否显示下划线
-        mIsShowUnderline = a.getBoolean(
-                R.styleable.TabIndicatorView_indicator_underlineVisibility, false)
+        mIsShowUnderline = a.getBoolean(R.styleable.TabIndicatorView_indicator_underlineVisibility, false)
 
         // 字体大小
-        mTextSizeNormal = a.getDimensionPixelSize(
-                R.styleable.TabIndicatorView_indicator_textSizeNormal, 14)
-        mTextSizeSelected = a.getDimensionPixelSize(
-                R.styleable.TabIndicatorView_indicator_textSizeSelected,
-                mTextSizeNormal)
+        mTextSizeNormal = a.getDimensionPixelSize(R.styleable.TabIndicatorView_indicator_textSizeNormal, 14)
+        mTextSizeSelected = a.getDimensionPixelSize(R.styleable.TabIndicatorView_indicator_textSizeSelected, mTextSizeNormal)
 
         // 滚动条相关
-        mFooterLineHeight = a.getDimension(
-                R.styleable.TabIndicatorView_indicator_footerLineHeight,
-                FOOTER_LINE_HEIGHT)
-        mFooterLineWidthRatio = a.getInt(
-                R.styleable.TabIndicatorView_indicator_footerLineWidthRatio, 1)
-        mIsShowFooterLine = a.getBoolean(
-                R.styleable.TabIndicatorView_indicator_footerLineVisibility, false)
+        mFooterLineHeight = a.getDimension(R.styleable.TabIndicatorView_indicator_footerLineHeight, FOOTER_LINE_HEIGHT)
+        mFooterLineWidthRatio = a.getInt(R.styleable.TabIndicatorView_indicator_footerLineWidthRatio, 1)
+        mIsShowFooterLine = a.getBoolean(R.styleable.TabIndicatorView_indicator_footerLineVisibility, false)
 
         // 点击时背景的颜色
-        mOnTouchBackgroundColor = a.getColor(
-                R.styleable.TabIndicatorView_indicator_onTouchBackgroundColor, 0)
+        mOnTouchBackgroundColor = a.getColor(R.styleable.TabIndicatorView_indicator_onTouchBackgroundColor, 0)
 
-        mTabSelectedColor = a.getColor(
-                R.styleable.TabIndicatorView_indicator_tabSelectedColor, 0)
+        mTabSelectedColor = a.getColor(R.styleable.TabIndicatorView_indicator_tabSelectedColor, 0)
 
         // 竖线相关
-        mVerticalLineHeightRatio = a.getInt(
-                R.styleable.TabIndicatorView_indicator_verticalLineHeightRatio, 1)
-        mVerticalLineColor = a.getColor(
-                R.styleable.TabIndicatorView_indicator_verticalLineColor, 0)
-        mVerticalLineWidth = a.getDimension(
-                R.styleable.TabIndicatorView_indicator_verticalLineWidth, 0f)
-        mIsShowVerticalLine = a.getBoolean(
-                R.styleable.TabIndicatorView_indicator_verticalLineVisibility,
-                false)
+        mVerticalLineHeightRatio = a.getInt(R.styleable.TabIndicatorView_indicator_verticalLineHeightRatio, 1)
+        mVerticalLineColor = a.getColor(R.styleable.TabIndicatorView_indicator_verticalLineColor, 0)
+        mVerticalLineWidth = a.getDimension(R.styleable.TabIndicatorView_indicator_verticalLineWidth, 0f)
+        mIsShowVerticalLine = a.getBoolean(R.styleable.TabIndicatorView_indicator_verticalLineVisibility, false)
 
-        mPaddingTop = a.getDimension(
-                R.styleable.TabIndicatorView_indicator_textPaddingTop, 0f).toInt()
-        mPaddingBottom = a.getDimension(
-                R.styleable.TabIndicatorView_indicator_textPaddingBottom, 0f).toInt()
+        mPaddingTop = a.getDimension(R.styleable.TabIndicatorView_indicator_textPaddingTop, 0f).toInt()
+        mPaddingBottom = a.getDimension(R.styleable.TabIndicatorView_indicator_textPaddingBottom, 0f).toInt()
 
         a.recycle()
     }
@@ -246,17 +221,16 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
         // mPaintFooterLine.setStrokeWidth(footerLineHeight);
         // mPaintFooterLine.setColor(footerColor);
         // 设置抗锯齿
-        mPaintFooterLine!!.isAntiAlias = true
-        mPaintFooterLine!!.style = Style.FILL
+        mPaintFooterLine.isAntiAlias = true
+        mPaintFooterLine.style = Style.FILL
 
         // Tab之间竖线
         mPaintTabtip = Paint()
-        mPaintTabtip!!.style = Style.FILL_AND_STROKE
-        mPaintTabtip!!.strokeWidth = mVerticalLineWidth
-        mPaintTabtip!!.color = mVerticalLineColor
+        mPaintTabtip.style = Style.FILL_AND_STROKE
+        mPaintTabtip.strokeWidth = mVerticalLineWidth
+        mPaintTabtip.color = mVerticalLineColor
 
-        mInflater = mContext!!
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        mInflater = mContext!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     }
 
     /**
@@ -265,13 +239,13 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
      */
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        if (mTabs == null || mTabs!!.size == 0) {
+        if (mTabs == null || mTabs!!.isEmpty()) {
             return
         }
         // 单个选项卡的宽度
-        var mPerItemWidth = 0f
-        var tabID = 0
-        var scroll_x = 0f
+        val mPerItemWidth: Float
+        val tabID: Int
+        val scroll_x: Float
 
         if (mViewPager != null) {
             mPerItemWidth = (width + mViewPager!!.pageMargin) * 1f / mTotal
@@ -288,9 +262,9 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
 
         if (mIsShowUnderline) {
             // 绘制默认的下划线
-            mPaintFooterLine!!.color = underlineColor
+            mPaintFooterLine.color = underlineColor
             canvas.drawRect(0f, height - mFooterLineHeight, width.toFloat(),
-                    height.toFloat(), mPaintFooterLine!!)
+                    height.toFloat(), mPaintFooterLine)
         }
 
         // 如果需要才进行下划线的绘制
@@ -331,8 +305,8 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
             val bottom_y = height.toFloat()
             // 因为绘制的下滑线可以设置高度所以这边绘制一个实心矩形
 
-            mPaintFooterLine!!.strokeWidth = mFooterLineHeight
-            mPaintFooterLine!!.color = footerColor
+            mPaintFooterLine.strokeWidth = mFooterLineHeight
+            mPaintFooterLine.color = footerColor
 
             canvas.drawRect(left_x, top_y, right_x, bottom_y, mPaintFooterLine!!)
         }
@@ -414,11 +388,11 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     // 初始化选项卡
-    fun init(startPos: Int, tabs: List<TabInfo>, mViewPager: ViewPager) {
+    fun init(startPos: Int, tabs: List<TabInfo>, mViewPager: ViewPager?) {
         removeAllViews()
         this.mViewPager = mViewPager
         this.mTabs = tabs
-        if (mTabs!!.size > 0) {
+        if (mTabs!!.isNotEmpty()) {
             this.mTotal = tabs.size
         }
         var i = 0

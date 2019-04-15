@@ -22,6 +22,7 @@ import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.X509TrustManager
 
+@Suppress("UNCHECKED_CAST")
 abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
     private var mCache: Cache? = null                                             //OkHttp缓存对象
     private var mCacheFile: File? = null                                          //缓存目录
@@ -68,7 +69,7 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
         this.mRetryCount = rxHttp.retryCount
         this.mRetryDelay = rxHttp.retryDelay
         this.mRetryIncreaseDelay = rxHttp.retryIncreaseDelay
-        if (mBaseUrl == null && mUrl != null && (mUrl!!.startsWith("http://") || mUrl!!.startsWith("https://"))) {
+        if (mBaseUrl == null && (mUrl.startsWith("http://") || mUrl.startsWith("https://"))) {
             val httpUrl = HttpUrl.parse(mUrl!!)
             if (httpUrl != null)
                 mBaseUrl = httpUrl.url().protocol + "://" + httpUrl.url().host + "/"

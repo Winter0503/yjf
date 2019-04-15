@@ -71,14 +71,14 @@ abstract class ResponseTemplateCallback<T> protected constructor() : ResponseCal
     }
 
     open fun checkSuccessCode(code: Int, msg: String): Boolean {
-        return true
+        return ResultConfigLoader.checkSuccess(code = code)
     }
 
-    private fun getCode(jsonObject: JSONObject): String {
+    private fun getCode(jsonObject: JSONObject): Int {
         val codeKey = ResultConfigLoader.codeKey
-        var code = "-1"
+        var code = -1
         if (jsonObject.containsKey(codeKey)) {
-            code = jsonObject.getString(codeKey)
+            code = jsonObject.getIntValue(codeKey)
         }
         return code
     }

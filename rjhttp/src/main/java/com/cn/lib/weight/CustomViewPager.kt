@@ -11,6 +11,8 @@ import android.view.View
  * 可以禁止左右滑动的ViewPager
  */
 class CustomViewPager @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null) : ViewPager(context, attrs) {
+
+
     private var noScroll = false
 
     /**

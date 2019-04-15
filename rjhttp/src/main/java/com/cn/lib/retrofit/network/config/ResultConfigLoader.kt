@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
+import java.io.Serializable
 import java.util.ArrayList
 import java.util.HashMap
 
@@ -20,7 +21,7 @@ object ResultConfigLoader {
     /**
      * 获取自定义失败对应的说明信息
      */
-    private val errorConfig: HashMap<String, String>?
+    private val errorConfig: HashMap<Int, String>?
         get() = config!!.errorInfo
 
     /**
@@ -72,12 +73,12 @@ object ResultConfigLoader {
     }
 
     fun checkErrorCode(errorCode: Int): Boolean {
-        return errorConfig != null && errorConfig!!.containsKey(errorCode.toString())
+        return errorConfig?.containsKey(errorCode)!!
     }
 
     fun errorDesc(errorCode: Int): String {
         if (checkErrorCode(errorCode)) {
-            errorConfig!![errorCode.toString()]
+            errorConfig!![errorCode]
         }
         return "未知错误"
     }
@@ -85,7 +86,7 @@ object ResultConfigLoader {
     /**
      * 判断是否请求成功
      */
-    fun checkSuccess(code: String): Boolean {
+    fun checkSuccess(code: Int): Boolean {
         return config == null || config!!.successCode!!.contains(code)
     }
 
@@ -122,12 +123,12 @@ object ResultConfigLoader {
         return ""
     }
 
-    class Config {
-        var successCode: List<String>? = null
+    class Config :Serializable{
+        var successCode: List<Int>? = null
         var codeKey: String? = null
         var dataKey: List<String>? = null
         var msgKey: String? = null
-        var errorInfo: HashMap<String, String>? = null
+        var errorInfo: HashMap<Int, String>? = null
     }
 
 }

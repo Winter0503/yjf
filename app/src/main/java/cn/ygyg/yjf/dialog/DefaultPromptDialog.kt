@@ -3,26 +3,16 @@ package cn.ygyg.yjf.dialog
 import android.app.Dialog
 import android.content.Context
 import android.text.TextUtils
-import android.util.ArrayMap
 import android.util.DisplayMetrics
-import android.view.Gravity
-import android.view.LayoutInflater
-import android.view.View
-import android.view.Window
-import android.view.WindowManager
+import android.view.*
 import android.widget.TextView
-
+import cn.ygyg.yjf.R
 import com.cn.lib.util.CommonUtil
 
-import cn.ygyg.yjf.R
-import cn.ygyg.yjf.utils.StringUtil
 
+class DefaultPromptDialog private constructor(context: Context, private val titleStr: String?, private val affirmStr: String?, private val affirmColor: Int = 0, private val cancelStr: String?, private val contentStr: String?, private var contentEnabled: Boolean = false, private var typeEnum: TypeEnum = TypeEnum.BUTTON_HORIZONTAL, private val dialogButtonListener: PromptDialogButtonListener?) : View.OnClickListener {
 
-class DefaultPromptDialog private constructor(context: Context, private val titleStr: String, private val affirmStr: String, private val affirmColor: Int, private val cancelStr: String, private val contentStr: String, contentEnabled: Boolean, typeEnum: TypeEnum, private val dialogButtonListener: PromptDialogButtonListener?) : View.OnClickListener {
-
-    private var tagMap: ArrayMap<Int, Any>? = null
-    private val contentEnabled = true
-    private val typeEnum = TypeEnum.BUTTON_HORIZONTAL
+    private var tagMap: HashMap<Int, Any> = hashMapOf()
 
 
     private val dialog: Dialog?
@@ -32,9 +22,6 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
     }
 
     init {
-        this.contentEnabled = contentEnabled
-        this.typeEnum = typeEnum
-
         dialog = Dialog(context, R.style.prompt_dialog_style)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
@@ -49,22 +36,22 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
         if (view != null) {
             dialog.setContentView(view)
         }
-        if (this.typeEnum == TypeEnum.BUTTON_VERTICAL) {
-            val dialogWindow = dialog.window
-            if (dialogWindow != null) {
+        val dialogWindow = dialog.window
+        if (dialogWindow != null) {
+            dialogWindow.decorView.setPadding(0, 0, 0, 0) //消除边距
+            if (this.typeEnum == TypeEnum.BUTTON_VERTICAL) {
                 dialogWindow.setGravity(Gravity.BOTTOM) //可设置dialog的位置
-                dialogWindow.decorView.setPadding(0, 0, 0, 0) //消除边距
-
-                val dm = DisplayMetrics()
-                val manager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-                manager?.defaultDisplay?.getMetrics(dm)
-                val wlp = dialogWindow.attributes
-                wlp.width = dm.widthPixels
-                wlp.horizontalMargin = 10f
-                wlp.flags = wlp.flags or WindowManager.LayoutParams.FLAG_DIM_BEHIND
-                dialogWindow.attributes = wlp
             }
-
+            val dm = DisplayMetrics()
+            val manager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            manager.defaultDisplay?.getMetrics(dm)
+            val wlp = dialogWindow.attributes
+            wlp.width = if (this.typeEnum == TypeEnum.BUTTON_VERTICAL) dm.widthPixels else dm.widthPixels * 7 / 10
+            if (this.typeEnum == TypeEnum.BUTTON_VERTICAL) {
+                wlp.horizontalMargin = 10f
+            }
+            wlp.flags = wlp.flags or WindowManager.LayoutParams.FLAG_DIM_BEHIND
+            dialogWindow.attributes = wlp
         }
         initViews()
     }
@@ -76,7 +63,7 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
         val affirm = dialog.findViewById<TextView>(R.id.dialog_hint_affirm)
         val cancel = dialog.findViewById<TextView>(R.id.dialog_hint_cancel)
         val titleLayout = dialog.findViewById<View>(R.id.dialog_title_layout)
-        if (StringUtil.isEmpty(titleStr)) {
+        if (TextUtils.isEmpty(titleStr)) {
             titleLayout.visibility = View.GONE
         }
         title.text = titleStr
@@ -99,15 +86,12 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
         content.setOnClickListener(this)
     }
 
-    fun getTag(key: Int): Any {
-        return tagMap!![key]
+    fun getTag(key: Int): Any? {
+        return tagMap[key]
     }
 
     fun setTag(key: Int, tag: Any) {
-        if (this.tagMap == null) {
-            tagMap = ArrayMap()
-        }
-        tagMap!!.put(key, tag)
+        tagMap.put(key, tag)
     }
 
     override fun onClick(v: View) {
@@ -146,9 +130,9 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
         private var affirm: String? = null
         private var affirmColor: Int = 0
         private var contentEnabled: Boolean = false
-        private var mContext: Context? = null
+        private lateinit var mContext: Context
         private var dialogButtonListener: PromptDialogButtonListener? = null
-        private var typeEnum: TypeEnum? = TypeEnum.BUTTON_HORIZONTAL
+        private var typeEnum: TypeEnum = TypeEnum.BUTTON_HORIZONTAL
 
 
         /**
@@ -216,12 +200,8 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
          *
          * PromptDialogFragment.BUTTON_HORIZONTAL表示按钮布局横向排列
          */
-        fun setButtonOrientation(typeEnum: TypeEnum?): DefaultPromptDialog.Builder {
+        fun setButtonOrientation(typeEnum: TypeEnum): DefaultPromptDialog.Builder {
             this.typeEnum = typeEnum
-            if (typeEnum == null) {
-                this.typeEnum = TypeEnum.BUTTON_HORIZONTAL
-            }
-
             return this
         }
 
@@ -266,7 +246,7 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
         fun clickNegativeButton(dialog: DefaultPromptDialog): Boolean
     }
 
-    class DefaultPromptDialogButtonListener : DefaultPromptDialog.PromptDialogButtonListener {
+    open class DefaultPromptDialogButtonListener : DefaultPromptDialog.PromptDialogButtonListener {
 
         override fun clickContentButton(dialog: DefaultPromptDialog): Boolean {
             return true

@@ -1,12 +1,11 @@
-package cn.ygyg.yjf.modular.presenter
+package cn.ygyg.yjf.modular.register.presenter
 
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
-import cn.ygyg.yjf.modular.contract.RegisterContract
+import cn.ygyg.yjf.modular.register.contract.RegisterContract
 import cn.ygyg.yjf.utils.StringUtil
 import com.cn.lib.basic.BasePresenterImpl
-import com.cn.lib.retrofit.network.util.RxUtil
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,12 +22,12 @@ class RegisterPresenter(view: RegisterContract.View) : RegisterContract.Presente
     private var isLegalPhone = false
     private var isLegalPassword = false
     private var isLegalCode = false
+    private var disposable: Disposable? = null
 
     /**
      * 开始重新获取验证码的倒计时
      */
     override fun startCountDown() {
-        var disposable: Disposable? = null
         val count = 60
         Observable.interval(0, 1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
@@ -85,6 +84,8 @@ class RegisterPresenter(view: RegisterContract.View) : RegisterContract.Presente
                 if (dend != dest.length && dstart == 0) { //如果是非尾端删除并且删除的是第一位
                     result = dest.subSequence(dstart, dend)
                 } else {
+                    disposable?.dispose()
+                    mvpView?.changeCodeBtnState(false)
                     isLegalPhone = false
                 }
             }
@@ -111,16 +112,7 @@ class RegisterPresenter(view: RegisterContract.View) : RegisterContract.Presente
     override fun getPasswordTextChangeListener(): TextWatcher {
         return object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                isLegalPassword = false
-                val length = s.length
-                if (length >= 6) {
-                    val reg = "^(?![a-zA-Z]+\$)(?!\\d+\$)\\S{6,}\$"
-                    if (!StringUtil.match(reg, s.toString())) {
-                        mvpView?.showToast("密码设置6-20位必须包含数字和字母")
-                    } else { //当密码输入符合设定时进行校验
-                        isLegalPassword = true
-                    }
-                }
+                isLegalPassword = s.length >= 6//当密码位数设置大于最小值6时
                 checkAllInput()
             }
 
@@ -146,7 +138,11 @@ class RegisterPresenter(view: RegisterContract.View) : RegisterContract.Presente
     }
 
     override fun submitRegister(phone: String, password: String, code: String) {
-
+        val reg = "^(?![a-zA-Z]+\$)(?!\\d+\$)\\S{6,}\$"
+        if (!StringUtil.match(reg, password)) {
+            mvpView?.showToast("密码设置6-20位必须包含数字和字母")
+            return
+        }
     }
 
 }

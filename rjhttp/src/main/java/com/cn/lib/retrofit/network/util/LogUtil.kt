@@ -203,10 +203,6 @@ object LogUtil {
 
 
     private fun doLog(aLevel: LogLevel, aTag: String, aMessage: String, aThrow: Throwable?) {
-        var aMessage = aMessage
-        if (aMessage == null) {
-            aMessage = ""
-        }
         when (aLevel) {
             LogUtil.LogLevel.DEBUG -> if (aThrow == null) {
                 Log.d(aTag, aMessage)

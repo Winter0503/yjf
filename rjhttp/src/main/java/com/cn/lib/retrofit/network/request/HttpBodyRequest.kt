@@ -11,6 +11,7 @@ import okhttp3.MediaType
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 
+@Suppress("UNCHECKED_CAST")
 @SuppressLint("ParcelCreator")
 open class HttpBodyRequest<R : BaseRequest<R>>(url: String) : BaseRequest<R>(url) {
     private var mRequestBody: RequestBody? = null

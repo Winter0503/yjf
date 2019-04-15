@@ -1,4 +1,4 @@
-package cn.ygyg.yjf.modular.activity
+package cn.ygyg.yjf.modular.register.activity
 
 import android.view.View
 import cn.ygyg.yjf.R

@@ -1,4 +1,4 @@
-package cn.ygyg.yjf.modular.contract
+package cn.ygyg.yjf.modular.login.contract
 
 import android.text.InputFilter
 import android.text.TextWatcher
@@ -24,5 +24,6 @@ class LoginContract{
         fun getPasswordTextChangeListener(): TextWatcher
         fun setLoginType(type: Int)
         fun getCodeFilter(): InputFilter
+        fun getVerificationCode(phone: String)
     }
 }

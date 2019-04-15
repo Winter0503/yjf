@@ -141,7 +141,7 @@ class RxHttp private constructor() {
      * 缓存文件大小
      */
     fun cacheMaxSize(cacheMaxSize: Long): RxHttp {
-        this.mCacheMaxSize = mCacheMaxSize
+        this.mCacheMaxSize = cacheMaxSize
         return this
     }
 
@@ -337,7 +337,6 @@ class RxHttp private constructor() {
     }
 
     fun getContext(): Context {
-        testInitialize()
         return context
     }
 
@@ -384,11 +383,6 @@ class RxHttp private constructor() {
             throw IllegalArgumentException("retryIncreaseDelay must > 0")
         this.retryIncreaseDelay = retryIncreaseDelay
         return this
-    }
-
-    private fun testInitialize() {
-        if (this.context == null)
-            throw ExceptionInInitializerError("请先在全局Application中调用 RxHttp.getInstance().init() 初始化！")
     }
 
     fun getOkHttpClientBuilder(): OkHttpClient.Builder {

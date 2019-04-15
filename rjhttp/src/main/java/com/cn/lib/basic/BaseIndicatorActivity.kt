@@ -3,21 +3,16 @@
  */
 package com.cn.lib.basic
 
-import android.content.Intent
-import android.content.Intent.getIntent
-import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager.OnPageChangeListener
-
 import com.cn.lib.weight.CustomViewPager
 import com.cn.lib.weight.indicator.IndicatorTabPageAdapter
 import com.cn.lib.weight.indicator.TabIndicatorView
 import com.cn.lib.weight.indicator.TabInfo
+import java.util.*
 
-import java.util.ArrayList
 
-
-abstract class BaseIndicatorActivity<P : IBasePresenter<V>, V : IBaseView> : BaseMvpActivity<P,V>(), OnPageChangeListener, TabIndicatorView.OnTabChangeListener, IndicatorTabPageAdapter.FragmentRelevantCallback {
+abstract class BaseIndicatorActivity : BaseActivity(), OnPageChangeListener, TabIndicatorView.OnTabChangeListener, IndicatorTabPageAdapter.FragmentRelevantCallback {
 
     /**
      * 选中的选项卡的下标
@@ -39,13 +34,12 @@ abstract class BaseIndicatorActivity<P : IBasePresenter<V>, V : IBaseView> : Bas
     /**
      * 返回ViewPager的控件ID，如果没有ViewPager不用重写
      */
-    protected val viewPagerId: Int
-        get() = 0
+    protected open fun getViewPagerId(): Int = 0
 
     /**
      * 返回选项卡控件的布局ID
      */
-    protected abstract val tagIndicatorViewId: Int
+    protected abstract fun getTagIndicatorViewId(): Int
 
 
     override fun onDestroy() {
@@ -53,7 +47,7 @@ abstract class BaseIndicatorActivity<P : IBasePresenter<V>, V : IBaseView> : Bas
         if (mPager != null) {
             myAdapter!!.notifyDataSetChanged()
             myAdapter = null
-            mPager!!.adapter = null
+            mPager?.adapter = null
             mPager = null
         }
         mIndicator = null
@@ -75,36 +69,40 @@ abstract class BaseIndicatorActivity<P : IBasePresenter<V>, V : IBaseView> : Bas
             }
         }
         // 根据ID获得选项卡对象
-        mIndicator = findViewById(tagIndicatorViewId)
-        val layoutResId = viewPagerId
+        mIndicator = findViewById(getTagIndicatorViewId())
+        val layoutResId = getViewPagerId()
         if (layoutResId != 0) {
             myAdapter = IndicatorTabPageAdapter(supportFragmentManager, mTabs)
-            myAdapter!!.setFragmentRelevantCallback(this)
-            mPager = findViewById(viewPagerId)
-            mPager!!.adapter = myAdapter
-            mPager!!.addOnPageChangeListener(this)
-            mPager!!.offscreenPageLimit = 0
-            // 设置ViewPager内部页面之间的间距
-            mPager!!.pageMargin = 0
-            // 设置ViewPager内部页面间距的Drawable
-            mPager!!.setPageMarginDrawable(android.R.color.transparent)
+            myAdapter?.setFragmentRelevantCallback(this)
+            mPager = findViewById(getViewPagerId())
+            mPager?.let {
+                it.adapter = myAdapter
+                it.addOnPageChangeListener(this)
+                it.offscreenPageLimit = 0
+                // 设置ViewPager内部页面之间的间距
+                it.pageMargin = 0
+                // 设置ViewPager内部页面间距的Drawable
+                it.setPageMarginDrawable(android.R.color.transparent)
+            }
         } else {
             mIndicator?.onTabChangeListener = this
         }
 
         // 初始化选项卡
-        mPager?.let { mIndicator?.init(mCurrentTab, mTabs, it) }
+        mIndicator?.init(mCurrentTab, mTabs, mPager)
     }
 
     override fun onPageScrolled(position: Int, positionOffset: Float,
                                 positionOffsetPixels: Int) {
-        mIndicator!!.onScrolled((mPager!!.width + mPager!!.pageMargin) * position + positionOffsetPixels)
+        mIndicator?.onScrolled((mPager!!.width + mPager!!.pageMargin) * position + positionOffsetPixels)
     }
 
     override fun onPageSelected(position: Int) {
-        mIndicator!!.onSwitched(position)
+        mIndicator?.onSwitched(position)
         mCurrentTab = position
-        mTabs[mCurrentTab].fragment?.let { onViewPagerSwitch(mCurrentTab, it) }
+        mTabs[mCurrentTab].fragment?.let {
+            onViewPagerSwitch(mCurrentTab, it)
+        }
     }
 
     override fun onPageScrollStateChanged(state: Int) {}
@@ -143,12 +141,12 @@ abstract class BaseIndicatorActivity<P : IBasePresenter<V>, V : IBaseView> : Bas
     /**
      * 在这里提供要显示的选项卡数据
      */
-    protected abstract fun initTabsInfo(tabs: ArrayList<TabInfo>?)
+    protected abstract fun initTabsInfo(tabs: ArrayList<TabInfo>)
 
     /**
      * 在这里提供初始化后的Fragment的特性初始化操作(没有ViewPager时不用重写这个方法)
      */
-    override fun initFragmentEnd(index: Int, fragment: Fragment?) {
+    override fun initFragmentEnd(fragmentIndex: Int, fragment: Fragment) {
 
     }
 

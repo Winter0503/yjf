@@ -163,6 +163,10 @@ abstract class BaseFragment : Fragment(), IBaseView {
         startActivity(intent)
     }
 
+    override fun toActivityForResult(context: Context, cls: Class<out Activity>, requestCode: Int) {
+        toActivityForResult(context, cls, requestCode, null)
+    }
+
     override fun toActivityForResult(context: Context, cls: Class<out Activity>, requestCode: Int, options: Bundle?) {
         val intent = Intent(context, cls)
         intent.putExtra(ACTIVITY_BUNDLE, options)

@@ -1,9 +1,9 @@
-package cn.ygyg.yjf.modular.presenter
+package cn.ygyg.yjf.modular.login.presenter
 
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
-import cn.ygyg.yjf.modular.contract.LoginContract
+import cn.ygyg.yjf.modular.login.contract.LoginContract
 import cn.ygyg.yjf.utils.StringUtil
 import com.cn.lib.basic.BasePresenterImpl
 import io.reactivex.Observable
@@ -23,6 +23,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
     private var isLegalPhone: Boolean = false
     private var isLegalCode: Boolean = false
     private var loginType: Int = 0
+    var disposable: Disposable? = null
 
     override fun setLoginType(type: Int) {
         loginType = type
@@ -32,7 +33,6 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
      * 开始重新获取验证码的倒计时
      */
     override fun startCountDown() {
-        var disposable: Disposable? = null
         val count = 60
         Observable.interval(0, 1, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
@@ -89,6 +89,8 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
                 if (dend != dest.length && dstart == 0) { //如果是非尾端删除并且删除的是第一位
                     result = dest.subSequence(dstart, dend)
                 } else {
+                    disposable?.dispose()
+                    mvpView?.changeCodeBtnState(false)
                     isLegalPhone = false
                 }
             }
@@ -134,7 +136,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
         return object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
                 val length = s.length
-                isLegalPassword = length > 6
+                isLegalPassword = length >= 6
                 checkAllInput()
             }
 
@@ -155,5 +157,9 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
         } else {
             isLegalPhone && isLegalCode
         })
+    }
+
+    override fun getVerificationCode(phone: String) {
+        startCountDown()
     }
 }
