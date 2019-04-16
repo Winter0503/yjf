@@ -46,4 +46,5 @@
     <string name="ali_pay">支付宝服务</string>
     <string name="immediately_payments">立即充值</string>
     <string name="payments_history">充值记录</string>
+    <string name="iot_card">物联网卡</string>
 </resources>

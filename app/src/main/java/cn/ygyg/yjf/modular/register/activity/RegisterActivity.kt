@@ -63,7 +63,7 @@ class RegisterActivity : BaseMvpActivity<RegisterContract.Presenter, RegisterCon
 
     override fun changeRegisterBtnState(state: Boolean) {
         btn_register.isEnabled = state
-        btn_register.setBackgroundResource(if(state)R.mipmap.btn_selected_long else R.mipmap.btn_unselected_long)
+        btn_register.setBackgroundResource(if(state)R.mipmap.btn_full_press else R.mipmap.btn_full_normal)
     }
 
     @SuppressLint("SetTextI18n")
