@@ -35,8 +35,7 @@ class ConfirmAccountDialog(context: Context) : Dialog(context) {
         address = findViewById(R.id.address)
         balance = findViewById(R.id.balance)
         confirm = findViewById(R.id.confirm)
-        val close: ImageView = findViewById(R.id.close)
-        close.setOnClickListener { dismiss() }
+        findViewById<View>(R.id.close).setOnClickListener { dismiss() }
     }
 
 
