@@ -34,7 +34,7 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
     }
 
     override fun initListener() {
-        next_step.setOnClickListener { v -> popupWindow.show(v) }
+        next_step.setOnClickListener { v -> popupWindow.show() }
         input_account_help.setOnClickListener { dialog.show() }
         pay_cost_company.setOnClickListener {
             toActivity(AddressSelectorActivity::class.java)
