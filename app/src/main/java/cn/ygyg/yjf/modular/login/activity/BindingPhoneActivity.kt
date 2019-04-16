@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_binding_phone.*
 class BindingPhoneActivity: BaseMvpActivity<BindingPhoneContract.Presenter, BindingPhoneContract.View>(),BindingPhoneContract.View {
     override fun changeConfirmBtnState(state: Boolean) {
         btn_binding_confirm.isEnabled = state
-        btn_binding_confirm.setBackgroundResource(if(state)R.mipmap.btn_selected_long else R.mipmap.btn_unselected_long)
+        btn_binding_confirm.setBackgroundResource(if(state)R.mipmap.btn_full_press else R.mipmap.btn_full_normal)
     }
 
     override fun changeCodeBtnState(state: Boolean) {

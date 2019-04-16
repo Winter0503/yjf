@@ -31,6 +31,10 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
         this.isCancelSelectedState = isCancelSelectedState;
     }
 
+    public BaseRecyclerAdapter(Context context, int layoutResId) {
+        this(context, layoutResId, false);
+    }
+
     public void setNewList(List<T> data) {
         this.data = data == null ? new ArrayList<T>() : new ArrayList<T>(data);
         notifyDataSetChanged();

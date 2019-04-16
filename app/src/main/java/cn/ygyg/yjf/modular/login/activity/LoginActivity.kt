@@ -23,7 +23,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
 
     override fun changeLoginBtnState(state: Boolean) {
         btn_login.isEnabled = state
-        btn_login.setBackgroundResource(if (state) R.mipmap.btn_selected_long else R.mipmap.btn_unselected_long)
+        btn_login.setBackgroundResource(if (state) R.mipmap.btn_full_press else R.mipmap.btn_full_normal)
     }
 
     override fun changeCodeBtnState(state: Boolean) {
