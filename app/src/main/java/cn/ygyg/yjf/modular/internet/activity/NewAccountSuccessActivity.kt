@@ -1,6 +1,7 @@
 package cn.ygyg.yjf.modular.internet.activity
 
 import cn.ygyg.yjf.R
+import cn.ygyg.yjf.modular.payments.activity.PaymentsActivity
 import cn.ygyg.yjf.utils.HeaderBuilder
 import com.cn.lib.basic.BaseActivity
 import kotlinx.android.synthetic.main.activity_new_account_success.*
@@ -15,6 +16,8 @@ class NewAccountSuccessActivity : BaseActivity() {
     }
 
     override fun initListener() {
-        to_recharge.setOnClickListener { }
+        to_payments.setOnClickListener {
+            toActivity(PaymentsActivity::class.java)
+        }
     }
 }

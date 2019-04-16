@@ -25,23 +25,18 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:gravity="center"
-        android:text="充值帐户信息添加成功"
+        android:text="@string/add_account_success"
         android:textColor="@color/text_color"
         android:textSize="@dimen/ts_content" />
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
     <TextView
-        android:id="@+id/to_recharge"
-        android:layout_width="275dp"
-        android:layout_height="46dp"
-        android:layout_marginTop="16dp"
-        android:background="@color/text_green_color"
+        android:id="@+id/to_payments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:background="@mipmap/btn_full_press"
         android:gravity="center"
-        android:text="立即充值"
+        android:text="@string/to_payments"
         android:textColor="@color/white"
         android:textSize="@dimen/ts_btn" />
 
@@ -49,11 +44,14 @@
         android:id="@+id/back_to_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:layout_marginTop="30dp"
         android:gravity="center"
-        android:text="暂不充值"
+        android:padding="10dp"
+        android:text="@string/no_payments"
         android:textColor="@color/text_gray_dark_color"
         android:textSize="@dimen/ts_content" />
 
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 </LinearLayout>

@@ -14,7 +14,7 @@ class InquireAccountDialog(context: Context) : Dialog(context) {
         setContentView(R.layout.dialog_inquire_account)
         window?.let {
             it.decorView?.setPadding(0, 0, 0, 0)
-            it.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            it.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             it.setGravity(Gravity.BOTTOM)
             it.decorView?.setBackgroundColor(Color.TRANSPARENT)
         }
