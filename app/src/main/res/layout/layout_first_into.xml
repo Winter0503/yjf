@@ -6,7 +6,7 @@
     android:orientation="vertical">
 
     <include layout="@layout/layout_first_recharge"/>
-    <include layout="@layout/layout_add_account"/>
+    <include android:id="@+id/layout_add_account" layout="@layout/layout_add_account"/>
     <include layout="@layout/layout_function_development"/>
 
 </LinearLayout>

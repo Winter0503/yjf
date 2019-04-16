@@ -19,7 +19,7 @@
         app:indicator_textSizeNormal="10sp" />
 
 
-  <com.cn.lib.weight.CustomViewPager
+  <com.cn.lib.widget.CustomViewPager
       android:layout_above="@id/layout_tab"
       android:id="@+id/view_pager"
       android:layout_width="match_parent"

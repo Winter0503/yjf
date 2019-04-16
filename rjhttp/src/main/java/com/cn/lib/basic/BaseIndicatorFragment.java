@@ -5,7 +5,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 
-import com.cn.lib.R;
 import com.cn.lib.weight.indicator.IndicatorTabPageAdapter;
 import com.cn.lib.weight.indicator.TabIndicatorView;
 import com.cn.lib.weight.indicator.TabInfo;

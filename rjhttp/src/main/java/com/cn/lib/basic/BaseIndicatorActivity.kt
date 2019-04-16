@@ -5,7 +5,7 @@ package com.cn.lib.basic
 
 import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager.OnPageChangeListener
-import com.cn.lib.weight.CustomViewPager
+import com.cn.lib.widget.CustomViewPager
 import com.cn.lib.weight.indicator.IndicatorTabPageAdapter
 import com.cn.lib.weight.indicator.TabIndicatorView
 import com.cn.lib.weight.indicator.TabInfo

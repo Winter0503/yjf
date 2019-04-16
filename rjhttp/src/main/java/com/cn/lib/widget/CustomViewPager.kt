@@ -1,4 +1,4 @@
-package com.cn.lib.weight
+package com.cn.lib.widget
 
 import android.content.Context
 import android.support.v4.view.ViewPager
