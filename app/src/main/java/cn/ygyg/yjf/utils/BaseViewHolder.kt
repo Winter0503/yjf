@@ -10,11 +10,11 @@ class BaseViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     @Suppress("UNCHECKED_CAST")
     fun <V : View> findViewById(@IdRes id: Int): V {
-        var v: V? = views.get(id) as V
+        var v: View? = views.get(id)
         if (v == null) {
             v = itemView.findViewById(id)
             views.put(id, v)
         }
-        return v!!
+        return v!! as V
     }
 }
