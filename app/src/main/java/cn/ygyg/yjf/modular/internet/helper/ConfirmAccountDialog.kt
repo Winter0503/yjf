@@ -12,7 +12,7 @@ import android.widget.TextView
 import cn.ygyg.yjf.R
 import com.cn.lib.util.DensityUtil
 
-class ConfirmAccountPopupWindow(context: Context) : Dialog(context) {
+class ConfirmAccountDialog(context: Context) : Dialog(context) {
     private var userName: TextView
     private var payCostCompany: TextView
     private var accountName: TextView

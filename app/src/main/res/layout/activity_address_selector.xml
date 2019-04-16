@@ -16,6 +16,7 @@
         android:layout_marginStart="11dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/shape_solid_gray"
+        android:gravity="center_vertical"
         android:hint="输入城市名/拼音或者字母查询"
         android:paddingEnd="15dp"
         android:paddingStart="15dp"
