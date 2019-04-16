@@ -1,29 +1,32 @@
 package com.cn.lib.basic;
 
 import android.content.Context;
-import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 
 /**
  * Created by admin on 2016/4/1.
  */
 public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRecyclerViewHolder> {
-    protected static final int ITEM_TYPE_HEADER = 0x1000;
-    protected static final int ITEM_TYPE_FOOTER = 0x2000;
+    private static final int ITEM_TYPE_HEADER = 0x1000;
+    private static final int ITEM_TYPE_FOOTER = 0x2000;
     protected Context context;
     protected List<T> data;
-    protected int layoutResId = -1;
-    protected int onClickPosition = -1;
-    protected boolean isCancelSelectedState;
-    protected OnItemClickListener<T> onItemClickListener;
-    protected SparseArrayCompat<View> mHeaderViews = new SparseArrayCompat<>();
-    protected SparseArrayCompat<View> mFootViews = new SparseArrayCompat<>();
+    private int layoutResId = -1;
+    private int onClickPosition = -1;
+    private boolean isCancelSelectedState;
+    private OnItemClickListener<T> onItemClickListener;
+    private LinearLayout mHeaderLayout;
+    private LinearLayout mFooterLayout;
 
     public BaseRecyclerAdapter(Context context, int layoutResId, boolean isCancelSelectedState) {
         this.context = context;
@@ -102,9 +105,6 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
 
     /**
      * 插入元素操作
-     *
-     * @param position
-     * @param newElem
      */
     public void insertItem(int position, T newElem) {
         if (data == null || newElem == null) return;
@@ -118,10 +118,10 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
             return null;
         }
         if (viewType == ITEM_TYPE_HEADER) {
-            return new HeadHolder(mHeaderViews.get(viewType), context);
+            return new HeadHolder(mHeaderLayout, context);
         }
         if (viewType == ITEM_TYPE_FOOTER) {
-            return new FooterHolder(mFootViews.get(viewType), context);
+            return new FooterHolder(mFooterLayout, context);
         }
         View view = LayoutInflater.from(context).inflate(layoutResId, parent, false);
         return new BaseRecyclerViewHolder(view, context);
@@ -136,7 +136,7 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
             return;
         }
         //除去头部的真实数据位置
-        final int realPosition = position - getHeadersCount();
+        final int realPosition = position - getHeaderLayoutCount();
         convertView(holder, data.get(realPosition), realPosition);
         if (holder.itemView != null && onItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -157,43 +157,101 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
     }
 
     private boolean isHeaderViewPos(int position) {
-        return position < getHeadersCount();
+        return position < getHeaderLayoutCount();
     }
 
     private boolean isFooterViewPos(int position) {
-        return position >= getHeadersCount() + getRealItemCount();
+        return position >= getHeaderLayoutCount() + getRealItemCount();
     }
 
-    public void addHeaderView(View view) {
-        mHeaderViews.put(mHeaderViews.size() + ITEM_TYPE_HEADER, view);
+    public int addHeaderView(View header) {
+        return this.addHeaderView(header, -1);
     }
 
-    public void addFootView(View view) {
-        mFootViews.put(mFootViews.size() + ITEM_TYPE_FOOTER, view);
+    public int addHeaderView(View header, int index) {
+        return addHeaderView(header, index, LinearLayout.VERTICAL);
+    }
+
+    public int addHeaderView(View header, int index, int orientation) {
+        if (mHeaderLayout == null) {
+            mHeaderLayout = new LinearLayout(header.getContext());
+            if (orientation == LinearLayout.VERTICAL) {
+                mHeaderLayout.setOrientation(LinearLayout.VERTICAL);
+                mHeaderLayout.setLayoutParams(new RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+            } else {
+                mHeaderLayout.setOrientation(LinearLayout.HORIZONTAL);
+                mHeaderLayout.setLayoutParams(new RecyclerView.LayoutParams(WRAP_CONTENT, MATCH_PARENT));
+            }
+        }
+        final int childCount = mHeaderLayout.getChildCount();
+        if (index < 0 || index > childCount) {
+            index = childCount;
+        }
+        mHeaderLayout.addView(header, index);
+        return index;
+    }
+
+    public int addFooterView(View footer) {
+        return addFooterView(footer, -1, LinearLayout.VERTICAL);
+    }
+
+    public int addFooterView(View footer, int index) {
+        return addFooterView(footer, index, LinearLayout.VERTICAL);
+    }
+
+    public int addFooterView(View footer, int index, int orientation) {
+        if (mFooterLayout == null) {
+            mFooterLayout = new LinearLayout(footer.getContext());
+            if (orientation == LinearLayout.VERTICAL) {
+                mFooterLayout.setOrientation(LinearLayout.VERTICAL);
+                mFooterLayout.setLayoutParams(new RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT));
+            } else {
+                mFooterLayout.setOrientation(LinearLayout.HORIZONTAL);
+                mFooterLayout.setLayoutParams(new RecyclerView.LayoutParams(WRAP_CONTENT, MATCH_PARENT));
+            }
+        }
+        final int childCount = mFooterLayout.getChildCount();
+        if (index < 0 || index > childCount) {
+            index = childCount;
+        }
+        mFooterLayout.addView(footer, index);
+        if (mFooterLayout.getChildCount() == 1) {
+            int position = getFooterViewPosition();
+            if (position != -1) {
+                notifyItemInserted(position);
+            }
+        }
+        return index;
     }
 
     /*根据位置来返回不同的item类型*/
     @Override
     public int getItemViewType(int position) {
         if (isHeaderViewPos(position)) {
-            return mHeaderViews.keyAt(position);
+            return ITEM_TYPE_HEADER;
         } else if (isFooterViewPos(position)) {
-            return mFootViews.keyAt(position - getHeadersCount() - getRealItemCount());
+            return ITEM_TYPE_FOOTER;
         }
-        return position - getHeadersCount();
+        return position - getHeaderLayoutCount();
     }
 
     @Override
     public int getItemCount() {
-        return getHeadersCount() + getFootersCount() + getRealItemCount();
+        return getHeaderLayoutCount() + getFootersCount() + getRealItemCount();
     }
 
-    public int getHeadersCount() {
-        return mHeaderViews.size();
+    public int getHeaderLayoutCount() {
+        if (mHeaderLayout == null || mHeaderLayout.getChildCount() == 0) {
+            return 0;
+        }
+        return 1;
     }
 
     public int getFootersCount() {
-        return mFootViews.size();
+        if (mFooterLayout == null || mFooterLayout.getChildCount() == 0) {
+            return 0;
+        }
+        return 1;
     }
 
     /**
@@ -213,22 +271,24 @@ public abstract class BaseRecyclerAdapter<T> extends RecyclerView.Adapter<BaseRe
         this.onClickPosition = onClickPosition;
     }
 
+    public int getFooterViewPosition() {
+        return getHeaderLayoutCount() + data.size();
+    }
+
     public interface OnItemClickListener<T> {
         void onItemClick(int position, T obj);
     }
 
-    protected class HeadHolder extends BaseRecyclerViewHolder {
+    private class HeadHolder extends BaseRecyclerViewHolder {
 
-
-        public HeadHolder(View itemView, Context context) {
+        private HeadHolder(View itemView, Context context) {
             super(itemView, context);
         }
     }
 
-    protected class FooterHolder extends BaseRecyclerViewHolder {
+    private class FooterHolder extends BaseRecyclerViewHolder {
 
-
-        public FooterHolder(View itemView, Context context) {
+        private FooterHolder(View itemView, Context context) {
             super(itemView, context);
         }
     }

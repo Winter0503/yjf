@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="412dp"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="@string/confirm_account"
+            android:textColor="@color/text_color"
+            android:textSize="@dimen/ts_title" />
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="55dp"
+            android:layout_height="46dp"
+            android:contentDescription="@string/close"
+            android:paddingEnd="20dp"
+            android:paddingStart="20dp"
+            android:scaleType="fitCenter"
+            android:src="@mipmap/btn_close_gray" />
+    </LinearLayout>
+
+    <View style="@style/div_horizontal" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <TextView
+        android:id="@+id/confirm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:background="@mipmap/btn_full_press"
+        android:gravity="center"
+        android:text="@string/confirm"
+        android:textColor="@color/white" />
+
+</LinearLayout>

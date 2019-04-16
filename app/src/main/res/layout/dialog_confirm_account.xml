@@ -203,10 +203,10 @@
 
         <TextView
             android:id="@+id/confirm"
-            android:layout_width="275dp"
-            android:layout_height="46dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@color/text_green_color"
+            android:background="@mipmap/btn_full_press"
             android:gravity="center"
             android:text="@string/confirm"
             android:textColor="@color/white"

@@ -3,7 +3,7 @@ package cn.ygyg.yjf.modular.internet.activity
 import android.view.View
 import cn.ygyg.yjf.R
 import cn.ygyg.yjf.modular.internet.contract.NewAccountActivityContract
-import cn.ygyg.yjf.modular.internet.helper.ConfirmAccountPopupWindow
+import cn.ygyg.yjf.modular.internet.helper.ConfirmAccountDialog
 import cn.ygyg.yjf.modular.internet.helper.InquireAccountDialog
 import cn.ygyg.yjf.modular.internet.presenter.NewAccountActivityPresenter
 import cn.ygyg.yjf.utils.HeaderBuilder
@@ -17,8 +17,8 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
     }
 
     private val headerBuilder: HeaderBuilder by lazy { HeaderBuilder(this) }
-    private val popupWindow: ConfirmAccountPopupWindow by lazy {
-        ConfirmAccountPopupWindow(this).apply {
+    private val accountDialog: ConfirmAccountDialog by lazy {
+        ConfirmAccountDialog(this).apply {
             setOnConformClick(View.OnClickListener { toActivity(NewAccountSuccessActivity::class.java) })
         }
     }
@@ -34,7 +34,7 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
     }
 
     override fun initListener() {
-        next_step.setOnClickListener { v -> popupWindow.show(v) }
+        next_step.setOnClickListener { v -> accountDialog.show() }
         input_account_help.setOnClickListener { dialog.show() }
         pay_cost_company.setOnClickListener {
             toActivity(AddressSelectorActivity::class.java)

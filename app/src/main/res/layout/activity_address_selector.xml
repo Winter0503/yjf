@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:orientation="vertical"
     tools:context=".modular.internet.activity.AddressSelectorActivity">
 
     <include layout="@layout/include_activity_header" />
 
-    <EditText
+    <TextView
         android:id="@+id/search"
         android:layout_width="match_parent"
         android:layout_height="34dp"
@@ -16,6 +17,7 @@
         android:layout_marginStart="11dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/shape_solid_gray"
+        android:gravity="center_vertical"
         android:hint="输入城市名/拼音或者字母查询"
         android:paddingEnd="15dp"
         android:paddingStart="15dp"
