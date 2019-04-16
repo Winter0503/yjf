@@ -286,7 +286,7 @@
                     android:drawablePadding="10dp"
                     android:drawableStart="@mipmap/icon_wx_pay"
                     android:gravity="center_vertical"
-                    android:text="微信支付" />
+                    android:text="@string/wx_pay" />
 
                 <ImageView
                     android:id="@+id/wx_pay_select"
@@ -315,7 +315,7 @@
                     android:drawablePadding="10dp"
                     android:drawableStart="@mipmap/icon_ali_pay"
                     android:gravity="center_vertical"
-                    android:text="支付宝服务" />
+                    android:text="@string/ali_pay" />
 
                 <ImageView
                     android:id="@+id/ali_pay_select"
@@ -338,7 +338,7 @@
         android:layout_gravity="center_horizontal"
         android:background="@mipmap/btn_full_press"
         android:gravity="center"
-        android:text="立即充值"
+        android:text="@string/immediately_payments"
         android:textColor="@color/white"
         android:textSize="@dimen/ts_btn" />
 
@@ -356,7 +356,7 @@
             android:layout_weight="1"
             android:gravity="end"
             android:padding="10dp"
-            android:text="充值记录"
+            android:text="@string/payments_history"
             android:textColor="@color/text_green_color"
             android:textSize="@dimen/ts_note" />
 

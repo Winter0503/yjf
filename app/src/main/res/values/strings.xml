@@ -42,4 +42,8 @@
     <string name="input_amount_hint">请输入充值金额大于0元</string>
     <string name="rmb_unit">元</string>
     <string name="pay_type">支付方式</string>
+    <string name="wx_pay">微信支付</string>
+    <string name="ali_pay">支付宝服务</string>
+    <string name="immediately_payments">立即充值</string>
+    <string name="payments_history">充值记录</string>
 </resources>
