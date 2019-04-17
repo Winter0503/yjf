@@ -52,9 +52,16 @@
     <string name="account_num">缴费账户</string>
     <string name="pay_mode">支付方式</string>
     <string name="pay_time">缴费时间</string>
+    <string name="no_history">暂无记录</string>
+    <string name="no_data">暂无数据</string>
     <string name="recharge_history">充值记录</string>
     <string name="contact_customer_service">联系客服</string>
     <string name="logout">退出登录</string>
+    <string name="payment_success">充值成功</string>
+    <string name="to_payments_history">查看充值记录</string>
+    <string name="back_to_main">返回首页</string>
+    <string name="payment_failed">充值失败</string>
+    <string name="payment_again">继续充值</string>
     <string name="trading_statue">交易状态</string>
     <string name="payment_account">缴费账户</string>
     <string name="payment_type">付款方式</string>

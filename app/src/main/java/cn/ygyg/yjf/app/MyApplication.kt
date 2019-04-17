@@ -1,4 +1,4 @@
-package cn.ygyg.yjf
+package cn.ygyg.yjf.app
 
 import android.app.Application
 import com.cn.lib.retrofit.network.RxHttp

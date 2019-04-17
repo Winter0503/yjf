@@ -22,5 +22,6 @@ class PaymentsActivity :
 
     override fun initListener() {
         payments_history.setOnClickListener { toActivity(PaymentsHistoryActivity::class.java) }
+        payments.setOnClickListener { toActivity(PaymentsCompleteActivity::class.java) }
     }
 }

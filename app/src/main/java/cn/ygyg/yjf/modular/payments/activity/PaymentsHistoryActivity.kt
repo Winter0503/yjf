@@ -6,13 +6,18 @@ import cn.ygyg.yjf.modular.payments.adapter.PaymentsHistoryAdapter
 import cn.ygyg.yjf.modular.payments.contract.PaymentsHistoryActivityContract
 import cn.ygyg.yjf.modular.payments.presenter.PaymentsHistoryActivityPresenter
 import cn.ygyg.yjf.utils.HeaderBuilder
+import cn.ygyg.yjf.widget.LoadMoreView
+import cn.ygyg.yjf.widget.ProgressHeaderView
 import com.cn.lib.basic.BaseMvpActivity
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import kotlinx.android.synthetic.main.activity_payments_historty.*
 
 class PaymentsHistoryActivity :
         BaseMvpActivity<PaymentsHistoryActivityContract.Presenter, PaymentsHistoryActivityContract.View>(),
         PaymentsHistoryActivityContract.View {
-
+    private val pageSize = 10
+    private val pageNum = 1
     private val adapter: PaymentsHistoryAdapter by lazy { PaymentsHistoryAdapter() }
 
     override fun createPresenter(): PaymentsHistoryActivityContract.Presenter = PaymentsHistoryActivityPresenter(this)
@@ -23,7 +28,21 @@ class PaymentsHistoryActivity :
             setTitle(R.string.activity_title_payments_history)
             setLeftImageRes(R.mipmap.back)
         }
+        refresh_layout.setHeaderView(ProgressHeaderView(getViewContext()).setTextVisibility(false))
+        refresh_layout.setBottomView(LoadMoreView(getViewContext()))
         recycler.layoutManager = LinearLayoutManager(this)
         recycler.adapter = adapter
+    }
+
+    override fun initListener() {
+        refresh_layout.setOnRefreshListener(object : RefreshListenerAdapter() {
+            override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
+                mPresenter?.loadPage(1, pageSize)
+            }
+
+            override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
+                mPresenter?.loadPage(pageNum + 1, pageSize)
+            }
+        })
     }
 }

@@ -8,8 +8,22 @@
 
     <include layout="@layout/include_activity_header" />
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler"
+    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <cn.ygyg.yjf.widget.EmptyView
+            android:id="@+id/empty_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+
 </LinearLayout>

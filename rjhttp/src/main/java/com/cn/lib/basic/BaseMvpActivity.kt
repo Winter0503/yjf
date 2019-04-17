@@ -9,7 +9,7 @@ import android.os.Bundle
 
 abstract class BaseMvpActivity<P : IBasePresenter<V>, in V : IBaseView> : BaseActivity() {
 
-    protected var mPresenter: P? = null
+    protected  var mPresenter: P? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         this.mPresenter = createPresenter()
