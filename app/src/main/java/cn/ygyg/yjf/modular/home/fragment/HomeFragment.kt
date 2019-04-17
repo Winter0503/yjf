@@ -1,15 +1,23 @@
 package cn.ygyg.yjf.modular.home.fragment
 
+import android.os.Handler
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import cn.ygyg.yjf.R
 import cn.ygyg.yjf.modular.home.adapter.AccountInfoListAdapter
 import cn.ygyg.yjf.modular.internet.activity.NewAccountActivity
+import cn.ygyg.yjf.widget.LoadMoreView
+import cn.ygyg.yjf.widget.ProgressHeaderView
 import com.cn.lib.basic.BaseFragment
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeFragment : BaseFragment() {
+
+    private var refreshLayout: TwinklingRefreshLayout? = null
+
     private val mAdapter: AccountInfoListAdapter by lazy {
         AccountInfoListAdapter(getViewContext())
     }
@@ -30,10 +38,27 @@ class HomeFragment : BaseFragment() {
         firstView.findViewById<View>(R.id.layout_add_account).setOnClickListener {
             toActivity(NewAccountActivity::class.java)
         }
+        refreshLayout= findViewById(R.id.layout_refresh)
+        refreshLayout?.setHeaderView(ProgressHeaderView(getViewContext()).setTextVisibility(false))
+        refreshLayout?.setBottomView(LoadMoreView(getViewContext()))
     }
 
     override fun initListener(v: View) {
+        refreshLayout?.setOnRefreshListener(object : RefreshListenerAdapter() {
+            override fun onRefresh(refreshLayout: TwinklingRefreshLayout) {
+                Handler().postDelayed({
 
+                    refreshLayout.finishRefreshing()
+                }, 2000)
+            }
+
+            override fun onLoadMore(refreshLayout: TwinklingRefreshLayout) {
+                Handler().postDelayed({
+
+                    refreshLayout.finishLoadmore()
+                }, 2000)
+            }
+        })
     }
 
     override fun loaderData() {

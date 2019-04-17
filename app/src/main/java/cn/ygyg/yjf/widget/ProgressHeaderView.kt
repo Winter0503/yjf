@@ -1,3 +1,5 @@
+package cn.ygyg.yjf.widget
+
 import android.content.Context
 import android.support.annotation.ColorInt
 import android.support.annotation.DrawableRes
@@ -12,50 +14,59 @@ import cn.ygyg.yjf.R
 import com.lcodecore.tkrefreshlayout.IHeaderView
 import com.lcodecore.tkrefreshlayout.OnAnimEndListener
 
-
-class ProgressHeaderView(context: Context) : FrameLayout(context), IHeaderView {
+/**
+ * 下拉刷新时显示的控件
+ */
+class ProgressHeaderView constructor(context: Context) : FrameLayout(context), IHeaderView {
 
     private var pullDownStr = "下拉刷新"
     private var releaseRefreshStr = "释放刷新"
     private var refreshingStr = "正在刷新"
     private var refreshArrow: ImageView
     private var loadingView: ImageView
-    private var refreshTextView: TextView 
+    private var refreshTextView: TextView
 
-  init {
-      val rootView = View.inflate(getContext(), R.layout.layout_refresh_header, null)
-      refreshArrow = rootView.findViewById(R.id.iv_arrow)
-      refreshTextView = rootView.findViewById(R.id.tv_state)
-      loadingView = rootView.findViewById(R.id.iv_loading)
-      addView(rootView)
-  }
+    init {
+        val rootView = View.inflate(getContext(), R.layout.layout_refresh_header, null)
+        refreshArrow = rootView.findViewById(R.id.iv_arrow)
+        refreshTextView = rootView.findViewById(R.id.tv_state)
+        loadingView = rootView.findViewById(R.id.iv_loading)
+        addView(rootView)
+    }
 
-    fun setArrowResource(@DrawableRes resId: Int) {
+    fun setArrowResource(@DrawableRes resId: Int): ProgressHeaderView {
         refreshArrow.setImageResource(resId)
+        return this
     }
 
-    fun setLoadingViewResource(@DrawableRes resId: Int){
+    fun setLoadingViewResource(@DrawableRes resId: Int): ProgressHeaderView {
         loadingView.setImageResource(resId)
+        return this
     }
 
-    fun setTextColor(@ColorInt color: Int) {
+    fun setTextColor(@ColorInt color: Int): ProgressHeaderView {
         refreshTextView.setTextColor(color)
+        return this
     }
 
-    fun setPullDownStr(pullDownStr1: String) {
+    fun setPullDownStr(pullDownStr1: String): ProgressHeaderView {
         pullDownStr = pullDownStr1
+        return this
     }
 
-    fun setReleaseRefreshStr(releaseRefreshStr1: String) {
+    fun setReleaseRefreshStr(releaseRefreshStr1: String): ProgressHeaderView {
         releaseRefreshStr = releaseRefreshStr1
+        return this
     }
 
-    fun setRefreshingStr(refreshingStr1: String) {
+    fun setRefreshingStr(refreshingStr1: String): ProgressHeaderView {
         refreshingStr = refreshingStr1
+        return this
     }
 
-    fun setTextVisibility(isVisibility:Boolean = false){
-        refreshTextView.visibility = if(isVisibility) View.VISIBLE else View.GONE
+    fun setTextVisibility(isVisibility: Boolean = false): ProgressHeaderView {
+        refreshTextView.visibility = if (isVisibility) View.VISIBLE else View.GONE
+        return this
     }
 
     override fun getView(): View {
@@ -74,6 +85,7 @@ class ProgressHeaderView(context: Context) : FrameLayout(context), IHeaderView {
             refreshArrow.rotation = fraction * headHeight / maxHeadHeight * 180
             if (refreshArrow.visibility == View.GONE) {
                 refreshArrow.visibility = View.VISIBLE
+                loadingView.clearAnimation()
                 loadingView.visibility = View.GONE
             }
         }
@@ -91,12 +103,13 @@ class ProgressHeaderView(context: Context) : FrameLayout(context), IHeaderView {
         loadingView.startAnimation(animation)
     }
 
-    override  fun onFinish(listener: OnAnimEndListener) {
+    override fun onFinish(listener: OnAnimEndListener) {
         listener.onAnimEnd()
     }
 
-    override  fun reset() {
+    override fun reset() {
         refreshArrow.visibility = View.VISIBLE
+        loadingView.clearAnimation()
         loadingView.visibility = View.GONE
         refreshTextView.text = pullDownStr
     }
