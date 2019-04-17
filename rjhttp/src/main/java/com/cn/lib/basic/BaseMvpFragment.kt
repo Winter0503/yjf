@@ -4,11 +4,12 @@ import android.os.Bundle
 
 
 /**
+ * Fragment基类
  * Created by admin on 2017/4/17.
  */
 
 
-abstract class BaseMvpFragment<P : IBasePresenter<IBaseView>> : BaseFragment(), IBaseView {
+abstract class BaseMvpFragment<P : IBasePresenter<V>,in V : IBaseView> : BaseFragment() {
     protected var mPresenter: P? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -16,7 +17,7 @@ abstract class BaseMvpFragment<P : IBasePresenter<IBaseView>> : BaseFragment(), 
         if (mPresenter == null) {
             this.mPresenter = createPresenter()
         } else {
-            this.mPresenter!!.attachView(this)
+            mPresenter?.attachView(this as V)
         }
     }
 
@@ -25,7 +26,7 @@ abstract class BaseMvpFragment<P : IBasePresenter<IBaseView>> : BaseFragment(), 
     override fun onDestroy() {
         super.onDestroy()
         if (mPresenter != null) {
-            mPresenter!!.detachView()
+            mPresenter?.detachView()
             mPresenter = null
         }
     }

@@ -99,13 +99,16 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
             return
         }
         when (v.id) {
-            R.id.dialog_hint_content -> if (dialogButtonListener!!.clickContentButton(this)) {
+            R.id.dialog_hint_content -> {
+                dialogButtonListener?.clickContentButton(this)
                 this.dismiss()
             }
-            R.id.dialog_hint_cancel -> if (dialogButtonListener!!.clickNegativeButton(this)) {
+            R.id.dialog_hint_cancel -> {
+                dialogButtonListener?.clickNegativeButton(this)
                 this.dismiss()
             }
-            else -> if (dialogButtonListener!!.clickPositiveButton(this)) {
+            else -> {
+                dialogButtonListener?.clickPositiveButton(this)
                 this.dismiss()
             }
         }
@@ -239,7 +242,7 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
         fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean
 
         /**
-         * 左侧(第一个)按钮
+         * 左侧(第二个)按钮
          *
          * @return 返回true表示关闭对话框
          */
