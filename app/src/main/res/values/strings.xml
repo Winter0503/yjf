@@ -23,6 +23,7 @@
     <string name="activity_title_new_account_success">添加成功</string>
     <string name="activity_title_address_select">选择燃气公司</string>
     <string name="activity_title_payments">燃气充值</string>
+    <string name="activity_title_payments_history">燃气充值</string>
     <string name="tab_home">首页</string>
     <string name="tab_my">我的</string>
     <string name="cancel">取消</string>
@@ -47,4 +48,8 @@
     <string name="immediately_payments">立即充值</string>
     <string name="payments_history">充值记录</string>
     <string name="iot_card">物联网卡</string>
+    <string name="pay_state">交易状态</string>
+    <string name="account_num">缴费账户</string>
+    <string name="pay_mode">支付方式</string>
+    <string name="pay_time">缴费时间</string>
 </resources>
