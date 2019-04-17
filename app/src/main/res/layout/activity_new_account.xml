@@ -65,6 +65,7 @@
             android:layout_weight="1"
             android:background="@color/transparent"
             android:gravity="center_vertical"
+            android:inputType="text"
             android:hint="@string/hint_input_pay_account"
             android:lines="1"
             android:textColor="@color/text_color"
@@ -121,7 +122,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="20dp"
-        android:background="@mipmap/btn_full_press"
+        android:background="@drawable/btn_bg_full"
         android:gravity="center"
         android:text="下一步"
         android:textColor="@color/white" />
