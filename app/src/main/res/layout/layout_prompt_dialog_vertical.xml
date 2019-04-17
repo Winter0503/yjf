@@ -78,6 +78,6 @@
         android:gravity="center"
         android:padding="15dp"
         android:text="取消"
-        android:textColor="@color/text_gray_color"
+        android:textColor="@color/text_blue_color"
         android:textSize="18sp" />
 </LinearLayout>

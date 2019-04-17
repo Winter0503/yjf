@@ -5,7 +5,7 @@ package com.cn.lib.basic
  * Created by admin on 2017/4/17.
  */
 
-interface IBasePresenter<V : IBaseView> {
+interface IBasePresenter<in V : IBaseView> {
 
     /**
      * 绑定View层

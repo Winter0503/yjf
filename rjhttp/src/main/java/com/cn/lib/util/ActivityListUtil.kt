@@ -138,7 +138,7 @@ class ActivityListUtil {
         // Activity栈
         private var activityStack: Stack<Activity> = Stack()
 
-        internal val INSTANCE: ActivityListUtil by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { ActivityListUtil() }
+        val INSTANCE: ActivityListUtil by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { ActivityListUtil() }
     }
 
 }

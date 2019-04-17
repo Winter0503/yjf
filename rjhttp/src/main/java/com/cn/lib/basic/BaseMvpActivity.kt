@@ -7,7 +7,7 @@ import android.os.Bundle
  * Created by admin on 2017/4/17.
  */
 
-abstract class BaseMvpActivity<P : IBasePresenter<V>, V : IBaseView> : BaseActivity() {
+abstract class BaseMvpActivity<P : IBasePresenter<V>, in V : IBaseView> : BaseActivity() {
 
     protected var mPresenter: P? = null
 
@@ -18,7 +18,7 @@ abstract class BaseMvpActivity<P : IBasePresenter<V>, V : IBaseView> : BaseActiv
 
     override fun onDestroy() {
         if (mPresenter != null) {
-            mPresenter!!.detachView()
+            mPresenter?.detachView()
         }
         super.onDestroy()
     }

@@ -55,4 +55,8 @@
     <string name="recharge_history">充值记录</string>
     <string name="contact_customer_service">联系客服</string>
     <string name="logout">退出登录</string>
+    <string name="trading_statue">交易状态</string>
+    <string name="payment_account">缴费账户</string>
+    <string name="payment_type">付款方式</string>
+    <string name="payment_time">缴费时间</string>
 </resources>

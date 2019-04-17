@@ -32,6 +32,7 @@
         <activity android:name=".modular.payments.activity.PaymentsActivity" />
         <activity android:name=".modular.payments.activity.PaymentsHistoryActivity" />
         <activity android:name=".modular.payments.activity.PaymentsCompleteActivity" />
+        <activity android:name=".modular.record.activity.RechargeRecordActivity" />
     </application>
 
 </manifest>
