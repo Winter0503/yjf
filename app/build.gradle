@@ -6,7 +6,7 @@ apply from: 'versioninfo.gradle'
 android {
     compileSdkVersion compile_sdk_version
     defaultConfig {
-        applicationId "cn.ygyg.yjf"
+        applicationId "cn.ygyg.cloudpayment"
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
         versionCode version_code

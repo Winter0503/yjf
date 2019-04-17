@@ -1,0 +1,10 @@
+package cn.ygyg.cloudpayment.modular.payments.contract
+
+import com.cn.lib.basic.IBasePresenter
+import com.cn.lib.basic.IBaseView
+
+class PaymentsActivityContract {
+    interface View : IBaseView
+
+    interface Presenter : IBasePresenter<View>
+}

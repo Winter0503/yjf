@@ -36,7 +36,7 @@
                 android:orientation="horizontal"
                 android:padding="25dp">
 
-                <cn.ygyg.yjf.widget.CircleImageView
+                <cn.ygyg.cloudpayment.widget.CircleImageView
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:src="@drawable/avatar1" />
