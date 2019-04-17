@@ -5,15 +5,15 @@
     android:gravity="center">
     <ImageView
         android:id="@+id/iv_arrow"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@mipmap/refresh"/>
 
     <ImageView
         android:id="@+id/iv_loading"
         android:visibility="gone"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:src="@mipmap/refresh"/>
 
     <TextView

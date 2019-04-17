@@ -27,4 +27,7 @@
     <string name="cancel">取消</string>
     <string name="search">搜索</string>
     <string name="iot_card">物联网卡</string>
+    <string name="recharge_history">充值记录</string>
+    <string name="contact_customer_service">联系客服</string>
+    <string name="logout">退出登录</string>
 </resources>

@@ -5,6 +5,7 @@ import cn.ygyg.yjf.R
 import com.cn.lib.basic.BaseFragment
 
 class MyFragment:BaseFragment() {
+
     override val contentViewResId: Int = R.layout.fragment_my
 
 
