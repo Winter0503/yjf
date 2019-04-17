@@ -7,6 +7,7 @@ import cn.ygyg.yjf.modular.internet.contract.AddressSelectorActivityContract
 import cn.ygyg.yjf.modular.internet.helper.CompanySelectDialog
 import cn.ygyg.yjf.modular.internet.helper.SearchAddressDialog
 import cn.ygyg.yjf.modular.internet.presenter.AddressSelectorActivityPresenter
+import cn.ygyg.yjf.utils.BaseViewHolder
 import cn.ygyg.yjf.utils.HeaderBuilder
 import com.cn.lib.basic.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_address_selector.*
@@ -50,6 +51,11 @@ class AddressSelectorActivity :
 
     override fun initListener() {
         search.setOnClickListener { searchAddressDialog.show() }
+        adapter.onItemClickListener = object : AddressSelectorAdapter.OnItemClickListener {
+            override fun onItemClicked(holder: BaseViewHolder, position: Int) {
+                companySelectDialog.show()
+            }
+        }
     }
 
     private fun getAddressList(): List<String>? {

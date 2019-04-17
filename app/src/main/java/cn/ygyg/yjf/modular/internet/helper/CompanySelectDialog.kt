@@ -9,10 +9,10 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import cn.ygyg.yjf.R
-import cn.ygyg.yjf.modular.internet.adapter.CompanSelectorAdapter
+import cn.ygyg.yjf.modular.internet.adapter.CompanySelectorAdapter
 
 class CompanySelectDialog(context: Context) : Dialog(context) {
-    private val adapter: CompanSelectorAdapter by lazy { CompanSelectorAdapter() }
+    private val adapter: CompanySelectorAdapter by lazy { CompanySelectorAdapter() }
     private val recycler: RecyclerView
 
     var onCompanyConfirmListener: OnCompanyConfirmListener? = null

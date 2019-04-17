@@ -11,7 +11,7 @@ import cn.ygyg.yjf.R
 import cn.ygyg.yjf.utils.BaseViewHolder
 import cn.ygyg.yjf.utils.LogUtil
 
-class CompanSelectorAdapter : RecyclerView.Adapter<BaseViewHolder>() {
+class CompanySelectorAdapter : RecyclerView.Adapter<BaseViewHolder>() {
     private val list: ArrayList<String> by lazy { ArrayList<String>() }
 
     var onItemClickListener: OnItemClickListener? = null

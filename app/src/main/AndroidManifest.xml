@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-      <activity android:name=".modular.internet.activity.NewAccountActivity"/>
+
+        <activity android:name=".modular.internet.activity.NewAccountActivity" />
         <activity android:name=".modular.register.activity.UserAgreementActivity" />
         <activity android:name=".modular.register.activity.RegisterActivity" />
         <activity android:name=".modular.home.activity.MainTabActivity">
@@ -27,7 +28,10 @@
         <activity android:name=".modular.login.activity.BindingPhoneActivity" />
         <activity android:name=".modular.login.activity.LoginActivity" />
         <activity android:name=".modular.internet.activity.ListSelectActivity" />
-        <activity android:name=".modular.internet.activity.AddressSelectorActivity"/>
+        <activity android:name=".modular.internet.activity.AddressSelectorActivity" />
+        <activity android:name=".modular.payments.activity.PaymentsActivity" />
+        <activity android:name=".modular.payments.activity.PaymentsHistoryActivity" />
+        <activity android:name=".modular.payments.activity.PaymentsCompleteActivity" />
     </application>
 
 </manifest>

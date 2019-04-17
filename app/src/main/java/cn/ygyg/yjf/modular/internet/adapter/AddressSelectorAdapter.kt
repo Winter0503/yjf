@@ -11,7 +11,7 @@ import cn.ygyg.yjf.utils.LogUtil
 
 class AddressSelectorAdapter : RecyclerView.Adapter<BaseViewHolder>() {
     private val list: ArrayList<String> by lazy { ArrayList<String>() }
-
+    var onItemClickListener: OnItemClickListener? = null
     fun setData(list: List<String>?) {
         this.list.clear()
         list?.let {
@@ -52,6 +52,7 @@ class AddressSelectorAdapter : RecyclerView.Adapter<BaseViewHolder>() {
             else -> {
                 val address = holder.findViewById<TextView>(R.id.address_name)
                 address.text = list[position - 1]
+                address.setOnClickListener { onItemClickListener?.onItemClicked(holder, position - 1) }
             }
         }
     }
@@ -64,5 +65,9 @@ class AddressSelectorAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         private val TYPE_HEADER = 0
         private val TYPE_TITLE = 1
         private val TYPE_CONTENT = 2
+    }
+
+    interface OnItemClickListener {
+        fun onItemClicked(holder: BaseViewHolder, position: Int)
     }
 }
