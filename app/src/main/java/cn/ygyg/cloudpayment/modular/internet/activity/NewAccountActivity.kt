@@ -1,6 +1,8 @@
 package cn.ygyg.cloudpayment.modular.internet.activity
 
+import android.os.Build
 import android.text.Editable
+import android.text.Html
 import android.text.TextWatcher
 import android.view.View
 import cn.ygyg.cloudpayment.R
@@ -8,6 +10,7 @@ import cn.ygyg.cloudpayment.modular.internet.contract.NewAccountActivityContract
 import cn.ygyg.cloudpayment.modular.internet.helper.ConfirmAccountDialog
 import cn.ygyg.cloudpayment.modular.internet.helper.InquireAccountDialog
 import cn.ygyg.cloudpayment.modular.internet.presenter.NewAccountActivityPresenter
+import cn.ygyg.cloudpayment.modular.register.activity.UserAgreementActivity
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
 import com.cn.lib.basic.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_new_account.*
@@ -36,6 +39,8 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
     }
 
     override fun initListener() {
+        read_protocol.setOnClickListener { toActivity(UserAgreementActivity::class.java) }
+        agree_protocol.setOnCheckedChangeListener { _, isChecked -> canDoNext(isChecked) }
         next_step.setOnClickListener { v ->
             if (v.isSelected) {
                 accountDialog.show()
@@ -44,7 +49,7 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
         input_account_help.setOnClickListener { dialog.show() }
         pay_account.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                next_step.isSelected = !s.isNullOrEmpty()
+                canDoNext(!s.isNullOrEmpty())
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -55,6 +60,14 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
         })
         pay_cost_company.setOnClickListener {
             toActivity(AddressSelectorActivity::class.java)
+        }
+    }
+
+    private fun canDoNext(canDo: Boolean) {
+        if (canDo) {
+            next_step.isSelected = agree_protocol.isChecked && !pay_account.text.isNullOrEmpty()
+        } else {
+            next_step.isSelected = false
         }
     }
 }
