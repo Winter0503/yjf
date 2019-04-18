@@ -1,5 +1,7 @@
 package cn.ygyg.cloudpayment.modular.internet.activity
 
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.modular.internet.contract.NewAccountActivityContract
@@ -34,8 +36,23 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
     }
 
     override fun initListener() {
-        next_step.setOnClickListener { v -> accountDialog.show() }
+        next_step.setOnClickListener { v ->
+            if (v.isSelected) {
+                accountDialog.show()
+            }
+        }
         input_account_help.setOnClickListener { dialog.show() }
+        pay_account.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                next_step.isSelected = !s.isNullOrEmpty()
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
         pay_cost_company.setOnClickListener {
             toActivity(AddressSelectorActivity::class.java)
         }

@@ -4,21 +4,44 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-
 import cn.ygyg.cloudpayment.R
+import cn.ygyg.cloudpayment.modular.internet.entity.CityVM
 import cn.ygyg.cloudpayment.utils.BaseViewHolder
-import cn.ygyg.cloudpayment.utils.LogUtil
 
 class AddressSelectorAdapter : RecyclerView.Adapter<BaseViewHolder>() {
-    private val list: ArrayList<String> by lazy { ArrayList<String>() }
+    private val list: ArrayList<CityVM> by lazy { ArrayList<CityVM>() }
+
     var onItemClickListener: OnItemClickListener? = null
-    fun setData(list: List<String>?) {
+    fun setData(list: List<CityVM>?) {
         this.list.clear()
         list?.let {
             this.list.addAll(it)
         }
-        LogUtil.i("setData", this.list.size.toString())
         notifyDataSetChanged()
+    }
+
+    fun setItem(position: Int, item: CityVM) {
+        if (position < list.size) {
+            list[position] = item
+            notifyItemChanged(position, item)
+        }
+    }
+
+    fun removeItem(position: Int) {
+        list.removeAt(position)
+        notifyDataSetChanged()
+    }
+
+    fun addItem(item: CityVM) {
+        list.add(item)
+        notifyItemInserted(list.size - 1)
+    }
+
+    fun addData(list: List<CityVM>?) {
+        list?.let {
+            this.list.addAll(list)
+            notifyDataSetChanged()
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -42,23 +65,27 @@ class AddressSelectorAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val viewType = getItemViewType(position)
+        val cityVM = list[position]
         when (viewType) {
             TYPE_HEADER -> {
+                val location = holder.findViewById<TextView>(R.id.location_city)
+                location.text = cityVM.getCityName()
+                location.setOnClickListener { onItemClickListener?.onLocationClicked(cityVM) }
             }
             TYPE_TITLE -> {
                 val title = holder.findViewById<TextView>(R.id.item_title)
-                title.text = list[position - 1]
+                title.text = cityVM.getCityName()
             }
             else -> {
                 val address = holder.findViewById<TextView>(R.id.address_name)
-                address.text = list[position - 1]
+                address.text = cityVM.getCityName()
                 address.setOnClickListener { onItemClickListener?.onItemClicked(holder, position - 1) }
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return list.size + 1
+        return list.size
     }
 
     companion object {
@@ -69,5 +96,7 @@ class AddressSelectorAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
     interface OnItemClickListener {
         fun onItemClicked(holder: BaseViewHolder, position: Int)
+        //定位按钮被点击
+        fun onLocationClicked(cityVM: CityVM)
     }
 }
