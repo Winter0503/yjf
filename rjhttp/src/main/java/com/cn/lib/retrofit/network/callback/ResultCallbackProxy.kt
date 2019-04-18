@@ -54,9 +54,7 @@ abstract class ResultCallbackProxy<T : ApiResultEntity<R>, R>(mCallback: ResultC
          * 返回结果为ApiResultEntity<T>格式的回调代理类
         </T> */
         fun <T> NEW_DEFAULT_INSTANCE(callback: ResultCallback<T>): ResultCallbackProxy<ApiResultEntity<T>, T> {
-            return object : ResultCallbackProxy<ApiResultEntity<T>, T>(callback) {
-
-            }
+            return object : ResultCallbackProxy<ApiResultEntity<T>, T>(callback) {}
         }
     }
 

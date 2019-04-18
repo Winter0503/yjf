@@ -5,11 +5,12 @@ import android.text.TextUtils
 import com.alibaba.fastjson.JSON
 import com.alibaba.fastjson.JSONObject
 import com.cn.lib.retrofit.network.config.ResultConfigLoader
+import com.cn.lib.retrofit.network.exception.ApiThrowable
 import com.cn.lib.retrofit.network.exception.ServerException
 
 import okhttp3.ResponseBody
 
-abstract class ResponseClazzCallback : IResponseCallback<String> {
+abstract class ResponseClazzCallback<D> : IResponseCallback<String> {
 
     @Throws(Exception::class)
     override fun onTransformationResponse(body: ResponseBody): String {
@@ -26,6 +27,23 @@ abstract class ResponseClazzCallback : IResponseCallback<String> {
     }
 
     internal abstract fun checkSuccess(code: Int): Boolean
+    /**
+     * 请求开始
+     */
+    open fun onStart(tag: Any?) {
+
+    }
+
+    /**
+     * 请求结束
+     */
+    open fun onCompleted(tag: Any?) {
+
+    }
+
+    abstract fun onError(tag: Any?, throwable: ApiThrowable)
+
+    abstract fun onSuccess(tag: Any?, result: D?)
 
     private fun getCode(jsonObject: JSONObject): Int {
         val codeKey = ResultConfigLoader.codeKey

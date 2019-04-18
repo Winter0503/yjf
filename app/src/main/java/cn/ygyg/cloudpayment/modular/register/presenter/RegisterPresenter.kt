@@ -1,15 +1,25 @@
 package cn.ygyg.cloudpayment.modular.register.presenter
 
+import android.os.AsyncTask.execute
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import android.util.Log
+import cn.ygyg.cloudpayment.api.RequestManager
+import cn.ygyg.cloudpayment.api.UrlConstants
 import cn.ygyg.cloudpayment.modular.register.contract.RegisterContract
 import cn.ygyg.cloudpayment.utils.StringUtil
+import com.alibaba.fastjson.JSONObject
 import com.cn.lib.basic.BasePresenterImpl
+import com.cn.lib.retrofit.network.RxHttp
+import com.cn.lib.retrofit.network.callback.ResultCallback
+import com.cn.lib.retrofit.network.exception.ApiThrowable
+import com.tencent.mm.opensdk.diffdev.a.e
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
@@ -134,6 +144,33 @@ class RegisterPresenter(view: RegisterContract.View) : RegisterContract.Presente
 
 
     override fun checkPhone(phone: String) {
+        val jsonObj = JSONObject()
+        jsonObj.put("phone ", phone)
+        RequestManager.post(UrlConstants.valPhone)
+                .jsonObj(jsonObj)
+                .execute(String::class.java)
+                .flatMap {
+                    RequestManager.post(UrlConstants.captcha)
+                            .jsonObj(jsonObj)
+                            .execute(String::class.java)
+                }
+                .subscribeWith(object : Observer<String> {
+                    override fun onSubscribe(d: Disposable) {
+
+                    }
+
+                    override fun onComplete() {
+                        Log.e("TAG","===onComplete===>请求结束")
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Log.e("TAG","===onError===>$e")
+                    }
+
+                    override fun onNext(t: String) {
+                        Log.e("TAG","===onNext===>$t")
+                    }
+                })
         mvpView?.checkPhoneSuccess()
     }
 

@@ -36,7 +36,6 @@ import java.lang.NullPointerException
 
 open class UploadRequest(url: String) : HttpBodyRequest<UploadRequest>(url) {
 
-    private var mRequestBody: RequestBody? = null
     private var mUploadType: UploadFileType? = null
 
     override fun requestBody(requestBody: RequestBody): UploadRequest {

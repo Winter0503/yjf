@@ -55,18 +55,18 @@ class MainActivity : AppCompatActivity() {
             RxHttp.templatePost("home/hotnews")
                     .jsonObj(param)
                     .execute(String::class.java).subscribeWith(object : DisposableObserver<String>() {
-                        override fun onNext(s: String) {
-                            LogUtil.e("MainActivity", "result=$s")
-                        }
+                override fun onNext(s: String) {
+                    LogUtil.e("MainActivity", "result=$s")
+                }
 
-                        override fun onError(e: Throwable) {
-                            LogUtil.e("MainActivity", "onError=$e")
-                        }
+                override fun onError(e: Throwable) {
+                    LogUtil.e("MainActivity", "onError=$e")
+                }
 
-                        override fun onComplete() {
+                override fun onComplete() {
 
-                        }
-                    })
+                }
+            })
         }
     }
 
@@ -221,7 +221,7 @@ class MainActivity : AppCompatActivity() {
                 .baseUrl("http://business-workbench.qingtian.ygego.alpha3/rest/")
                 .uploadType(UploadFileType.BODY)
                 .requestBody(requestBody1)
-                .execute("upload", object : ResultCallbackProxy<CommResultEntity<String>, String>( object : ResultProgressCallback<String>() {
+                .execute("upload", object : ResultCallbackProxy<CommResultEntity<String>, String>(object : ResultProgressCallback<String>() {
                     override fun onStart(tag: Any?) {
                         Toast.makeText(this@MainActivity, "开始上传", Toast.LENGTH_SHORT).show()
                     }
@@ -241,7 +241,7 @@ class MainActivity : AppCompatActivity() {
                     override fun onUIProgressChanged(tag: Any?, numBytes: Long, totalBytes: Long, percent: Float, speed: Float) {
                         Toast.makeText(this@MainActivity, "numBytes=$numBytes  totalBytes=$totalBytes  percent=$percent  speed=$speed", Toast.LENGTH_SHORT).show()
                     }
-                }){})
+                }) {})
     }
 
     fun downFile(v: View) {

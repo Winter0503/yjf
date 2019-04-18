@@ -9,14 +9,14 @@ import com.cn.lib.retrofit.network.transformer.HandleClazzBodyTransformer
 import com.cn.lib.retrofit.network.transformer.HandleErrorTransformer
 import com.cn.lib.retrofit.network.transformer.HandleResponseBodyTransformer
 import com.cn.lib.retrofit.network.util.RxUtil
-
-import java.lang.reflect.Type
-
+import com.cn.lib.retrofit.network.util.Util
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
+import java.lang.reflect.Type
 
-class TemplatePostRequest(url: String) : HttpBodyRequest<TemplatePostRequest>(url) {
+class TemplateDeleteRequest(url: String) : HttpBodyRequest<TemplateDeleteRequest>(url) {
 
     fun <T> execute(type: Type): Observable<T> {
         return build().generateRequest()
@@ -65,5 +65,30 @@ class TemplatePostRequest(url: String) : HttpBodyRequest<TemplatePostRequest>(ur
                 .retryWhen(RetryExceptionFunc(mRetryCount, mRetryDelay.toLong(), mRetryIncreaseDelay.toLong()))
     }
 
+    override fun generateRequest(): Observable<ResponseBody> {
+        mRequestBody?.let {//自定义的请求体
+            return mApiManager.deleteBody(mUrl, it)
+        }
+        mJsonStr?.let {//Json字符串
+            return mApiManager.deleteJson(mUrl, Util.createJson(it))
+        }
+        mJsonObj?.let {//Json对象
+            return mApiManager.deleteBody(mUrl, Util.createJson(it.toJSONString()))
+        }
+        mJsonArr?.let {//Json数组
+            return mApiManager.deleteBody(mUrl, Util.createJson(it.toJSONString()))
+        }
+        mStr?.let { //文本内容
+            val requestBody = RequestBody.create(mMediaType, it)
+            return mApiManager.deleteBody(mUrl, requestBody)
+        }
+        mObject?.let {//自定义的请求object
+            return mApiManager.deleteBody(mUrl, it)
+        }
+        if (!mHttpParams.isParamsEmpty() && mHttpParams.isFilesEmpty()) {
+            return mApiManager.delete(mUrl, mHttpParams.paramMap)
+        }
+        return mApiManager.deleteUrl(url = mUrl)
+    }
 
 }

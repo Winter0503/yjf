@@ -1,7 +1,5 @@
 package cn.ygyg.cloudpayment.modular.login.activity
 
-import android.content.Intent
-import android.net.Uri
 import android.text.InputFilter
 import android.view.View
 import cn.ygyg.cloudpayment.R
@@ -12,7 +10,6 @@ import cn.ygyg.cloudpayment.modular.password.activity.ResetPasswordActivity
 import cn.ygyg.cloudpayment.utils.ResourceUtil
 import com.cn.lib.basic.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_reset_password.*
 
 /**
  * 登录

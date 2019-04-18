@@ -9,14 +9,12 @@ import com.cn.lib.retrofit.network.transformer.HandleClazzBodyTransformer
 import com.cn.lib.retrofit.network.transformer.HandleErrorTransformer
 import com.cn.lib.retrofit.network.transformer.HandleResponseBodyTransformer
 import com.cn.lib.retrofit.network.util.RxUtil
-
-import java.lang.reflect.Type
-
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import okhttp3.ResponseBody
+import java.lang.reflect.Type
 
-class TemplatePostRequest(url: String) : HttpBodyRequest<TemplatePostRequest>(url) {
+class TemplateGetRequest(url: String) : HttpBodyRequest<TemplateGetRequest>(url) {
 
     fun <T> execute(type: Type): Observable<T> {
         return build().generateRequest()
@@ -65,5 +63,8 @@ class TemplatePostRequest(url: String) : HttpBodyRequest<TemplatePostRequest>(ur
                 .retryWhen(RetryExceptionFunc(mRetryCount, mRetryDelay.toLong(), mRetryIncreaseDelay.toLong()))
     }
 
+    override fun generateRequest(): Observable<ResponseBody> {
+        return mApiManager.get(mUrl, mHttpParams.paramMap)
+    }
 
 }

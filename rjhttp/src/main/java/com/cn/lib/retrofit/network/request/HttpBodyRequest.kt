@@ -14,14 +14,14 @@ import okhttp3.ResponseBody
 @Suppress("UNCHECKED_CAST")
 @SuppressLint("ParcelCreator")
 open class HttpBodyRequest<R : BaseRequest<R>>(url: String) : BaseRequest<R>(url) {
-    private var mRequestBody: RequestBody? = null
-    private var mJsonStr: String? = null
-    private var mJsonObj: JSONObject? = null
-    private var mJsonArr: JSONArray? = null
-    private var mBytes: ByteArray? = null
-    private var mStr: String? = null
-    private var mObject: Any? = null
-    private var mMediaType: MediaType? = null
+    protected var mRequestBody: RequestBody? = null
+    protected var mJsonStr: String? = null
+    protected var mJsonObj: JSONObject? = null
+    protected var mJsonArr: JSONArray? = null
+    protected var mBytes: ByteArray? = null
+    protected var mStr: String? = null
+    protected var mObject: Any? = null
+    protected var mMediaType: MediaType? = null
     private var bb: String? = null
 
     open fun requestBody(requestBody: RequestBody): R {
@@ -69,13 +69,13 @@ open class HttpBodyRequest<R : BaseRequest<R>>(url: String) : BaseRequest<R>(url
 
     override fun generateRequest(): Observable<ResponseBody> {
         mRequestBody?.let {
-            return mApiManager.post(mUrl, any = it)
+            return mApiManager.postBody(mUrl,it)
         }
-        mJsonStr?.run {
-            return mApiManager.potJsonStr(mUrl, Util.createJson(this))
+        mJsonStr?.let {
+            return mApiManager.potJsonStr(mUrl, Util.createJson(it))
         }
-        mJsonObj?.apply {
-            return mApiManager.postJson(mUrl, this)
+        mJsonObj?.let {
+            return mApiManager.postJson(mUrl, it)
         }
         mJsonArr?.let {
             return mApiManager.postJson(mUrl, it)
@@ -91,7 +91,7 @@ open class HttpBodyRequest<R : BaseRequest<R>>(url: String) : BaseRequest<R>(url
         mObject?.let {
             return mApiManager.postBody(mUrl, it)
         }
-        if (!mHttpParams.isParamsEmpty && mHttpParams.isFilesEmpty) {
+        if (!mHttpParams.isParamsEmpty() && mHttpParams.isFilesEmpty()) {
             return mApiManager.postMap(mUrl, mHttpParams.paramMap)
         }
         return mApiManager.post(mUrl)

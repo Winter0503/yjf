@@ -3,10 +3,7 @@ package com.cn.lib.retrofit.network
 
 import android.content.Context
 import com.cn.lib.retrofit.network.interceptor.HeaderInterceptor
-import com.cn.lib.retrofit.network.request.ApiResultPostRequest
-import com.cn.lib.retrofit.network.request.DownloadRequest
-import com.cn.lib.retrofit.network.request.TemplatePostRequest
-import com.cn.lib.retrofit.network.request.UploadRequest
+import com.cn.lib.retrofit.network.request.*
 import com.cn.lib.retrofit.network.util.LogUtil
 import com.cn.lib.retrofit.network.util.SSLUtil
 import com.cn.lib.retrofit.network.util.Util
@@ -25,7 +22,7 @@ import javax.net.ssl.HostnameVerifier
 import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.X509TrustManager
 
-class RxHttp private constructor() {
+open class RxHttp private constructor() {
     private val okHttpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()                 //okhttp请求的客户端
     internal val retrofitBuilder: Retrofit.Builder                         //Retrlofit请求Builder
     private var mCacheMaxSize: Long = 0                                       //最大缓存
@@ -430,9 +427,30 @@ class RxHttp private constructor() {
             return TemplatePostRequest(url)
         }
 
+        fun templateDelete(url: String): TemplateDeleteRequest {
+            return TemplateDeleteRequest(url)
+        }
+        fun templateGet(url: String): TemplateGetRequest {
+            return TemplateGetRequest(url)
+        }
+        fun templatePut(url: String): TemplatePutRequest {
+            return TemplatePutRequest(url)
+        }
+
         fun resultPost(url: String): ApiResultPostRequest {
             return ApiResultPostRequest(url)
         }
+
+        fun resultGet(url:String):ApiResultGetRequest{
+            return ApiResultGetRequest(url)
+        }
+        fun resultDelete(url:String):ApiResultDeleteRequest{
+            return ApiResultDeleteRequest(url)
+        }
+        fun resultPut(url:String):ApiResultPutRequest{
+            return ApiResultPutRequest(url)
+        }
+
 
         fun upload(url: String): UploadRequest {
             return UploadRequest(url)

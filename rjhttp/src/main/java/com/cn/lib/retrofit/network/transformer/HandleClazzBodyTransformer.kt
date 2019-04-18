@@ -14,7 +14,7 @@ import okhttp3.ResponseBody
 /**
  * 返回结果解析器，在assets文件夹下的result-config.json中定义过键值对
  */
-class HandleClazzBodyTransformer<T>(private val type: Type, private val callback: ResponseClazzCallback?) : ObservableTransformer<ResponseBody, T> {
+class HandleClazzBodyTransformer<T>(private val type: Type, private val callback: ResponseClazzCallback<T>?) : ObservableTransformer<ResponseBody, T> {
 
     override fun apply(upstream: Observable<ResponseBody>): ObservableSource<T> {
         return upstream.map { body ->

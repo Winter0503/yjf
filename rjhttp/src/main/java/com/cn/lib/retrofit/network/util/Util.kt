@@ -16,12 +16,7 @@ import okhttp3.RequestBody
     val MULTIPART_FORM_DATA = "multipart/form-data;"
     val MULTIPART_IMAGE_DATA = "image/*; charset=utf-8"
     val MULTIPART_JSON_DATA = "application/json; charset=utf-8"
-    val MULTIPART_VIDEO_DATA = "video/*"
-    val MULTIPART_AUDIO_DATA = "audio/*"
     val MULTIPART_TEXT_DATA = "text/plain"
-    val MULTIPART_APK_DATA = "application/vnd.android.package-archive"
-    val MULTIPART_JAVA_DATA = "java/*"
-    val MULTIPART_MESSAGE_DATA = "message/rfc822"
     val MULTIPART_BYTE_DATE = "application/octet-stream"
 
     fun isEmpty(str: String?): Boolean {

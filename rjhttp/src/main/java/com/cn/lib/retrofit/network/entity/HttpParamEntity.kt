@@ -12,11 +12,13 @@ class HttpParamEntity {
     val paramMap = HashMap<String, String>()
     val fileMap = HashMap<String, MutableList<FileEntity<*>>>()
 
-    val isParamsEmpty: Boolean
-        get() = paramMap.isEmpty()
+    fun isParamsEmpty(): Boolean{
+        return paramMap.isEmpty()
+    }
 
-    val isFilesEmpty: Boolean
-        get() = fileMap.isEmpty()
+    fun isFilesEmpty(): Boolean{
+        return fileMap.isEmpty()
+    }
 
     fun put(paramEntity: HttpParamEntity?) {
         if (paramEntity != null) {
