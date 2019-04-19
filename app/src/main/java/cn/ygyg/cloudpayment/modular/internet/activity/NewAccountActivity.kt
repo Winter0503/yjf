@@ -35,13 +35,13 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         data?.let {
-            //TODO AddressSelectorActivity.companySelectDialog
+            //TODO AddressSelectorActivity.companySelectDialog 城市 缴费单位获取
         }
     }
 
     override fun initViews() {
         bundle?.let {
-            //TODO AddressSelectorActivity.companySelectDialog
+            //TODO AddressSelectorActivity.companySelectDialog 城市 缴费单位获取
         }
         headerBuilder.setLeftImageRes(R.mipmap.back)
         headerBuilder.setTitle(R.string.activity_title_add_new_account)

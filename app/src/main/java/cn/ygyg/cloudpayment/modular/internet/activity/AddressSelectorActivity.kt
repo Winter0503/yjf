@@ -60,12 +60,12 @@ class AddressSelectorActivity :
                     company?.let {
                         if (forResult) {
                             setResult(Activity.RESULT_OK, Intent().apply {
-                                //TODO  NewAccountActivity.onActivityResult
+                                //TODO  NewAccountActivity.onActivityResult 城市 缴费单位传递
                             })
                             finish()
                         } else {
                             toActivity(NewAccountActivity::class.java, Bundle().apply {
-                                //TODO NewAccountActivity.initViews
+                                //TODO NewAccountActivity.initViews 城市 缴费单位传递
                             })
                         }
                     }
