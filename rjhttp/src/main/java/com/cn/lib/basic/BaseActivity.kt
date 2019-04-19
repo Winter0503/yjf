@@ -63,7 +63,7 @@ abstract class BaseActivity : FragmentActivity(), View.OnClickListener, IBaseVie
     /**
      * 初始化数据
      */
-    protected fun initData() {
+    protected open fun initData() {
 
     }
 

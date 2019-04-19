@@ -48,7 +48,11 @@ class AddressSelectorAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         if (position == 0) {
             return TYPE_HEADER
         }
-        return if (position % 5 == 0) TYPE_TITLE else TYPE_CONTENT
+        return if (getItem(position).isRealCity()) TYPE_CONTENT else TYPE_TITLE
+    }
+
+    private fun getItem(position: Int): CityVM {
+        return list[position]
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -69,16 +73,16 @@ class AddressSelectorAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         when (viewType) {
             TYPE_HEADER -> {
                 val location = holder.findViewById<TextView>(R.id.location_city)
-                location.text = cityVM.getCityName()
+                location.text = cityVM.cityShowName()
                 location.setOnClickListener { onItemClickListener?.onLocationClicked(cityVM) }
             }
             TYPE_TITLE -> {
                 val title = holder.findViewById<TextView>(R.id.item_title)
-                title.text = cityVM.getCityName()
+                title.text = cityVM.cityShowName()
             }
             else -> {
                 val address = holder.findViewById<TextView>(R.id.address_name)
-                address.text = cityVM.getCityName()
+                address.text = cityVM.cityShowName()
                 address.setOnClickListener { onItemClickListener?.onItemClicked(holder, position - 1) }
             }
         }
