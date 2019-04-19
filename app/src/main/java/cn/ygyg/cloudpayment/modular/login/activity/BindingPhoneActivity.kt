@@ -4,15 +4,17 @@ import android.annotation.SuppressLint
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.modular.login.contract.BindingPhoneContract
 import cn.ygyg.cloudpayment.modular.login.presenter.BindingPhonePresenter
-import cn.ygyg.cloudpayment.utils.ResourceUtil
+import com.cn.lib.util.ResourceUtil
 import com.cn.lib.basic.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_binding_phone.*
 
 
-class BindingPhoneActivity: BaseMvpActivity<BindingPhoneContract.Presenter, BindingPhoneContract.View>(),BindingPhoneContract.View {
+class BindingPhoneActivity : BaseMvpActivity<BindingPhoneContract.Presenter, BindingPhoneContract.View>(), BindingPhoneContract.View {
+
+
     override fun changeConfirmBtnState(state: Boolean) {
         btn_binding_confirm.isEnabled = state
-        btn_binding_confirm.setBackgroundResource(if(state)R.mipmap.btn_full_press else R.mipmap.btn_full_normal)
+        btn_binding_confirm.setBackgroundResource(if (state) R.mipmap.btn_full_press else R.mipmap.btn_full_normal)
     }
 
     override fun changeCodeBtnState(state: Boolean) {
@@ -36,14 +38,14 @@ class BindingPhoneActivity: BaseMvpActivity<BindingPhoneContract.Presenter, Bind
         btn_back.setOnClickListener {
             finish()
         }
-        btn_binding_code.setOnClickListener { //获取验证码
+        btn_binding_code.setOnClickListener {
+            //获取验证码
             mPresenter?.getVerificationCode(edit_binding_phone.text.toString())
         }
         btn_binding_confirm.setOnClickListener {
             edit_binding_phone.text.toString()
             edit_binding_code.text.toString()
         }
-
     }
 
     @SuppressLint("SetTextI18n")

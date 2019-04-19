@@ -59,7 +59,7 @@
                 android:hint="@string/verification_code"
                 android:inputType="number"
                 android:maxLines="1"
-                android:maxLength="4"
+                android:maxLength="6"
                 android:paddingBottom="13dp"
                 android:paddingTop="13dp"
                 android:textColor="@color/text_color"

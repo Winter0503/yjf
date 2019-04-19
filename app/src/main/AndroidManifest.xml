@@ -41,8 +41,8 @@
 
         <activity android:name=".modular.internet.activity.NewAccountActivity" />
         <activity android:name=".modular.register.activity.UserAgreementActivity" />
-        <!--<activity android:name=".modular.register.activity.RegisterActivity" />-->
-        <activity android:name=".modular.register.activity.RegisterActivity">
+        <activity android:name=".modular.register.activity.RegisterActivity" />
+        <activity android:name=".modular.login.activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -52,12 +52,20 @@
         <activity android:name=".modular.internet.activity.NewAccountSuccessActivity" />
         <activity android:name=".modular.password.activity.ResetPasswordActivity" />
         <activity android:name=".modular.login.activity.BindingPhoneActivity" />
-        <activity android:name=".modular.login.activity.LoginActivity" />
         <activity android:name=".modular.internet.activity.ListSelectActivity" />
         <activity android:name=".modular.internet.activity.AddressSelectorActivity" />
         <activity android:name=".modular.payments.activity.PaymentsActivity" />
         <activity android:name=".modular.payments.activity.PaymentsHistoryActivity" />
         <activity android:name=".modular.payments.activity.PaymentsCompleteActivity" />
+        <activity android:name=".modular.home.activity.MainTabActivity"
+            android:launchMode="singleTask"/>
+        <!--微信-->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <service android:name="com.amap.api.location.APSService" />
     </application>

@@ -3,7 +3,7 @@ package cn.ygyg.cloudpayment.modular.home.activity
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.modular.home.fragment.HomeFragment
 import cn.ygyg.cloudpayment.modular.my.fragment.MyFragment
-import cn.ygyg.cloudpayment.utils.ResourceUtil
+import com.cn.lib.util.ResourceUtil
 import com.cn.lib.basic.BaseIndicatorActivity
 import com.cn.lib.weight.indicator.TabInfo
 import java.util.*

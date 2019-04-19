@@ -5,4 +5,9 @@ object Constants {
     object IntentKey {
         const val IS_SUCCESS = "isSuccess"
     }
+
+    object WX {
+        val WEIXIN_APP_ID: String =""
+
+    }
 }

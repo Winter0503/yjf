@@ -14,6 +14,9 @@ class BindingPhoneContract {
 
     interface Presenter:IBasePresenter<View>{
         fun getPhoneInputFilter(): InputFilter?
+        /**
+         * 获取验证码
+         */
         fun getVerificationCode(phone: String)
         fun getCodeTextChangeListener(): TextWatcher
     }

@@ -7,13 +7,26 @@ object UrlConstants {
     /**
      * 验证手机
      */
-    const val valPhone ="chaoscloud-customerapi/customerapi/user/valPhone"
+    const val valPhone = "chaoscloud-customerapi/customerapi/user/valPhone"
     /**
      * 获取验证码
      */
-    const val captcha ="chaoscloud-customerapi/customerapi/user/captcha"
+    const val captcha = "chaoscloud-customerapi/customerapi/user/captcha"
     /**
      * 注册
      */
-    const val register ="chaoscloud-customerapi/customerapi/user/register"
+    const val register = "chaoscloud-customerapi/customerapi/user/register"
+    /**
+     * 账号密码登录
+     */
+    const val login = "chaoscloud-customerapi/customerapi/user/login"
+    /**
+     * 验证码登录
+     */
+    const val captchalogin = "chaoscloud-customerapi/customerapi/user/captchalogin"
+    /**
+     * 修改密码
+     */
+    const val modifyPassword = "chaoscloud-customerapi/customerapi/user/modifyPassword"
+
 }

@@ -126,7 +126,9 @@ object ToastUtil {
         }?:also {
             toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT)
             toast?.let {
-                val view = it.view
+                val view = it.view as LinearLayout
+                val childAt = view.getChildAt(0) as TextView
+                childAt.setTextColor(ResourceUtil.getColor(context, android.R.color.white))
                 //设置背景颜色
                 view.setBackgroundResource(R.drawable.shape_stroke_black)
                 val padding = DensityUtil.dip2px(context, 10f)
@@ -200,7 +202,7 @@ object ToastUtil {
             toastView.background.alpha = 150
             //获得文本View
             val childAt = toastView.getChildAt(0) as TextView
-            childAt.setTextColor(context.resources.getColor(android.R.color.white))
+            childAt.setTextColor(ResourceUtil.getColor(context,android.R.color.white))
             //获得顶部的间距
             val paddingMid = DensityUtil.dip2px(context, 10f)
             //根据屏幕计算左右padding
@@ -213,7 +215,7 @@ object ToastUtil {
             params.topMargin = padding
             childAt.layoutParams = params
             childAt.gravity = Gravity.CENTER
-            childAt.setCompoundDrawablesWithIntrinsicBounds(null, context.resources.getDrawable(imageResourceId), null, null)
+            childAt.setCompoundDrawablesWithIntrinsicBounds(null, ResourceUtil.getDrawable(context,imageResourceId), null, null)
             childAt.compoundDrawablePadding = paddingMid
             toast.show()
             return toast

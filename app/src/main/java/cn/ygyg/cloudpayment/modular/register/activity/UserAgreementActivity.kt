@@ -3,9 +3,8 @@ package cn.ygyg.cloudpayment.modular.register.activity
 import android.content.Context
 import android.view.View
 import cn.ygyg.cloudpayment.R
-import cn.ygyg.cloudpayment.utils.ResourceUtil
+import com.cn.lib.util.ResourceUtil
 import com.cn.lib.basic.BaseActivity
-import kotlinx.android.synthetic.main.activity_user_agreement.*
 import kotlinx.android.synthetic.main.include_activity_header.*
 import java.io.BufferedReader
 import java.io.IOException

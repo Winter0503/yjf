@@ -21,3 +21,5 @@ key password：       alias-1qaz2wsx
          SHA256: EC:6A:07:EE:B9:70:83:C5:8D:E3:9D:24:C4:D1:30:96:C5:D2:BD:E4:EE:15:8D:C9:3C:47:AC:43:D7:1B:97:AC
          签名算法名称: SHA256withRSA
          版本: 3
+
+微信签名：69b5117d330d466b71305669957ff476

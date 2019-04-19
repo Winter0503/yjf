@@ -1,4 +1,4 @@
-package cn.ygyg.cloudpayment.utils
+package com.cn.lib.util
 
 import android.content.Context
 import android.graphics.drawable.Drawable

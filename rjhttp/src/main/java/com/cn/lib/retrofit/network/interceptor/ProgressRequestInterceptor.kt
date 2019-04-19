@@ -15,14 +15,6 @@ import okhttp3.Response
 
 class ProgressRequestInterceptor(private var tag: Any?, private var progressListener: ResultProgressCallback<*>?) : Interceptor {
 
-    fun setProgressListener(progressListener: ResultProgressCallback<*>) {
-        this.progressListener = progressListener
-    }
-
-    fun setTag(tag: Any) {
-        this.tag = tag
-    }
-
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val original = chain.request()

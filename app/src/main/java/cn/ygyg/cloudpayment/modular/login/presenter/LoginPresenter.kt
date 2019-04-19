@@ -3,9 +3,15 @@ package cn.ygyg.cloudpayment.modular.login.presenter
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import cn.ygyg.cloudpayment.api.RequestManager
+import cn.ygyg.cloudpayment.api.UrlConstants
 import cn.ygyg.cloudpayment.modular.login.contract.LoginContract
+import cn.ygyg.cloudpayment.utils.ProgressUtil
 import cn.ygyg.cloudpayment.utils.StringUtil
 import com.cn.lib.basic.BasePresenterImpl
+import com.cn.lib.retrofit.network.callback.ResultCallback
+import com.cn.lib.retrofit.network.exception.ApiThrowable
+import com.loc.m
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -18,6 +24,7 @@ import java.util.concurrent.TimeUnit
  * Created by Admin on 2019/4/13.
  */
 class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract.View>(view), LoginContract.Presenter {
+
 
     private var isLegalPassword: Boolean = false
     private var isLegalPhone: Boolean = false
@@ -103,7 +110,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
         return InputFilter { source, start, end, dest, dstart, dend ->
             if (dstart == dend && !source.isEmpty()) { //当两者相等说明是输入
                 val count = end + dstart
-                if (count == 4) {
+                if (count == 6) {
                     isLegalCode = true
                     checkAllInput()
                     return@InputFilter null
@@ -119,7 +126,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
     override fun getCodeTextChangeListener(): TextWatcher {
         return object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                isLegalCode = s.length == 4
+                isLegalCode = s.length == 6
                 checkAllInput()
             }
 
@@ -160,6 +167,78 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
     }
 
     override fun getVerificationCode(phone: String) {
-        startCountDown()
+        val param = requestParams
+        param["phone "] = phone
+        RequestManager.post(UrlConstants.captcha)
+                .jsonObj(param)
+                .execute("login", object : ResultCallback<String>() {
+                    override fun onStart(tag: Any?) {
+                        mvpView?.getViewContext()?.let {
+                            ProgressUtil.showProgressDialog(it, "获取验证码中...")
+                        }
+                    }
+
+                    override fun onCompleted(tag: Any?) {
+                        ProgressUtil.dismissProgressDialog()
+                    }
+
+                    override fun onError(tag: Any?, e: ApiThrowable) {
+                        e.message?.let {
+                            mvpView?.showToast(it)
+                        }
+                    }
+
+                    override fun onSuccess(tag: Any?, t: String) {
+                        //获取验证码成功开始倒计时
+                        startCountDown()
+                    }
+                })
+    }
+
+    override fun login(loginType: Int, username: String, password: String) {
+        if (loginType == 0) { //密码登录
+            val reg = "^(?![a-zA-Z]+\$)(?!\\d+\$)\\S{6,}\$"
+            if (!StringUtil.match(reg, password)) {
+                mvpView?.showToast("密码必须包含数字和字母")
+                return
+            }
+            RequestManager.post(UrlConstants.login)
+                    .param("password",password)
+                    .param("username",username)
+                    .execute("passwordLogin", getLoginCallback())
+
+        } else { //验证码登录
+            val param = requestParams
+            param["captcha"] = password
+            param["username"] = username
+            RequestManager.post(UrlConstants.captchalogin)
+                    .jsonObj(param)
+                    .execute("captchaLogin", getLoginCallback())
+        }
+    }
+
+    private fun getLoginCallback(): ResultCallback<String> {
+        return object : ResultCallback<String>() {
+            override fun onStart(tag: Any?) {
+                mvpView?.getViewContext()?.let {
+                    ProgressUtil.showProgressDialog(it, "登录中...")
+                }
+            }
+
+            override fun onCompleted(tag: Any?) {
+                ProgressUtil.dismissProgressDialog()
+            }
+
+            override fun onError(tag: Any?, e: ApiThrowable) {
+                e.message?.let {
+                    mvpView?.showToast(it)
+                }
+            }
+
+            override fun onSuccess(tag: Any?, t: String) {
+                mvpView?.loginSuccess()
+            }
+
+        }
     }
 }

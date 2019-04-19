@@ -4,16 +4,24 @@ import android.annotation.SuppressLint
 import android.text.InputType
 import android.view.inputmethod.EditorInfo
 import cn.ygyg.cloudpayment.R
+import cn.ygyg.cloudpayment.modular.login.activity.LoginActivity
 import cn.ygyg.cloudpayment.modular.password.contract.ResetPasswordContract
 import cn.ygyg.cloudpayment.modular.password.presenter.ResetPasswordPresenter
-import cn.ygyg.cloudpayment.utils.ResourceUtil
+import com.cn.lib.util.ResourceUtil
 import com.cn.lib.basic.BaseMvpActivity
+import com.cn.lib.util.ActivityListUtil
 import kotlinx.android.synthetic.main.activity_reset_password.*
 
-class ResetPasswordActivity: BaseMvpActivity<ResetPasswordContract.Presenter, ResetPasswordContract.View>(),ResetPasswordContract.View {
+class ResetPasswordActivity : BaseMvpActivity<ResetPasswordContract.Presenter, ResetPasswordContract.View>(), ResetPasswordContract.View {
+    override fun modifyPasswordSuccess() {
+        showToast("修改密码成功，请使用新密码登录")
+        ActivityListUtil.INSTANCE.finishAllActivity(true)
+        toActivity(LoginActivity::class.java)
+    }
+
     override fun changeConfirmBtnState(state: Boolean) {
         btn_confirm.isEnabled = state
-        btn_confirm.setBackgroundResource(if(state)R.mipmap.btn_full_press else R.mipmap.btn_full_normal)
+        btn_confirm.setBackgroundResource(if (state) R.mipmap.btn_full_press else R.mipmap.btn_full_normal)
     }
 
     override fun changeCodeBtnState(state: Boolean) {
@@ -47,13 +55,15 @@ class ResetPasswordActivity: BaseMvpActivity<ResetPasswordContract.Presenter, Re
                 btn_pwd.setImageResource(R.mipmap.pwd_close)
             }
         }
-        btn_reset_code.setOnClickListener { //获取验证码
+        btn_reset_code.setOnClickListener {
+            //获取验证码
             mPresenter?.getVerificationCode(edit_reset_phone.text.toString())
         }
         btn_confirm.setOnClickListener {
-            edit_reset_phone.text.toString()
-            edit_reset_code.text.toString()
-            edit_reset_pwd.text.toString()
+            val phone = edit_reset_phone.text.toString()
+            val code = edit_reset_code.text.toString()
+            val password = edit_reset_pwd.text.toString()
+            mPresenter?.modifyPassword(code, phone, password)
         }
 
     }

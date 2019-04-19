@@ -3,9 +3,16 @@ package cn.ygyg.cloudpayment.modular.login.presenter
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
+import cn.ygyg.cloudpayment.api.RequestManager
+import cn.ygyg.cloudpayment.api.UrlConstants
 import cn.ygyg.cloudpayment.modular.login.contract.BindingPhoneContract
+import cn.ygyg.cloudpayment.utils.ProgressUtil
 import cn.ygyg.cloudpayment.utils.StringUtil
 import com.cn.lib.basic.BasePresenterImpl
+import com.cn.lib.retrofit.network.callback.ResultCallback
+import com.cn.lib.retrofit.network.exception.ApiThrowable
+import com.cn.lib.retrofit.network.subscriber.ResultCallbackSubscriber
+import com.loc.m
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -59,7 +66,7 @@ class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl
     override fun getCodeTextChangeListener(): TextWatcher {
         return object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                isLegalCode = s.length == 4
+                isLegalCode = s.length == 6
                 checkAllInput()
             }
 
@@ -79,7 +86,38 @@ class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl
     }
 
     override fun getVerificationCode(phone: String) {
-        startCountDown()
+        RequestManager.post(UrlConstants.valPhone)
+                .param("phone", phone)
+                .execute(String::class.java)
+                .flatMap {
+                    RequestManager.post(UrlConstants.captcha)
+                            .param("phone", phone)
+                            .execute(String::class.java)
+                }
+                .subscribeWith(ResultCallbackSubscriber("register", object : ResultCallback<String>() {
+                    override fun onStart(tag: Any?) {
+                        mvpView?.let {
+                            ProgressUtil.showProgressDialog(it.getViewContext(), "获取验证码中...")
+                        }
+                    }
+
+                    override fun onCompleted(tag: Any?) {
+                        mvpView?.let {
+                            ProgressUtil.dismissProgressDialog()
+                        }
+                    }
+
+                    override fun onError(tag: Any?, e: ApiThrowable) {
+                        e.message?.let {
+                            mvpView?.showToast(it)
+                        }
+                    }
+
+                    override fun onSuccess(tag: Any?, t: String) {
+                        //获取验证码成功开始倒计时
+                        startCountDown()
+                    }
+                }))
     }
 
     /**
@@ -113,4 +151,6 @@ class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl
                     }
                 })
     }
+
+
 }

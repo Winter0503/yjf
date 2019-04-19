@@ -6,7 +6,7 @@ import android.view.inputmethod.EditorInfo
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.modular.register.contract.RegisterContract
 import cn.ygyg.cloudpayment.modular.register.presenter.RegisterPresenter
-import cn.ygyg.cloudpayment.utils.ResourceUtil
+import com.cn.lib.util.ResourceUtil
 import com.cn.lib.basic.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_register.*
 
@@ -63,7 +63,7 @@ class RegisterActivity : BaseMvpActivity<RegisterContract.Presenter, RegisterCon
 
     override fun changeRegisterBtnState(state: Boolean) {
         btn_register.isEnabled = state
-        btn_register.setBackgroundResource(if(state)R.mipmap.btn_full_press else R.mipmap.btn_full_normal)
+        btn_register.setBackgroundResource(if (state) R.mipmap.btn_full_press else R.mipmap.btn_full_normal)
     }
 
     @SuppressLint("SetTextI18n")
@@ -72,12 +72,13 @@ class RegisterActivity : BaseMvpActivity<RegisterContract.Presenter, RegisterCon
     }
 
     override fun changeCodeBtnState(state: Boolean) {
-        if (state)  btn_code.text = "获取验证码"
+        if (state) btn_code.text = "获取验证码"
         btn_code.isEnabled = state
         btn_code.setTextColor(ResourceUtil.getColor(getViewContext(), if (state) R.color.text_green_color else R.color.text_gray_color))
     }
 
     override fun registerSuccess() {
+        showToast("注册成功")
         this.finish()
     }
 

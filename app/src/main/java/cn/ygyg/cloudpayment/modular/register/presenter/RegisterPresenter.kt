@@ -110,7 +110,7 @@ class RegisterPresenter(view: RegisterContract.View) : RegisterContract.Presente
     override fun getCodeTextChangeListener(): TextWatcher {
         return object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                isLegalCode = s.length == 4
+                isLegalCode = s.length == 6
                 checkAllInput()
             }
 
@@ -147,65 +147,35 @@ class RegisterPresenter(view: RegisterContract.View) : RegisterContract.Presente
 
 
     override fun checkPhone(phone: String) {
-        val jsonObj = JSONObject()
-        jsonObj.put("phone ", phone)
-//        RequestManager.post(UrlConstants.valPhone)
-//                .jsonObj(jsonObj)
-//                .execute(String::class.java)
-//                .flatMap {
-//                    RequestManager.post(UrlConstants.captcha)
-//                            .jsonObj(jsonObj)
-//                            .execute(String::class.java)
-//                }
-//                .subscribeWith(ResultCallbackSubscriber("register", object : ResultCallback<String>() {
-//                    override fun onStart(tag: Any?) {
-//                        mvpView?.let {
-//                            ProgressUtil.showProgressDialog(it.getViewContext(), "发送验证码中...")
-//                        }
-//                    }
-//
-//                    override fun onCompleted(tag: Any?) {
-//                        mvpView?.let {
-//                            ProgressUtil.dismissProgressDialog()
-//                        }
-//                    }
-//
-//                    override fun onError(tag: Any?, e: ApiThrowable) {
-//                        e.message?.let {
-//                            mvpView?.showToast(it)
-//                        }
-//                    }
-//
-//                    override fun onSuccess(tag: Any?, t: String) {
-//                        mvpView?.checkPhoneSuccess()
-//                    }
-//                }))
-
-        RequestManager.post(UrlConstants.captcha)
-                .jsonObj(jsonObj)
-                .execute(String::class.java).subscribeWith(ResultCallbackSubscriber("register", object : ResultCallback<String>() {
-            override fun onStart(tag: Any?) {
-                mvpView?.let {
-                    ProgressUtil.showProgressDialog(it.getViewContext(), "发送验证码中...")
+        RequestManager.post(UrlConstants.valPhone)
+                .param("phone", phone)
+                .execute(String::class.java)
+                .flatMap {
+                    RequestManager.post(UrlConstants.captcha)
+                            .param("phone", phone)
+                            .execute(String::class.java)
                 }
-            }
+                .subscribeWith(ResultCallbackSubscriber("register", object : ResultCallback<String>() {
+                    override fun onStart(tag: Any?) {
+                        mvpView?.let {
+                            ProgressUtil.showProgressDialog(it.getViewContext(), "发送验证码中...")
+                        }
+                    }
 
-            override fun onCompleted(tag: Any?) {
-                mvpView?.let {
-                    ProgressUtil.dismissProgressDialog()
-                }
-            }
+                    override fun onCompleted(tag: Any?) {
+                        ProgressUtil.dismissProgressDialog()
+                    }
 
-            override fun onError(tag: Any?, e: ApiThrowable) {
-                e.message?.let {
-                    mvpView?.showToast(it)
-                }
-            }
+                    override fun onError(tag: Any?, e: ApiThrowable) {
+                        e.message?.let {
+                            mvpView?.showToast(it)
+                        }
+                    }
 
-            override fun onSuccess(tag: Any?, t: String) {
-                mvpView?.checkPhoneSuccess()
-            }
-        }))
+                    override fun onSuccess(tag: Any?, t: String) {
+                        mvpView?.checkPhoneSuccess()
+                    }
+                }))
     }
 
     override fun submitRegister(phone: String, password: String, code: String) {
@@ -214,12 +184,10 @@ class RegisterPresenter(view: RegisterContract.View) : RegisterContract.Presente
             mvpView?.showToast("密码设置6-20位必须包含数字和字母")
             return
         }
-        val jsonObj = JSONObject()
-        jsonObj.put("username", phone)
-        jsonObj.put("captcha", code)
-        jsonObj.put("password", password)
         RequestManager.post(UrlConstants.register)
-                .jsonObj(jsonObj)
+                .param("username", phone)
+                .param("captcha", code)
+                .param("password", password)
                 .execute("", object : ResultCallback<String>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.let {
