@@ -136,8 +136,8 @@ class SideBarView : View {
             } else {
                 0
             }
-            val textSize = (if (charRect.width() > itemHeight) itemHeight else charRect.width()).toInt()
-            charPaint.textSize = textSize.toFloat()
+            val maxSize = Math.min(itemHeight, charRect.width())
+            charPaint.textSize = Math.min(textSize, maxSize).toFloat()
         }
     }
 

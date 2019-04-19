@@ -39,26 +39,29 @@
             android:name="com.amap.api.v2.apikey"
             android:value="7a8810e4f048e7fca97d7beb1ee6cef4" />
 
-        <activity android:name=".modular.internet.activity.NewAccountActivity" />
-        <activity android:name=".modular.register.activity.UserAgreementActivity" />
-        <activity android:name=".modular.register.activity.RegisterActivity" />
-        <activity android:name=".modular.login.activity.LoginActivity">
+        <activity
+            android:name=".modular.home.activity.MainTabActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".modular.internet.activity.NewAccountSuccessActivity" />
+        <activity android:name=".modular.register.activity.UserAgreementActivity" />
+        <activity android:name=".modular.register.activity.RegisterActivity" />
         <activity android:name=".modular.password.activity.ResetPasswordActivity" />
         <activity android:name=".modular.login.activity.BindingPhoneActivity" />
+        <activity android:name=".modular.login.activity.LoginActivity" />
+        <activity android:name=".modular.internet.activity.NewAccountActivity" />
         <activity android:name=".modular.internet.activity.ListSelectActivity" />
+        <activity
+            android:name=".modular.internet.activity.NewAccountSuccessActivity"
+            android:noHistory="true" />
         <activity android:name=".modular.internet.activity.AddressSelectorActivity" />
         <activity android:name=".modular.payments.activity.PaymentsActivity" />
         <activity android:name=".modular.payments.activity.PaymentsHistoryActivity" />
         <activity android:name=".modular.payments.activity.PaymentsCompleteActivity" />
-        <activity android:name=".modular.home.activity.MainTabActivity"
-            android:launchMode="singleTask"/>
         <!--微信-->
         <activity
             android:name=".wxapi.WXEntryActivity"
@@ -66,7 +69,7 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-
+        <!--高德定位服务-->
         <service android:name="com.amap.api.location.APSService" />
     </application>
 

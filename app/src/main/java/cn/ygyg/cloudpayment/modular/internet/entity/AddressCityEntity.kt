@@ -13,8 +13,16 @@ class AddressCityEntity : CityVM {
         return if (cityName.isNullOrEmpty()) "" else cityName!!
     }
 
+    override fun cityPinyin(): String {
+        return if (cityPinyin.isNullOrEmpty()) "" else cityPinyin!!
+    }
+
     override fun isRealCity(): Boolean {
         return !cityPinyin.isNullOrEmpty()
+    }
+
+    override fun toString(): String {
+        return "AddressCityEntity(cityName=$cityName, cityPinyin=$cityPinyin, cityId=$cityId)"
     }
 
 }
