@@ -323,8 +323,6 @@ class TypesUtil private constructor() {
                         && a.rawType == b.rawType
                         && Arrays.equals(a.actualTypeArguments, b.actualTypeArguments)
 
-                // TODO: save a .clone() call
-
             } else if (a is GenericArrayType) {
                 if (b !is GenericArrayType) {
                     false
@@ -449,11 +447,11 @@ class TypesUtil private constructor() {
      * extend Hashtable<Object, Object>.
      */
             if (context === Properties::class.java) {
-                return arrayOf<Type>(String::class.java, String::class.java) // TODO: test subclasses of Properties!
+                return arrayOf<Type>(String::class.java, String::class.java)
             }
 
             val mapType = getSupertype(context, contextRawType, Map::class.java)
-            // TODO: strip wildcards?
+
             return if (mapType is ParameterizedType) {
                 mapType.actualTypeArguments
             } else arrayOf<Type>(Any::class.java, Any::class.java)

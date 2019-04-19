@@ -1,5 +1,6 @@
 package cn.ygyg.cloudpayment.modular.internet.activity
 
+import android.content.Intent
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -31,7 +32,17 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
         return R.layout.activity_new_account
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        data?.let {
+            //TODO AddressSelectorActivity.companySelectDialog
+        }
+    }
+
     override fun initViews() {
+        bundle?.let {
+            //TODO AddressSelectorActivity.companySelectDialog
+        }
         headerBuilder.setLeftImageRes(R.mipmap.back)
         headerBuilder.setTitle(R.string.activity_title_add_new_account)
     }

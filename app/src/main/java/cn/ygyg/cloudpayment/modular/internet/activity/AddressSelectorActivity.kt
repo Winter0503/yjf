@@ -60,11 +60,12 @@ class AddressSelectorActivity :
                     company?.let {
                         if (forResult) {
                             setResult(Activity.RESULT_OK, Intent().apply {
-
+                                //TODO  NewAccountActivity.onActivityResult
                             })
                             finish()
                         } else {
                             toActivity(NewAccountActivity::class.java, Bundle().apply {
+                                //TODO NewAccountActivity.initViews
                             })
                         }
                     }
