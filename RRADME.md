@@ -1,8 +1,7 @@
 秘钥
-
-秘钥密码：android*1qaz2wsx
-别名：cloudpayment
-别名密码：alias-1qaz2wsx
+key store password： android*1qaz2wsx
+alias：              cloudpayment
+key password：       alias-1qaz2wsx
 
 密钥库类型: JKS
 密钥库提供方: SUN
