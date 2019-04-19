@@ -21,8 +21,8 @@ object ResultConfigLoader {
     /**
      * 获取自定义失败对应的说明信息
      */
-    private val errorConfig: HashMap<Int, String>?
-        get() = config!!.errorInfo
+    private val errorConfig: HashMap<String, String>?
+        get() = config?.errorInfo
 
     /**
      * 返回消息对应的键
@@ -30,7 +30,7 @@ object ResultConfigLoader {
     val msgKey: String?
         get() = if (config == null) {
             "msg"
-        } else config!!.msgKey
+        } else config?.msgKey
 
     /**
      * 获取状态码对应的键
@@ -38,19 +38,16 @@ object ResultConfigLoader {
     val codeKey: String?
         get() = if (config == null) {
             "code"
-        } else config!!.codeKey
+        } else config?.codeKey
 
     /**
      * 数据对应的键
      */
     val dataKey: List<String>?
         get() {
-            if (config == null) {
-                val dataKeyList = ArrayList<String>()
-                dataKeyList.add("data")
-                return dataKeyList
-            }
-            return config!!.dataKey
+            val dataKeyList = ArrayList<String>()
+            dataKeyList.add("data")
+            return config?.dataKey ?:  dataKeyList
         }
 
     /**
@@ -72,22 +69,22 @@ object ResultConfigLoader {
         config = JSON.parseObject<Config>(jsonStr, Config::class.java)
     }
 
-    fun checkErrorCode(errorCode: Int): Boolean {
-        return errorConfig?.containsKey(errorCode)!!
+    fun checkErrorCode(errorCode: String): Boolean {
+        return errorConfig?.containsKey(errorCode) ?: false
     }
 
-    fun errorDesc(errorCode: Int): String {
+    fun errorDesc(errorCode: String): String {
         if (checkErrorCode(errorCode)) {
-            errorConfig!![errorCode]
+            return errorConfig?.get(errorCode) ?: ""
         }
-        return "未知错误"
+        return ""
     }
 
     /**
      * 判断是否请求成功
      */
-    fun checkSuccess(code: Int): Boolean {
-        return config == null || config!!.successCode!!.contains(code)
+    fun checkSuccess(code: String): Boolean {
+        return config?.successCode?.contains(code) ?: false
     }
 
 
@@ -119,16 +116,15 @@ object ResultConfigLoader {
 
             }
         }
-
         return ""
     }
 
-    class Config :Serializable{
-        var successCode: List<Int>? = null
-        var codeKey: String? = null
-        var dataKey: List<String>? = null
-        var msgKey: String? = null
-        var errorInfo: HashMap<Int, String>? = null
+    class Config : Serializable {
+        var successCode: MutableList<String> = mutableListOf()
+        var codeKey: String = ""
+        var dataKey: MutableList<String> = mutableListOf()
+        var msgKey: String = ""
+        var errorInfo: HashMap<String, String> = hashMapOf()
     }
 
 }

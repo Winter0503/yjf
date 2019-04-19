@@ -41,7 +41,7 @@ class RetryExceptionFunc : Function<Observable<out Throwable>, Observable<*>> {
         return observable.zipWith(Observable.range(1, count + 1), BiFunction<Throwable, Int, Wrapper> { throwable, integer -> Wrapper(throwable, integer) }).flatMap { wrapper ->
             if (wrapper.index > 1)
                 LogUtil.i("重试次数：" + wrapper.index)
-            var errCode = 0
+            var errCode = ""
             val throwable = wrapper.throwable
             if (throwable is ApiThrowable) {
                 errCode = throwable.code

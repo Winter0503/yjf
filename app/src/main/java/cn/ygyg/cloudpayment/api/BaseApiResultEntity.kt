@@ -7,7 +7,7 @@ import com.cn.lib.retrofit.network.entity.ApiResultEntity
  */
 class BaseApiResultEntity<T> : ApiResultEntity<T>() {
 
-    override var code: Int = -1
+    override var code: String = "-1"
         get() = retCode
     override var data: T? = null
         get() = result
@@ -17,7 +17,7 @@ class BaseApiResultEntity<T> : ApiResultEntity<T>() {
     override val isOk: Boolean
         get() = super.isOk
 
-    var retCode: Int = -1
+    var retCode: String = "-1"
     var retMsg: String = ""
     var result: T? = null
 }

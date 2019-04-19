@@ -1,5 +1,7 @@
-package com.cn.lib.retrofit.network.callback
+package com.cn.lib.retrofit.network.proxy
 
+import com.cn.lib.retrofit.network.callback.IResultType
+import com.cn.lib.retrofit.network.callback.ResultCallback
 import com.cn.lib.retrofit.network.entity.ApiResultEntity
 import com.cn.lib.retrofit.network.util.Util
 import com.retrofit.network.util.TypesUtil
@@ -41,7 +43,7 @@ abstract class ResultCallbackProxy<T : ApiResultEntity<R>, R>(mCallback: ResultC
             rawType = rawType.rawType
         }
 
-        return TypesUtil.newParameterizedTypeWithOwner(rawType = rawType, typeArguments = *arrayOf(typeArguments))
+        return TypesUtil.newParameterizedTypeWithOwner(null, rawType = rawType, typeArguments = *arrayOf(typeArguments))
     }
 
     init {

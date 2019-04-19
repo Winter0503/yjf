@@ -26,7 +26,7 @@ abstract class ResponseClazzCallback<D> : IResponseCallback<String> {
         throw ServerException(code, msg)
     }
 
-    internal abstract fun checkSuccess(code: Int): Boolean
+    internal abstract fun checkSuccess(code: String): Boolean
     /**
      * 请求开始
      */
@@ -45,11 +45,11 @@ abstract class ResponseClazzCallback<D> : IResponseCallback<String> {
 
     abstract fun onSuccess(tag: Any?, result: D?)
 
-    private fun getCode(jsonObject: JSONObject): Int {
+    private fun getCode(jsonObject: JSONObject): String {
         val codeKey = ResultConfigLoader.codeKey
-        var code = -1
+        var code = "-1"
         if (jsonObject.containsKey(codeKey)) {
-            code = jsonObject.getIntValue(codeKey)
+            code = jsonObject.getString(codeKey)
         }
         return code
     }

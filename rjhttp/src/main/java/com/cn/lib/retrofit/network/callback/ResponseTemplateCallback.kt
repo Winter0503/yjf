@@ -39,7 +39,7 @@ abstract class ResponseTemplateCallback<T> protected constructor() : ResponseCal
         val code = getCode(jsonObject)
         val msg = getMessage(jsonObject)
         val dataStr = getDataStr(jsonObject)
-        val isSuccess = checkSuccessCode(Integer.valueOf(code), msg)
+        val isSuccess = checkSuccessCode(code, msg)
         if (isSuccess) {
             dataStr?.let { jsonStr ->
                 val genType = javaClass.genericSuperclass
@@ -67,18 +67,18 @@ abstract class ResponseTemplateCallback<T> protected constructor() : ResponseCal
             }
             return null
         }
-        throw ServerException(Integer.valueOf(code), msg)
+        throw ServerException(code, msg)
     }
 
-    open fun checkSuccessCode(code: Int, msg: String): Boolean {
+    open fun checkSuccessCode(code: String, msg: String): Boolean {
         return ResultConfigLoader.checkSuccess(code = code)
     }
 
-    private fun getCode(jsonObject: JSONObject): Int {
+    private fun getCode(jsonObject: JSONObject): String {
         val codeKey = ResultConfigLoader.codeKey
-        var code = -1
+        var code = "-1"
         if (jsonObject.containsKey(codeKey)) {
-            code = jsonObject.getIntValue(codeKey)
+            code = jsonObject.getString(codeKey)
         }
         return code
     }

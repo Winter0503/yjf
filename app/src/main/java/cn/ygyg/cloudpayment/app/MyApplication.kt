@@ -1,8 +1,8 @@
 package cn.ygyg.cloudpayment.app
 
+import android.annotation.SuppressLint
 import android.app.Application
 import com.alibaba.fastjson.support.retrofit.Retrofit2ConverterFactory
-import cn.ygyg.cloudpayment.utils.LogUtil
 import com.cn.lib.retrofit.network.RxHttp
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 
@@ -11,17 +11,16 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
  */
 class MyApplication : Application() {
     companion object {
-        private lateinit var application: Application
-
+        @SuppressLint("StaticFieldLeak")
+        private lateinit var mApp: Application
         fun getApplication(): Application {
-            return application
+            return mApp
         }
     }
-class MyApplication: Application() {
 
     override fun onCreate() {
         super.onCreate()
-        application = this
+        mApp = this
         RxHttp.INSTANCE
                 .init(context = baseContext)
                 .baseUrl("http://10.38.64.79:8088")
@@ -36,4 +35,6 @@ class MyApplication: Application() {
                 .converterFactory(Retrofit2ConverterFactory())
 
     }
+
+
 }

@@ -15,7 +15,7 @@ import com.cn.lib.retrofit.network.RxHttp
 import com.cn.lib.retrofit.network.callback.DownloadProgressCallBack
 import com.cn.lib.retrofit.network.entity.UploadFileType
 import com.cn.lib.retrofit.network.callback.ResponseTemplateCallback
-import com.cn.lib.retrofit.network.callback.ResultCallbackProxy
+import com.cn.lib.retrofit.network.proxy.ResultCallbackProxy
 import com.cn.lib.retrofit.network.callback.ResultProgressCallback
 import com.cn.lib.retrofit.network.config.ResultConfigLoader
 import com.cn.lib.retrofit.network.exception.ApiThrowable
@@ -90,8 +90,8 @@ class MainActivity : AppCompatActivity() {
                         LogUtil.e("MainActivity", "result=$result")
                     }
 
-                    override fun checkSuccessCode(code: Int, msg: String): Boolean {
-                        return code == 0
+                    override fun checkSuccessCode(code: String, msg: String): Boolean {
+                        return code == "0"
                     }
 
                     override fun onStart(tag: Any?) {

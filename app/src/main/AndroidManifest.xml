@@ -41,8 +41,8 @@
 
         <activity android:name=".modular.internet.activity.NewAccountActivity" />
         <activity android:name=".modular.register.activity.UserAgreementActivity" />
-        <activity android:name=".modular.register.activity.RegisterActivity" />
-        <activity android:name=".modular.home.activity.MainTabActivity">
+        <!--<activity android:name=".modular.register.activity.RegisterActivity" />-->
+        <activity android:name=".modular.register.activity.RegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

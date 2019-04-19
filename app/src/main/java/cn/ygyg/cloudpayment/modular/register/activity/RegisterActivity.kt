@@ -77,4 +77,8 @@ class RegisterActivity : BaseMvpActivity<RegisterContract.Presenter, RegisterCon
         btn_code.setTextColor(ResourceUtil.getColor(getViewContext(), if (state) R.color.text_green_color else R.color.text_gray_color))
     }
 
+    override fun registerSuccess() {
+        this.finish()
+    }
+
 }

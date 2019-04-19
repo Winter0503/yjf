@@ -2,8 +2,8 @@ package cn.ygyg.cloudpayment.api.request
 
 import cn.ygyg.cloudpayment.api.BaseApiResultEntity
 import com.cn.lib.retrofit.network.callback.ResultCallback
-import com.cn.lib.retrofit.network.callback.ResultCallbackProxy
-import com.cn.lib.retrofit.network.callback.ResultClazzCallProxy
+import com.cn.lib.retrofit.network.proxy.ResultCallbackProxy
+import com.cn.lib.retrofit.network.proxy.ResultClazzCallProxy
 import com.cn.lib.retrofit.network.request.ApiResultGetRequest
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable

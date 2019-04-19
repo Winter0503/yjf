@@ -1,8 +1,8 @@
 package com.cn.lib.retrofit.network.request
 
 import com.cn.lib.retrofit.network.callback.ResultCallback
-import com.cn.lib.retrofit.network.callback.ResultCallbackProxy
-import com.cn.lib.retrofit.network.callback.ResultClazzCallProxy
+import com.cn.lib.retrofit.network.proxy.ResultCallbackProxy
+import com.cn.lib.retrofit.network.proxy.ResultClazzCallProxy
 import com.cn.lib.retrofit.network.entity.ApiResultEntity
 import com.cn.lib.retrofit.network.func.ApiResultFunc
 import com.cn.lib.retrofit.network.func.RetryExceptionFunc
@@ -27,7 +27,7 @@ open class ApiResultPostRequest(url: String) : HttpBodyRequest<ApiResultPostRequ
 
     open fun <T> execute(proxy: ResultClazzCallProxy<out ApiResultEntity<T>, T>): Observable<T> {
         return build().generateRequest()
-                .map(ApiResultFunc<T>(proxy.type))
+                .map(ApiResultFunc<T>(proxy.getType()))
                 .compose<T>(if (isSyncRequest) RxUtil._io_main_result() else RxUtil._main_result())
                 .retryWhen(RetryExceptionFunc(mRetryCount, mRetryDelay.toLong(), mRetryIncreaseDelay.toLong()))
     }

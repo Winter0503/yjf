@@ -9,7 +9,7 @@ import android.widget.TextView
 
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.utils.BaseViewHolder
-import cn.ygyg.cloudpayment.utils.LogUtil
+import com.cn.lib.retrofit.network.util.LogUtil
 
 class CompanySelectorAdapter : RecyclerView.Adapter<BaseViewHolder>() {
     private val list: ArrayList<String> by lazy { ArrayList<String>() }

@@ -29,58 +29,58 @@ class ExceptionFactory {
         /**
          * 未知错误
          */
-        val UNKNOWN = 1000
+        val UNKNOWN = "1000"
         /**
          * 解析错误
          */
-        val PARSE_ERROR = 1001
+        val PARSE_ERROR = "1001"
         /**
          * 网络错误
          */
-        val NETWORD_ERROR = 1002
+        val NETWORD_ERROR = "1002"
         /**
          * 协议出错
          */
-        val HTTP_ERROR = 1003
+        val HTTP_ERROR = "1003"
 
         /**
          * 证书出错
          */
-        val SSL_ERROR = 1005
+        val SSL_ERROR = "1005"
 
         /**
          * 连接超时
          */
-        val TIMEOUT_ERROR = 1006
+        val TIMEOUT_ERROR = "1006"
 
         /**
          * 证书未找到
          */
-        val SSL_NOT_FOUND = 1007
+        val SSL_NOT_FOUND = "1007"
 
         /**
          * 出现空值
          */
-        val NULL = -100
+        val NULL = "-100"
 
         /**
          * 格式错误
          */
-        val FORMAT_ERROR = 1008
+        val FORMAT_ERROR = "1008"
     }
 
     companion object {
 
-        private val UNAUTHORIZED = 401
-        private val FORBIDDEN = 403
-        private val NOT_FOUND = 404
-        private val REQUEST_TIMEOUT = 408
-        private val INTERNAL_SERVER_ERROR = 500
-        private val BAD_GATEWAY = 502
-        private val SERVICE_UNAVAILABLE = 503
-        private val GATEWAY_TIMEOUT = 504
-        private val ACCESS_DENIED = 302
-        private val HANDEL_ERRROR = 417
+        private val UNAUTHORIZED = "401"
+        private val FORBIDDEN = "403"
+        private val NOT_FOUND = "404"
+        private val REQUEST_TIMEOUT = "408"
+        private val INTERNAL_SERVER_ERROR = "500"
+        private val BAD_GATEWAY = "502"
+        private val SERVICE_UNAVAILABLE = "503"
+        private val GATEWAY_TIMEOUT = "504"
+        private val ACCESS_DENIED = "302"
+        private val HANDEL_ERRROR = "417"
 
         fun handleException(e: Throwable): ApiThrowable {
             var detail = ""
@@ -93,7 +93,7 @@ class ExceptionFactory {
                 ex = e
                 return ex
             } else if (e !is ServerException && e is HttpException) {
-                ex = ApiThrowable(e, e.code())
+                ex = ApiThrowable(e, e.code().toString())
                 when (ex.code) {
                     UNAUTHORIZED -> ex.message = "未授权的请求"
                     FORBIDDEN -> ex.message = "禁止访问"

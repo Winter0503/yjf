@@ -7,9 +7,11 @@ import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.login.contract.LoginContract
 import cn.ygyg.cloudpayment.modular.login.presenter.LoginPresenter
 import cn.ygyg.cloudpayment.modular.password.activity.ResetPasswordActivity
+import cn.ygyg.cloudpayment.modular.register.activity.RegisterActivity
 import cn.ygyg.cloudpayment.utils.ResourceUtil
 import com.cn.lib.basic.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_login.*
+import kotlinx.android.synthetic.main.include_activity_header.*
 
 /**
  * 登录
@@ -17,21 +19,6 @@ import kotlinx.android.synthetic.main.activity_login.*
  */
 class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.View>(), LoginContract.View {
     private var loginType: Int = 0
-
-    override fun changeLoginBtnState(state: Boolean) {
-        btn_login.isEnabled = state
-        btn_login.setBackgroundResource(if (state) R.mipmap.btn_full_press else R.mipmap.btn_full_normal)
-    }
-
-    override fun changeCodeBtnState(state: Boolean) {
-        btn_login_code.text = "获取验证码"
-        btn_login_code.isEnabled = state
-        btn_login_code.setTextColor(ResourceUtil.getColor(getViewContext(), if (state) R.color.text_green_color else R.color.text_gray_color))
-    }
-
-    override fun changeCodeBtnText(aLong: Long) {
-        btn_login_code.text = "${aLong}秒后重发"
-    }
 
     override fun getContentViewResId(): Int = R.layout.activity_login
 
@@ -43,6 +30,8 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
         super.initViews()
         edit_login_code.addTextChangedListener(mPresenter?.getPasswordTextChangeListener())
         edit_login_phone.filters = arrayOf(mPresenter?.getPhoneInputFilter())
+        tv_right.text = "注册"
+        tv_right.visibility = View.VISIBLE
     }
 
     override fun initListener() {
@@ -91,6 +80,24 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
             mPresenter?.getVerificationCode(edit_login_phone.text.toString())
         }
 
+        tv_right.setOnClickListener {
+            toActivity(RegisterActivity::class.java)
+        }
+    }
+
+    override fun changeLoginBtnState(state: Boolean) {
+        btn_login.isEnabled = state
+        btn_login.setBackgroundResource(if (state) R.mipmap.btn_full_press else R.mipmap.btn_full_normal)
+    }
+
+    override fun changeCodeBtnState(state: Boolean) {
+        btn_login_code.text = "获取验证码"
+        btn_login_code.isEnabled = state
+        btn_login_code.setTextColor(ResourceUtil.getColor(getViewContext(), if (state) R.color.text_green_color else R.color.text_gray_color))
+    }
+
+    override fun changeCodeBtnText(aLong: Long) {
+        btn_login_code.text = "${aLong}秒后重发"
     }
 
 }

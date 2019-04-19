@@ -1,7 +1,7 @@
 package com.cn.lib.retrofit.network.request
 
 import com.cn.lib.retrofit.network.callback.ResultCallback
-import com.cn.lib.retrofit.network.callback.ResultCallbackProxy
+import com.cn.lib.retrofit.network.proxy.ResultCallbackProxy
 import com.cn.lib.retrofit.network.entity.CommResultEntity
 
 import io.reactivex.disposables.Disposable

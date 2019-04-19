@@ -41,16 +41,10 @@ abstract class BaseSubscriber<T> : DisposableObserver<T> {
             LogUtil.v("RxHttp", "Throwable  || Message == Null")
         }
         if (e is ApiThrowable) {
-            LogUtil.e("RxHttp", "--> e instanceof ApiThrowable")
-            LogUtil.e("RxHttp", "--> " + e.cause.toString())
+            LogUtil.e("RxHttp", "--> e is ApiException err:" + e)
             onError(e)
         } else {
-            LogUtil.e("RxHttp", "e !instanceof Throwable")
-            var detail = ""
-            if (e.cause != null) {
-                detail = e.cause!!.message.toString()
-            }
-            LogUtil.e("RxHttp", "--> $detail")
+            LogUtil.e("RxHttp", "e !is ApiException err:" + e)
             onError(ExceptionFactory.handleException(e))
         }
         onComplete()

@@ -102,11 +102,7 @@ class TypesUtil private constructor() {
     }
 
     private class GenericArrayTypeImpl(componentType: Type) : GenericArrayType, Serializable {
-        private val componentType: Type
-
-        init {
-            this.componentType = canonicalize(componentType)
-        }
+        private val componentType: Type = canonicalize(componentType)
 
         override fun getGenericComponentType(): Type {
             return componentType

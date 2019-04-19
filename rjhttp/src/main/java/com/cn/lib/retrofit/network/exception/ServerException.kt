@@ -1,16 +1,16 @@
 package com.cn.lib.retrofit.network.exception
 
 class ServerException : RuntimeException {
-    var code: Int = 0
+    var code: String = "-999"
     var msg: String? = null
 
     constructor() {}
 
-    constructor(code: Int) {
+    constructor(code: String) {
         this.code = code
     }
 
-    constructor(code: Int, message: String?) : super(message) {
+    constructor(code: String, message: String?) : super(message) {
         this.code = code
         this.msg = message
     }

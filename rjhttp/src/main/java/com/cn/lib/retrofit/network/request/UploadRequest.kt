@@ -4,8 +4,8 @@ import android.text.TextUtils
 
 import com.cn.lib.retrofit.network.entity.UploadFileType
 import com.cn.lib.retrofit.network.callback.ResultCallback
-import com.cn.lib.retrofit.network.callback.ResultCallbackProxy
-import com.cn.lib.retrofit.network.callback.ResultClazzCallProxy
+import com.cn.lib.retrofit.network.proxy.ResultCallbackProxy
+import com.cn.lib.retrofit.network.proxy.ResultClazzCallProxy
 import com.cn.lib.retrofit.network.callback.ResultProgressCallback
 import com.cn.lib.retrofit.network.entity.ApiResultEntity
 import com.cn.lib.retrofit.network.entity.FileEntity
@@ -118,7 +118,7 @@ open class UploadRequest(url: String) : HttpBodyRequest<UploadRequest>(url) {
 
     private fun <T> execute(proxy: ResultClazzCallProxy<out ApiResultEntity<T>, T>, callback: ResultProgressCallback<T>): Observable<T> {
         return addInterceptor(ProgressRequestInterceptor(null, callback)).build().generateRequest()
-                .map(ApiResultFunc<T>(proxy.type))
+                .map(ApiResultFunc<T>(proxy.getType()))
                 .compose<T>(if (isSyncRequest) RxUtil._io_main_result() else RxUtil._main_result())
                 .retryWhen(RetryExceptionFunc(mRetryCount, mRetryDelay.toLong(), mRetryIncreaseDelay.toLong()))
     }

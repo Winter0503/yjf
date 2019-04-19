@@ -12,9 +12,9 @@ import cn.ygyg.cloudpayment.modular.internet.presenter.AddressSelectorActivityPr
 import cn.ygyg.cloudpayment.utils.BaseViewHolder
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
 import cn.ygyg.cloudpayment.utils.LocationUtil
-import cn.ygyg.cloudpayment.utils.LogUtil
 import com.amap.api.location.AMapLocation
 import com.cn.lib.basic.BaseMvpActivity
+import com.cn.lib.retrofit.network.util.LogUtil
 import com.cn.lib.util.ToastUtil
 import kotlinx.android.synthetic.main.activity_address_selector.*
 

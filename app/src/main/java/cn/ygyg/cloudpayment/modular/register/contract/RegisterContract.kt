@@ -14,6 +14,7 @@ class RegisterContract {
         fun changeCodeBtnState(state: Boolean)
         fun changeCodeBtnText(aLong: Long)
         fun changeRegisterBtnState(state: Boolean)
+        fun registerSuccess()
     }
 
     interface Presenter : IBasePresenter<View> {
