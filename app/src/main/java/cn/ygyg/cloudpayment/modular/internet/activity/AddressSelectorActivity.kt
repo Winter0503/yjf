@@ -26,14 +26,20 @@ import kotlinx.android.synthetic.main.activity_address_selector.*
 class AddressSelectorActivity :
         BaseMvpActivity<AddressSelectorActivityContract.Presenter, AddressSelectorActivityContract.View>(),
         AddressSelectorActivityContract.View {
-    var dataSource: ArrayList<out CityVM>? = null
+    var dataSource: ArrayList<CityVM>? = null
     private val adapter: AddressSelectorAdapter by lazy { AddressSelectorAdapter() }
     private val searchAddressDialog: SearchAddressDialog by lazy {
         SearchAddressDialog(this).apply {
             onAddressClickListener = object : SearchAddressDialog.OnAddressClickListener {
-                override fun onAddressClicked() {
+                override fun onAddressClicked(city: CityVM) {
+                    mPresenter?.getCompanyByCity(city)
                     companySelectDialog.show()
-                    dataSource = this@AddressSelectorActivity.dataSource
+
+                }
+            }
+            getDataSource = object : SearchAddressDialog.DataSourceGetter {
+                override fun dataSource(): ArrayList<CityVM>? {
+                    return dataSource
                 }
             }
         }
@@ -124,12 +130,12 @@ class AddressSelectorActivity :
     }
 
 
-    override fun onLoadCityListSuccess(response: ArrayList<out CityVM>) {
+    override fun onLoadCityListSuccess(response: ArrayList<CityVM>) {
         this.dataSource = response
         mPresenter?.addTitleItem(response)
     }
 
-    override fun addTitleSuccess(response: ArrayList<out CityVM>, titlePositionMap: ArrayMap<String, Int>) {
+    override fun addTitleSuccess(response: ArrayList<CityVM>, titlePositionMap: ArrayMap<String, Int>) {
         adapter.addData(response)
         this.titlePositionMap = titlePositionMap
         val array = titlePositionMap.keys.toTypedArray()

@@ -13,7 +13,7 @@ class AddressSelectorActivityPresenter(view: AddressSelectorActivityContract.Vie
         BasePresenterImpl<AddressSelectorActivityContract.View>(view),
         AddressSelectorActivityContract.Presenter {
     override fun loadCityList() {
-        var response = ArrayList<AddressCityEntity>()
+        var response = ArrayList<CityVM>()
         response.add(AddressCityEntity().apply { cityName = "北京" })
         response.add(AddressCityEntity().apply { cityName = "石家庄市" })
         response.add(AddressCityEntity().apply { cityName = "邯郸市" })
@@ -34,22 +34,25 @@ class AddressSelectorActivityPresenter(view: AddressSelectorActivityContract.Vie
         val titlePositionMap = ArrayMap<String, Int>()
         for (ele in response) {
             val pinyin = ele.cityPinyin()
-            pinyin?.let {
-                val c = it[0]
-                if (c != char) {
-                    titlePositionMap[c.toString()] = result.size
-                    result.add(AddressCityEntity().apply { cityName = c.toString() })
-                }
-                result.add(ele)
-                char = c
+            val c = pinyin[0]
+            if (c != char) {
+                titlePositionMap[c.toString()] = result.size
+                result.add(AddressCityEntity().apply { cityName = c.toString() })
             }
+            result.add(ele)
+            char = c
         }
         mvpView?.addTitleSuccess(result, titlePositionMap)
     }
 
-    private fun getSortPinyinCityList(response: ArrayList<AddressCityEntity>): ArrayList<AddressCityEntity> {
+    override fun getCompanyByCity(city: CityVM) {
+
+    }
+
+    private fun getSortPinyinCityList(response: ArrayList<CityVM>): ArrayList<CityVM> {
         val map = TreeMap<String, AddressCityEntity>()
         for (ele in response) {
+            ele as AddressCityEntity
             val pinyin = Pinyin.toPinyin(ele.cityShowName(), "")
             ele.cityPinyin = pinyin
             map[pinyin] = ele

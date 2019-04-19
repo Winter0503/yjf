@@ -6,21 +6,26 @@ import android.view.ViewGroup
 import android.widget.TextView
 
 import cn.ygyg.cloudpayment.R
+import cn.ygyg.cloudpayment.modular.internet.entity.CityVM
 import cn.ygyg.cloudpayment.utils.BaseViewHolder
 import com.cn.lib.retrofit.network.util.LogUtil
 
 class AddressSearchAdapter : RecyclerView.Adapter<BaseViewHolder>() {
-    private val list: ArrayList<String> by lazy { ArrayList<String>() }
+    private val list: ArrayList<CityVM> by lazy { ArrayList<CityVM>() }
 
     var onItemClickListener: OnItemClickListener? = null
 
-    fun setData(list: List<String>?) {
+    fun setData(list: List<CityVM>?) {
         this.list.clear()
         list?.let {
             this.list.addAll(it)
         }
         LogUtil.i("setData", this.list.size.toString())
         notifyDataSetChanged()
+    }
+
+    fun getItem(position: Int): CityVM {
+        return list[position]
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -32,7 +37,7 @@ class AddressSearchAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
         val address = holder.findViewById<TextView>(R.id.address_name)
-        address.text = list[position]
+        address.text = list[position].cityShowName()
         address.setOnClickListener { onItemClickListener?.onItemClicked(holder, position) }
     }
 

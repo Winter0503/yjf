@@ -16,16 +16,18 @@ import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.modular.internet.adapter.AddressSearchAdapter
 import cn.ygyg.cloudpayment.modular.internet.entity.CityVM
 import cn.ygyg.cloudpayment.utils.BaseViewHolder
+import cn.ygyg.cloudpayment.utils.TextSearchUtils
 import cn.ygyg.cloudpayment.widget.CleanUpEditText
+import com.cn.lib.retrofit.network.util.LogUtil
 
 class SearchAddressDialog(context: Context) : Dialog(context) {
     private var searchBtn: TextView
     private var search: CleanUpEditText
     private var searchList: RecyclerView
 
-    var dataSource: ArrayList<out CityVM>? = null
 
     var onAddressClickListener: OnAddressClickListener? = null
+    var getDataSource: DataSourceGetter? = null
 
     private val adapter = AddressSearchAdapter()
 
@@ -47,7 +49,7 @@ class SearchAddressDialog(context: Context) : Dialog(context) {
         adapter.onItemClickListener = object : AddressSearchAdapter.OnItemClickListener {
             override fun onItemClicked(holder: BaseViewHolder, position: Int) {
                 dismiss()
-                onAddressClickListener?.onAddressClicked()
+                onAddressClickListener?.onAddressClicked(adapter.getItem(position))
             }
         }
 
@@ -75,7 +77,6 @@ class SearchAddressDialog(context: Context) : Dialog(context) {
             if (search.text.isEmpty()) {
                 dismiss()
             } else {
-                //do something
                 searchAddress(search.text.toString())
             }
         }
@@ -90,10 +91,27 @@ class SearchAddressDialog(context: Context) : Dialog(context) {
      * 搜索地址
      */
     private fun searchAddress(keyWorld: String) {
-
+        val result = ArrayList<CityVM>()
+        getDataSource?.dataSource()?.let {
+            val regex = TextSearchUtils.toRegex(keyWorld.toUpperCase())
+            for (ele in it) {
+                LogUtil.i("searchAddress", ele.toString())
+                if (TextSearchUtils.contain(ele.cityShowName(), regex) ||
+                        TextSearchUtils.contain(ele.cityPinyin(), regex)) {
+                    result.add(ele)
+                    LogUtil.i("searchAddress", ele.toString())
+                }
+            }
+        }
+        adapter.setData(result)
     }
 
     interface OnAddressClickListener {
-        fun onAddressClicked()
+        fun onAddressClicked(city: CityVM)
+    }
+
+    interface DataSourceGetter {
+        fun dataSource(): ArrayList<CityVM>?
+
     }
 }

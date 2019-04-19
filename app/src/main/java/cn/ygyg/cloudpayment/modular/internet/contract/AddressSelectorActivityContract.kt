@@ -11,9 +11,9 @@ class AddressSelectorActivityContract {
         /**
          * 加载城市列表
          */
-        fun onLoadCityListSuccess(response: ArrayList<out CityVM>)
+        fun onLoadCityListSuccess(response: ArrayList<CityVM>)
 
-        fun addTitleSuccess(response: ArrayList<out CityVM>, titlePositionMap: ArrayMap<String, Int>)
+        fun addTitleSuccess(response: ArrayList<CityVM>, titlePositionMap: ArrayMap<String, Int>)
     }
 
     interface Presenter : IBasePresenter<View> {
@@ -23,5 +23,9 @@ class AddressSelectorActivityContract {
         fun loadCityList()
 
         fun addTitleItem(response: ArrayList<out CityVM>)
+        /**
+         * 根据城市 获取该城市的机构
+         */
+        fun getCompanyByCity(city: CityVM)
     }
 }

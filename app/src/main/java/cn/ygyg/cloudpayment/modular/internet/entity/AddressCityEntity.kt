@@ -21,4 +21,8 @@ class AddressCityEntity : CityVM {
         return !cityPinyin.isNullOrEmpty()
     }
 
+    override fun toString(): String {
+        return "AddressCityEntity(cityName=$cityName, cityPinyin=$cityPinyin, cityId=$cityId)"
+    }
+
 }
