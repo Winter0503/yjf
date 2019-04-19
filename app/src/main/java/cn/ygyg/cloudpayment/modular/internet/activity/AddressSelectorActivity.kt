@@ -1,6 +1,7 @@
 package cn.ygyg.cloudpayment.modular.internet.activity
 
 import android.support.v7.widget.LinearLayoutManager
+import android.util.ArrayMap
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.modular.internet.adapter.AddressSelectorAdapter
 import cn.ygyg.cloudpayment.modular.internet.contract.AddressSelectorActivityContract
@@ -12,10 +13,14 @@ import cn.ygyg.cloudpayment.modular.internet.presenter.AddressSelectorActivityPr
 import cn.ygyg.cloudpayment.utils.BaseViewHolder
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
 import cn.ygyg.cloudpayment.utils.LocationUtil
-import cn.ygyg.cloudpayment.utils.LogUtil
+import cn.ygyg.cloudpayment.widget.LoadMoreView
+import cn.ygyg.cloudpayment.widget.ProgressHeaderView
+import cn.ygyg.cloudpayment.widget.SideBarView
 import com.amap.api.location.AMapLocation
 import com.cn.lib.basic.BaseMvpActivity
 import com.cn.lib.util.ToastUtil
+import com.github.promeg.pinyinhelper.Pinyin
+import com.github.promeg.tinypinyin.lexicons.android.cncity.CnCityDict
 import kotlinx.android.synthetic.main.activity_address_selector.*
 
 class AddressSelectorActivity :
@@ -42,40 +47,26 @@ class AddressSelectorActivity :
     }
 
     private var haveLocation = false
+    private var titlePositionMap: ArrayMap<String, Int>? = null
 
     override fun getContentViewResId(): Int = R.layout.activity_address_selector
 
     override fun createPresenter(): AddressSelectorActivityContract.Presenter = AddressSelectorActivityPresenter(this)
 
     override fun initViews() {
+        Pinyin.init(Pinyin.newConfig().with(CnCityDict.getInstance(this)))
         HeaderBuilder(this).apply {
             setTitle(R.string.activity_title_address_select)
             setLeftImageRes(R.mipmap.back)
         }
         recycler.layoutManager = LinearLayoutManager(this)
         adapter.addItem(AddressCityEntity().apply {
-            address = "定位中"
+            cityName = "定位中"
         })
         recycler.adapter = adapter
 
-        LocationUtil.startLocation(object : LocationUtil.Callback {
-            override fun onStart() {
-
-            }
-
-            override fun onSuccess(location: AMapLocation) {
-                haveLocation = true
-                LogUtil.i("location", location.city)
-                adapter.setItem(0, AddressCityEntity().apply {
-                    address = location.city
-                })
-            }
-
-            override fun onFailed(errCode: Int) {
-                ToastUtil.showErrorToast(this@AddressSelectorActivity, "定位失败")
-                adapter.removeItem(0)
-            }
-        })
+        refreshLayout.setHeaderView(ProgressHeaderView(getViewContext()).setTextVisibility(false))
+        refreshLayout.setBottomView(LoadMoreView(getViewContext()))
     }
 
     override fun initListener() {
@@ -87,9 +78,55 @@ class AddressSelectorActivity :
 
             override fun onLocationClicked(cityVM: CityVM) {
                 if (haveLocation) {
-                    ToastUtil.showToast(this@AddressSelectorActivity, cityVM.getCityName())
+                    ToastUtil.showToast(this@AddressSelectorActivity, cityVM.cityShowName())
                 }
             }
         }
+        sideBar.onSideBarTouchListener = object : SideBarView.OnSideBarTouchListener {
+            override fun onTouchChanged(char: String, position: Int) {
+                titlePositionMap?.let {
+                    it[char]?.let {
+                        recycler.smoothScrollToPosition(it.plus(1))
+                    }
+                }
+            }
+
+            override fun onTouching(touching: Boolean) {
+            }
+
+        }
+
+    }
+
+    override fun initData() {
+        mPresenter?.loadCityList()
+        LocationUtil.startLocation(object : LocationUtil.Callback {
+            override fun onStart() {
+
+            }
+
+            override fun onSuccess(location: AMapLocation) {
+                haveLocation = true
+                val pinyin = Pinyin.toPinyin(location.city, "")
+                adapter.setItem(0, AddressCityEntity().apply {
+                    cityName = location.city
+                    cityPinyin = pinyin
+                })
+            }
+
+            override fun onFailed(errCode: Int) {
+                ToastUtil.showErrorToast(this@AddressSelectorActivity, "定位失败")
+                adapter.removeItem(0)
+            }
+        })
+    }
+
+
+    override fun onLoadCityListSuccess(response: ArrayList<AddressCityEntity>, titlePositionMap: ArrayMap<String, Int>) {
+        adapter.addData(response)
+        this.titlePositionMap = titlePositionMap
+        val array = titlePositionMap.keys.toTypedArray()
+//        sideBar.itemData = array
+        sideBar.itemData = arrayOf("A", "B", "V", "W", "X", "Y", "Z", "#")
     }
 }

@@ -34,7 +34,7 @@ class SideBarView : View {
     var itemData: Array<String>? = null
         set(value) {
             field = value
-            invalidate()
+            requestLayout()
         }
 
     private var selectIndex = -1
@@ -136,7 +136,7 @@ class SideBarView : View {
             } else {
                 0
             }
-            val textSize = (if (charRect.width() > itemHeight) itemHeight else width).toInt()
+            val textSize = (if (charRect.width() > itemHeight) itemHeight else charRect.width()).toInt()
             charPaint.textSize = textSize.toFloat()
         }
     }
