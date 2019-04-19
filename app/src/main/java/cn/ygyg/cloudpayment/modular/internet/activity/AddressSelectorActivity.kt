@@ -57,18 +57,16 @@ class AddressSelectorActivity :
     private val companySelectDialog: CompanySelectDialog by lazy {
         CompanySelectDialog(this).apply {
             onCompanyConfirmListener = object : CompanySelectDialog.OnCompanyConfirmListener {
-                override fun onCompanyConfirm(company: CompanyVM?) {
-                    company?.let {
-                        if (forResult) {
-                            setResult(Activity.RESULT_OK, Intent().apply {
-                                //TODO  NewAccountActivity.onActivityResult 城市 缴费单位传递
-                            })
-                            finish()
-                        } else {
-                            toActivity(NewAccountActivity::class.java, Bundle().apply {
-                                //TODO NewAccountActivity.initViews 城市 缴费单位传递
-                            })
-                        }
+                override fun onCompanyConfirm(company: CompanyVM) {
+                    if (forResult) {
+                        setResult(Activity.RESULT_OK, Intent().apply {
+                            //TODO  NewAccountActivity.onActivityResult 城市 缴费单位传递
+                        })
+                        finish()
+                    } else {
+                        toActivity(NewAccountActivity::class.java, Bundle().apply {
+                            //TODO NewAccountActivity.initViews 城市 缴费单位传递
+                        })
                     }
                 }
             }

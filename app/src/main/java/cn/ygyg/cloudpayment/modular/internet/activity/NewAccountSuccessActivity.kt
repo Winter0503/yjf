@@ -1,6 +1,7 @@
 package cn.ygyg.cloudpayment.modular.internet.activity
 
 import cn.ygyg.cloudpayment.R
+import cn.ygyg.cloudpayment.modular.home.activity.MainTabActivity
 import cn.ygyg.cloudpayment.modular.payments.activity.PaymentsActivity
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
 import com.cn.lib.basic.BaseActivity
@@ -18,6 +19,9 @@ class NewAccountSuccessActivity : BaseActivity() {
     override fun initListener() {
         to_payments.setOnClickListener {
             toActivity(PaymentsActivity::class.java)
+        }
+        back_to_main.setOnClickListener {
+            toActivity(MainTabActivity::class.java)
         }
     }
 }

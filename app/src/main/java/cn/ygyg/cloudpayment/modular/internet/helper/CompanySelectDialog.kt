@@ -12,6 +12,7 @@ import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.modular.internet.adapter.CompanySelectorAdapter
 import cn.ygyg.cloudpayment.modular.internet.vm.CompanyVM
 import cn.ygyg.cloudpayment.utils.BaseViewHolder
+import com.cn.lib.util.ToastUtil
 
 class CompanySelectDialog(context: Context) : Dialog(context) {
     private val adapter: CompanySelectorAdapter by lazy { CompanySelectorAdapter() }
@@ -43,8 +44,12 @@ class CompanySelectDialog(context: Context) : Dialog(context) {
 
         findViewById<View>(R.id.close).setOnClickListener { dismiss() }
         findViewById<View>(R.id.confirm).setOnClickListener {
-            dismiss()
-            onCompanyConfirmListener?.onCompanyConfirm(adapter.getItem(adapter.selectPosition))
+            val company = adapter.getItem(adapter.selectPosition)
+            if (company == null) {
+                ToastUtil.showToast(context, "请选择")
+            } else {
+                onCompanyConfirmListener?.onCompanyConfirm(company)
+            }
         }
         adapter.onItemClickListener = object : CompanySelectorAdapter.OnItemClickListener {
             override fun onItemClicked(holder: BaseViewHolder, position: Int) {
@@ -54,6 +59,6 @@ class CompanySelectDialog(context: Context) : Dialog(context) {
     }
 
     interface OnCompanyConfirmListener {
-        fun onCompanyConfirm(company: CompanyVM?)
+        fun onCompanyConfirm(company: CompanyVM)
     }
 }
