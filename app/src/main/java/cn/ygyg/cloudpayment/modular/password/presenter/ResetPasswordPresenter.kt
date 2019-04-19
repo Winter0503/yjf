@@ -101,7 +101,7 @@ class ResetPasswordPresenter(view: ResetPasswordContract.View) : BasePresenterIm
     }
 
     override fun getVerificationCode(phone: String) {
-        RequestManager.post(UrlConstants.valPhone)
+        RequestManager.post(UrlConstants.captcha)
                 .param("phone", phone)
                 .execute(String::class.java)
                 .subscribeWith(ResultCallbackSubscriber("register", object : ResultCallback<String>() {
@@ -162,14 +162,12 @@ class ResetPasswordPresenter(view: ResetPasswordContract.View) : BasePresenterIm
                 })
     }
 
-    override fun modifyPassword(code: String, username: String, password: String) {
-        val param = requestParams
-        param["captcha"] = password
-        param["username"] = username
-        RequestManager.post(UrlConstants.captchalogin)
-                .param("captcha",password)
-                .param("username",username)
-                .execute("modifyPassword", object : ResultCallback<String>(){
+    override fun forgetPwd(code: String, username: String, password: String) {
+        RequestManager.post(UrlConstants.forgetPwd)
+                .param("password",password)
+                .param("phone",username)
+                .param("captcha",code)
+                .execute("forgetPwd", object : ResultCallback<String>(){
                     override fun onStart(tag: Any?) {
                         mvpView?.getViewContext()?.let {
                             ProgressUtil.showProgressDialog(it, "提交数据中...")
