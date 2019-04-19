@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.ArrayMap
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.app.Constants
+import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.internet.adapter.AddressSelectorAdapter
 import cn.ygyg.cloudpayment.modular.internet.contract.AddressSelectorActivityContract
 import cn.ygyg.cloudpayment.modular.internet.entity.AddressCityEntity
@@ -110,7 +111,24 @@ class AddressSelectorActivity :
 
             override fun onLocationClicked(cityVM: CityVM) {
                 if (haveLocation) {
-                    ToastUtil.showToast(this@AddressSelectorActivity, cityVM.cityShowName())
+                    var locationCity: CityVM? = null
+                    dataSource?.let {
+                        for (c in it)
+                            if (c.cityShowName() == cityVM.cityShowName()) {
+                                locationCity = c
+                                break
+                            }
+                    }
+                    if (locationCity == null) {
+                        DefaultPromptDialog.builder()
+                                .setContext(this@AddressSelectorActivity)
+                                .setContentText(getString(R.string.no_company_in_city))
+                                .setAffirmText(getString(R.string.i_know_it))
+                                .build()
+                                .show()
+                    } else {
+                        mPresenter?.getCompanyByCity(locationCity!!)
+                    }
                 }
             }
         }

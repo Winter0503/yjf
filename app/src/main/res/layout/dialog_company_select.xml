@@ -16,7 +16,7 @@
             android:layout_marginStart="20dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="选择燃气集团"
+            android:text="@string/company_select"
             android:textColor="@color/text_color"
             android:textSize="@dimen/ts_title" />
 

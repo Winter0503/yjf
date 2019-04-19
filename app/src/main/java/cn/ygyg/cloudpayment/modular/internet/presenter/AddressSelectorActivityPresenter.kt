@@ -14,7 +14,7 @@ class AddressSelectorActivityPresenter(view: AddressSelectorActivityContract.Vie
         AddressSelectorActivityContract.Presenter {
     override fun loadCityList() {
         var response = ArrayList<CityVM>()
-        response.add(AddressCityEntity().apply { cityName = "北京" })
+        response.add(AddressCityEntity().apply { cityName = "南京" })
         response.add(AddressCityEntity().apply { cityName = "石家庄市" })
         response.add(AddressCityEntity().apply { cityName = "邯郸市" })
         response.add(AddressCityEntity().apply { cityName = "重庆" })

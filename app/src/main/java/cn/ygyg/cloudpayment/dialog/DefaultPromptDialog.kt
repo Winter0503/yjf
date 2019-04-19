@@ -155,7 +155,7 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
         }
 
         /**
-         * 右侧(第二个)按钮文本
+         * （左起）第二个按钮文本
          */
         fun setAffirmText(affirm: String): DefaultPromptDialog.Builder {
             this.affirm = affirm
@@ -163,7 +163,7 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
         }
 
         /**
-         * 右侧(第二个)按钮文本
+         * （左起）第二个按钮文本颜色
          */
         fun setAffirmTextColor(color: Int): DefaultPromptDialog.Builder {
             this.affirmColor = color
@@ -171,7 +171,7 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
         }
 
         /**
-         * 左侧(第三个)按钮文本
+         * （左起）第一个按钮文本
          */
         fun setCancelText(cancel: String): DefaultPromptDialog.Builder {
             this.cancel = cancel
@@ -179,7 +179,7 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
         }
 
         /**
-         * 设置第一个文本是否可点击
+         * 设置第内容文本是否可点击
          */
         fun setContentEnabled(contentEnabled: Boolean): DefaultPromptDialog.Builder {
             this.contentEnabled = contentEnabled
