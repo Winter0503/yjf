@@ -2,7 +2,9 @@ package cn.ygyg.cloudpayment.modular.internet.entity
 
 interface CityVM {
 
-    fun cityShowName():String
+    fun cityShowName(): String
 
-    fun isRealCity():Boolean
+    fun cityPinyin(): String
+
+    fun isRealCity(): Boolean
 }

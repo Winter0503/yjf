@@ -3,6 +3,7 @@ package cn.ygyg.cloudpayment.modular.internet.presenter
 import android.util.ArrayMap
 import cn.ygyg.cloudpayment.modular.internet.contract.AddressSelectorActivityContract
 import cn.ygyg.cloudpayment.modular.internet.entity.AddressCityEntity
+import cn.ygyg.cloudpayment.modular.internet.entity.CityVM
 import com.cn.lib.basic.BasePresenterImpl
 import com.github.promeg.pinyinhelper.Pinyin
 import java.util.*
@@ -24,17 +25,15 @@ class AddressSelectorActivityPresenter(view: AddressSelectorActivityContract.Vie
         response.add(AddressCityEntity().apply { cityName = "潞城市" })
         response.add(AddressCityEntity().apply { cityName = "巴彦淖尔市" })
         response = getSortPinyinCityList(response)
-
-        val titlePositionMap = addTitleItem(response)
-        mvpView?.onLoadCityListSuccess(response, titlePositionMap)
+        mvpView?.onLoadCityListSuccess(response)
     }
 
-    private fun addTitleItem(response: ArrayList<AddressCityEntity>): ArrayMap<String, Int> {
-        val result = ArrayList<AddressCityEntity>()
+    override fun addTitleItem(response: ArrayList<out CityVM>) {
+        val result = ArrayList<CityVM>()
         var char = '0'
         val titlePositionMap = ArrayMap<String, Int>()
         for (ele in response) {
-            val pinyin = ele.cityPinyin
+            val pinyin = ele.cityPinyin()
             pinyin?.let {
                 val c = it[0]
                 if (c != char) {
@@ -45,9 +44,7 @@ class AddressSelectorActivityPresenter(view: AddressSelectorActivityContract.Vie
                 char = c
             }
         }
-        response.clear()
-        response.addAll(result)
-        return titlePositionMap
+        mvpView?.addTitleSuccess(result, titlePositionMap)
     }
 
     private fun getSortPinyinCityList(response: ArrayList<AddressCityEntity>): ArrayList<AddressCityEntity> {

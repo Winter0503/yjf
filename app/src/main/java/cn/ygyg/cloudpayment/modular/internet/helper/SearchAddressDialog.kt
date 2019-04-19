@@ -14,6 +14,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.modular.internet.adapter.AddressSearchAdapter
+import cn.ygyg.cloudpayment.modular.internet.entity.CityVM
 import cn.ygyg.cloudpayment.utils.BaseViewHolder
 import cn.ygyg.cloudpayment.widget.CleanUpEditText
 
@@ -21,6 +22,8 @@ class SearchAddressDialog(context: Context) : Dialog(context) {
     private var searchBtn: TextView
     private var search: CleanUpEditText
     private var searchList: RecyclerView
+
+    var dataSource: ArrayList<out CityVM>? = null
 
     var onAddressClickListener: OnAddressClickListener? = null
 
@@ -87,11 +90,7 @@ class SearchAddressDialog(context: Context) : Dialog(context) {
      * 搜索地址
      */
     private fun searchAddress(keyWorld: String) {
-        adapter.setData(ArrayList<String>().apply {
-            for (i in 1..20) {
-                add("i=$i")
-            }
-        })
+
     }
 
     interface OnAddressClickListener {
