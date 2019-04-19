@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import cn.ygyg.cloudpayment.R
-import cn.ygyg.cloudpayment.modular.internet.entity.CityVM
+import cn.ygyg.cloudpayment.modular.internet.vm.CityVM
 import cn.ygyg.cloudpayment.utils.BaseViewHolder
 
 class AddressSelectorAdapter : RecyclerView.Adapter<BaseViewHolder>() {

@@ -19,10 +19,12 @@
             android:layout_weight="1"
             android:background="@drawable/shape_solid_gray"
             android:gravity="center_vertical"
-            android:hint="输入城市名/拼音或者字母查询"
+            android:hint="@string/hint_input_city_search"
             android:imeOptions="actionSearch"
+            android:inputType="text"
             android:paddingEnd="15dp"
             android:paddingStart="15dp"
+            android:singleLine="true"
             android:textColorHint="@color/text_hint_color"
             android:textSize="@dimen/ts_content" />
 

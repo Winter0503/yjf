@@ -1,15 +1,20 @@
 package cn.ygyg.cloudpayment.modular.internet.activity
 
+import android.app.Activity
+import android.content.Intent
+import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.ArrayMap
 import cn.ygyg.cloudpayment.R
+import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.modular.internet.adapter.AddressSelectorAdapter
 import cn.ygyg.cloudpayment.modular.internet.contract.AddressSelectorActivityContract
 import cn.ygyg.cloudpayment.modular.internet.entity.AddressCityEntity
-import cn.ygyg.cloudpayment.modular.internet.entity.CityVM
+import cn.ygyg.cloudpayment.modular.internet.vm.CityVM
 import cn.ygyg.cloudpayment.modular.internet.helper.CompanySelectDialog
 import cn.ygyg.cloudpayment.modular.internet.helper.SearchAddressDialog
 import cn.ygyg.cloudpayment.modular.internet.presenter.AddressSelectorActivityPresenter
+import cn.ygyg.cloudpayment.modular.internet.vm.CompanyVM
 import cn.ygyg.cloudpayment.utils.BaseViewHolder
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
 import cn.ygyg.cloudpayment.utils.LocationUtil
@@ -26,12 +31,15 @@ import kotlinx.android.synthetic.main.activity_address_selector.*
 class AddressSelectorActivity :
         BaseMvpActivity<AddressSelectorActivityContract.Presenter, AddressSelectorActivityContract.View>(),
         AddressSelectorActivityContract.View {
-    var dataSource: ArrayList<CityVM>? = null
+    private var dataSource: ArrayList<CityVM>? = null
+
+    private var city: CityVM? = null
     private val adapter: AddressSelectorAdapter by lazy { AddressSelectorAdapter() }
     private val searchAddressDialog: SearchAddressDialog by lazy {
         SearchAddressDialog(this).apply {
             onAddressClickListener = object : SearchAddressDialog.OnAddressClickListener {
                 override fun onAddressClicked(city: CityVM) {
+                    this@AddressSelectorActivity.city = city
                     mPresenter?.getCompanyByCity(city)
                     companySelectDialog.show()
 
@@ -44,16 +52,28 @@ class AddressSelectorActivity :
             }
         }
     }
+
     private val companySelectDialog: CompanySelectDialog by lazy {
         CompanySelectDialog(this).apply {
             onCompanyConfirmListener = object : CompanySelectDialog.OnCompanyConfirmListener {
-                override fun onCompanyConfirm() {
-                    finish()
+                override fun onCompanyConfirm(company: CompanyVM?) {
+                    company?.let {
+                        if (forResult) {
+                            setResult(Activity.RESULT_OK, Intent().apply {
+
+                            })
+                            finish()
+                        } else {
+                            toActivity(NewAccountActivity::class.java, Bundle().apply {
+                            })
+                        }
+                    }
                 }
             }
         }
     }
 
+    private var forResult = false
     private var haveLocation = false
     private var titlePositionMap: ArrayMap<String, Int>? = null
 
@@ -62,6 +82,9 @@ class AddressSelectorActivity :
     override fun createPresenter(): AddressSelectorActivityContract.Presenter = AddressSelectorActivityPresenter(this)
 
     override fun initViews() {
+        bundle?.let {
+            forResult = it.getBoolean(Constants.IntentKey.FOR_RESULT, false)
+        }
         Pinyin.init(Pinyin.newConfig().with(CnCityDict.getInstance(this)))
         HeaderBuilder(this).apply {
             setTitle(R.string.activity_title_address_select)

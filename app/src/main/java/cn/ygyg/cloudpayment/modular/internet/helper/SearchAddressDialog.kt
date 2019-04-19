@@ -14,7 +14,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.TextView
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.modular.internet.adapter.AddressSearchAdapter
-import cn.ygyg.cloudpayment.modular.internet.entity.CityVM
+import cn.ygyg.cloudpayment.modular.internet.vm.CityVM
 import cn.ygyg.cloudpayment.utils.BaseViewHolder
 import cn.ygyg.cloudpayment.utils.TextSearchUtils
 import cn.ygyg.cloudpayment.widget.CleanUpEditText

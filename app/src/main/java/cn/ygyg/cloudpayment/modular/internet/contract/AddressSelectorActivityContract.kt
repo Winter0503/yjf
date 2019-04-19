@@ -1,8 +1,7 @@
 package cn.ygyg.cloudpayment.modular.internet.contract
 
 import android.util.ArrayMap
-import cn.ygyg.cloudpayment.modular.internet.entity.AddressCityEntity
-import cn.ygyg.cloudpayment.modular.internet.entity.CityVM
+import cn.ygyg.cloudpayment.modular.internet.vm.CityVM
 import com.cn.lib.basic.IBasePresenter
 import com.cn.lib.basic.IBaseView
 

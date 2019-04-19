@@ -1,4 +1,4 @@
-package cn.ygyg.cloudpayment.modular.internet.entity
+package cn.ygyg.cloudpayment.modular.internet.vm
 
 interface CityVM {
 

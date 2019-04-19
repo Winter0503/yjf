@@ -8,6 +8,7 @@ import cn.ygyg.cloudpayment.R.id.recycler_view
 import cn.ygyg.cloudpayment.modular.home.adapter.AccountInfoListAdapter
 import cn.ygyg.cloudpayment.modular.home.contract.HomeContract
 import cn.ygyg.cloudpayment.modular.home.presenter.HomePresenter
+import cn.ygyg.cloudpayment.modular.internet.activity.AddressSelectorActivity
 import cn.ygyg.cloudpayment.modular.internet.activity.NewAccountActivity
 import cn.ygyg.cloudpayment.widget.LoadMoreView
 import cn.ygyg.cloudpayment.widget.ProgressHeaderView
@@ -18,19 +19,21 @@ import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
-class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(),HomeContract.View {
+class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(), HomeContract.View {
     override fun loaderSuccess(mutableList: MutableList<String>?) {
-        mutableList?.let { //不为空时执行
+        mutableList?.let {
+            //不为空时执行
             mAdapter.setNewList(mutableList)
 
-        } ?:let { //为空时执行
+        } ?: let {
+            //为空时执行
             val firstView = layoutInflater.inflate(R.layout.layout_first_into, recycler_view, false)
             mAdapter.addHeaderView(firstView)
             firstView.findViewById<View>(R.id.btn_recharge).setOnClickListener {
-                toActivity(NewAccountActivity::class.java)
+                toActivity(AddressSelectorActivity::class.java)
             }
             firstView.findViewById<View>(R.id.layout_add_account).setOnClickListener {
-                toActivity(NewAccountActivity::class.java)
+                toActivity(AddressSelectorActivity::class.java)
             }
         }
     }
@@ -51,7 +54,7 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
             it.layoutManager = LinearLayoutManager(getViewContext())
         }
         mAdapter.addHeaderView(layoutInflater.inflate(R.layout.layout_banner, recycler_view, false))
-        refreshLayout= findViewById(R.id.layout_refresh)
+        refreshLayout = findViewById(R.id.layout_refresh)
         refreshLayout?.setHeaderView(ProgressHeaderView(getViewContext()).setTextVisibility(false))
         refreshLayout?.setBottomView(LoadMoreView(getViewContext()))
     }

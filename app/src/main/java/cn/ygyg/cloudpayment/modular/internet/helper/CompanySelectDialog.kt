@@ -10,6 +10,8 @@ import android.view.View
 import android.view.ViewGroup
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.modular.internet.adapter.CompanySelectorAdapter
+import cn.ygyg.cloudpayment.modular.internet.vm.CompanyVM
+import cn.ygyg.cloudpayment.utils.BaseViewHolder
 
 class CompanySelectDialog(context: Context) : Dialog(context) {
     private val adapter: CompanySelectorAdapter by lazy { CompanySelectorAdapter() }
@@ -27,16 +29,31 @@ class CompanySelectDialog(context: Context) : Dialog(context) {
         }
         recycler = findViewById(R.id.recycler)
         recycler.layoutManager = LinearLayoutManager(context)
+        adapter.setData(ArrayList<CompanyVM>().apply {
+            for (i in 1..10) {
+                add(object : CompanyVM {
+                    override fun companyName(): String = "$i"
+
+                    override fun companyId(): Long = 0L
+
+                })
+            }
+        })
         recycler.adapter = adapter
 
         findViewById<View>(R.id.close).setOnClickListener { dismiss() }
         findViewById<View>(R.id.confirm).setOnClickListener {
             dismiss()
-            onCompanyConfirmListener?.onCompanyConfirm()
+            onCompanyConfirmListener?.onCompanyConfirm(adapter.getItem(adapter.selectPosition))
+        }
+        adapter.onItemClickListener = object : CompanySelectorAdapter.OnItemClickListener {
+            override fun onItemClicked(holder: BaseViewHolder, position: Int) {
+                adapter.selectPosition = position
+            }
         }
     }
 
     interface OnCompanyConfirmListener {
-        fun onCompanyConfirm()
+        fun onCompanyConfirm(company: CompanyVM?)
     }
 }

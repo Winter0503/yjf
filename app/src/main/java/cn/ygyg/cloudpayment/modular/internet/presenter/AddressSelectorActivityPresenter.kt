@@ -3,7 +3,7 @@ package cn.ygyg.cloudpayment.modular.internet.presenter
 import android.util.ArrayMap
 import cn.ygyg.cloudpayment.modular.internet.contract.AddressSelectorActivityContract
 import cn.ygyg.cloudpayment.modular.internet.entity.AddressCityEntity
-import cn.ygyg.cloudpayment.modular.internet.entity.CityVM
+import cn.ygyg.cloudpayment.modular.internet.vm.CityVM
 import com.cn.lib.basic.BasePresenterImpl
 import com.github.promeg.pinyinhelper.Pinyin
 import java.util.*

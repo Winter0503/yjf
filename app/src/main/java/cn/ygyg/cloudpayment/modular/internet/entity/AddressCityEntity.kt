@@ -1,5 +1,7 @@
 package cn.ygyg.cloudpayment.modular.internet.entity
 
+import cn.ygyg.cloudpayment.modular.internet.vm.CityVM
+
 class AddressCityEntity : CityVM {
 
 

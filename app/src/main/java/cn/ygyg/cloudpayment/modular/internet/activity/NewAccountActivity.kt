@@ -1,8 +1,6 @@
 package cn.ygyg.cloudpayment.modular.internet.activity
 
-import android.os.Build
 import android.text.Editable
-import android.text.Html
 import android.text.TextWatcher
 import android.view.View
 import cn.ygyg.cloudpayment.R
