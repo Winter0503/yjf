@@ -63,7 +63,7 @@ class ResetPasswordActivity : BaseMvpActivity<ResetPasswordContract.Presenter, R
             val phone = edit_reset_phone.text.toString()
             val code = edit_reset_code.text.toString()
             val password = edit_reset_pwd.text.toString()
-            mPresenter?.modifyPassword(code, phone, password)
+            mPresenter?.forgetPwd(code, phone, password)
         }
 
     }

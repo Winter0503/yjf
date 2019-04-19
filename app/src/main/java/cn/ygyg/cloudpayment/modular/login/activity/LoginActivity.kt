@@ -40,6 +40,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
         tv_right.text = "注册"
         tv_right.setTextColor(ResourceUtil.getColor(getViewContext(), R.color.text_green_color))
         tv_right.visibility = View.VISIBLE
+        inputTypePassword()
     }
 
     override fun initListener() {
@@ -48,28 +49,10 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
             edit_login_code.text = null
             if (loginType == 0) { //判断是否是密码登录
                 //验证码登录
-                loginType = 1
-                edit_login_code.addTextChangedListener(mPresenter?.getCodeTextChangeListener())
-                edit_login_code.hint = ResourceUtil.getString(getViewContext(), R.string.verification_code)
-                btn_retrieve_password.visibility = View.INVISIBLE
-                btn_login_code.visibility = View.VISIBLE
-                btn_login_code.inputType = TYPE_CLASS_NUMBER or TYPE_TEXT_VARIATION_PASSWORD
-                edit_login_code.filters = arrayOf(InputFilter.LengthFilter(6))
-                btn_login_type.text = "密码登录"
-                tv_login_title.text = "验证码登录"
-                btn_pwd.visibility = View.GONE
+                inputTypeVerificationCode()
             } else {
                 //密码登录
-                loginType = 0
-                edit_login_code.addTextChangedListener(mPresenter?.getPasswordTextChangeListener())
-                edit_login_code.hint = ResourceUtil.getString(getViewContext(), R.string.input_password)
-                btn_retrieve_password.visibility = View.VISIBLE
-                btn_login_code.visibility = View.GONE
-                btn_login_code.inputType = TYPE_CLASS_TEXT or TYPE_TEXT_VARIATION_PASSWORD
-                edit_login_code.filters = arrayOf(InputFilter.LengthFilter(20))
-                btn_login_type.text = "验证码登录"
-                tv_login_title.text = "密码登录"
-                btn_pwd.visibility = View.VISIBLE
+                inputTypePassword()
             }
             mPresenter?.setLoginType(loginType)
         }
@@ -116,6 +99,42 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
                 MyApplication.getApplication().mWxApi.sendReq(req)
             }
         }
+    }
+
+    /**
+     * 密码登录设置密码文本输入类型
+     */
+    private fun inputTypePassword() {
+        loginType = 0
+        edit_login_code.apply {
+            hint = ResourceUtil.getString(getViewContext(), R.string.input_password)
+            addTextChangedListener(mPresenter?.getPasswordTextChangeListener())
+            inputType = TYPE_TEXT_VARIATION_PASSWORD
+            filters = arrayOf(InputFilter.LengthFilter(20))
+        }
+        btn_retrieve_password.visibility = View.VISIBLE
+        btn_login_code.visibility = View.GONE
+        btn_login_type.text = "验证码登录"
+        tv_login_title.text = "密码登录"
+        btn_pwd.visibility = View.VISIBLE
+    }
+
+    /**
+     * 验证码登录设置文本输入类型为铭文数字
+     */
+    private fun inputTypeVerificationCode() {
+        loginType = 1
+        edit_login_code.apply {
+            hint = ResourceUtil.getString(getViewContext(), R.string.verification_code)
+            addTextChangedListener(mPresenter?.getCodeTextChangeListener())
+            inputType = TYPE_CLASS_NUMBER
+            filters = arrayOf(InputFilter.LengthFilter(6))
+        }
+        btn_retrieve_password.visibility = View.INVISIBLE
+        btn_login_code.visibility = View.VISIBLE
+        btn_login_type.text = "密码登录"
+        tv_login_title.text = "验证码登录"
+        btn_pwd.visibility = View.GONE
     }
 
     override fun changeLoginBtnState(state: Boolean) {

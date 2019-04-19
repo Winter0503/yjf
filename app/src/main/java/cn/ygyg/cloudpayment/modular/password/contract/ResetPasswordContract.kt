@@ -28,7 +28,7 @@ class ResetPasswordContract {
         /**
          * 修改密码
          */
-        fun modifyPassword(code: String, username: String, password: String)
+        fun forgetPwd(code: String, username: String, password: String)
     }
 
 

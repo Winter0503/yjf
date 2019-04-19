@@ -167,11 +167,9 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
     }
 
     override fun getVerificationCode(phone: String) {
-        val param = requestParams
-        param["phone "] = phone
         RequestManager.post(UrlConstants.captcha)
-                .jsonObj(param)
-                .execute("login", object : ResultCallback<String>() {
+                .param("phone",phone)
+                .execute("captcha", object : ResultCallback<String>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.getViewContext()?.let {
                             ProgressUtil.showProgressDialog(it, "获取验证码中...")
@@ -208,11 +206,9 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
                     .execute("passwordLogin", getLoginCallback())
 
         } else { //验证码登录
-            val param = requestParams
-            param["captcha"] = password
-            param["username"] = username
             RequestManager.post(UrlConstants.captchalogin)
-                    .jsonObj(param)
+                    .param("captcha",password)
+                    .param("username",username)
                     .execute("captchaLogin", getLoginCallback())
         }
     }

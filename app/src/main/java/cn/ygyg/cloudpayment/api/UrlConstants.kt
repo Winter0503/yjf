@@ -25,8 +25,8 @@ object UrlConstants {
      */
     const val captchalogin = "chaoscloud-customerapi/customerapi/user/captchalogin"
     /**
-     * 修改密码
+     * 忘记密码修改密码
      */
-    const val modifyPassword = "chaoscloud-customerapi/customerapi/user/modifyPassword"
+    const val forgetPwd = "chaoscloud-customerapi/customerapi/user/forgetPwd"
 
 }
