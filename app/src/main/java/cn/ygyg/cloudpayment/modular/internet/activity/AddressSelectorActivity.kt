@@ -10,7 +10,7 @@ import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.internet.adapter.AddressSelectorAdapter
 import cn.ygyg.cloudpayment.modular.internet.contract.AddressSelectorActivityContract
-import cn.ygyg.cloudpayment.modular.internet.entity.AddressCityEntity
+import cn.ygyg.cloudpayment.modular.internet.entity.CityTitle
 import cn.ygyg.cloudpayment.modular.internet.vm.CityVM
 import cn.ygyg.cloudpayment.modular.internet.helper.CompanySelectDialog
 import cn.ygyg.cloudpayment.modular.internet.helper.SearchAddressDialog
@@ -32,7 +32,7 @@ import kotlinx.android.synthetic.main.activity_address_selector.*
 class AddressSelectorActivity :
         BaseMvpActivity<AddressSelectorActivityContract.Presenter, AddressSelectorActivityContract.View>(),
         AddressSelectorActivityContract.View {
-    private var dataSource: ArrayList<CityVM>? = null
+    private var dataSource: ArrayList<out CityVM>? = null
 
     private var city: CityVM? = null
     private val adapter: AddressSelectorAdapter by lazy { AddressSelectorAdapter() }
@@ -47,7 +47,7 @@ class AddressSelectorActivity :
                 }
             }
             getDataSource = object : SearchAddressDialog.DataSourceGetter {
-                override fun dataSource(): ArrayList<CityVM>? {
+                override fun dataSource(): ArrayList<out CityVM>? {
                     return dataSource
                 }
             }
@@ -91,8 +91,8 @@ class AddressSelectorActivity :
             setLeftImageRes(R.mipmap.back)
         }
         recycler.layoutManager = LinearLayoutManager(this)
-        adapter.addItem(AddressCityEntity().apply {
-            cityName = "定位中"
+        adapter.addItem(CityTitle().apply {
+            cityTitle = "定位中"
         })
         recycler.adapter = adapter
 
@@ -156,8 +156,8 @@ class AddressSelectorActivity :
             override fun onSuccess(location: AMapLocation) {
                 haveLocation = true
                 val pinyin = Pinyin.toPinyin(location.city, "")
-                adapter.setItem(0, AddressCityEntity().apply {
-                    cityName = location.city
+                adapter.setItem(0, CityTitle().apply {
+                    cityTitle = location.city
                     cityPinyin = pinyin
                 })
             }
@@ -170,7 +170,7 @@ class AddressSelectorActivity :
     }
 
 
-    override fun onLoadCityListSuccess(response: ArrayList<CityVM>) {
+    override fun onLoadCityListSuccess(response: ArrayList<out CityVM>) {
         this.dataSource = response
         mPresenter?.addTitleItem(response)
     }

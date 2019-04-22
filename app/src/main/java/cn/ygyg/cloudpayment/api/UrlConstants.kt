@@ -29,4 +29,11 @@ object UrlConstants {
      */
     const val forgetPwd = "chaoscloud-customerapi/customerapi/user/forgetPwd"
 
+
+    /**
+     * 城市列表
+     */
+    const val cityList = "chaoscloud-customerapi/webApi/customerapi/city/list"
+
+
 }

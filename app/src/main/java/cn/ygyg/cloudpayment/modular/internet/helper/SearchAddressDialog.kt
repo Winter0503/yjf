@@ -72,12 +72,16 @@ class SearchAddressDialog(context: Context) : Dialog(context) {
             }
         })
         search.setOnEditorActionListener { v, actionId, event ->
-            if (event.action == KeyEvent.ACTION_UP) {
-                searchAddress(v.text.toString())
+            var click = true
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                event?.let {
+                    click = event.action == KeyEvent.ACTION_UP
+                }
+                if (click) {
+                    searchAddress(v.text.toString())
+                }
             }
-
-
-            actionId == EditorInfo.IME_ACTION_SEARCH
+            click
         }
         searchBtn.setOnClickListener {
             if (search.text.isEmpty()) {
@@ -114,7 +118,7 @@ class SearchAddressDialog(context: Context) : Dialog(context) {
     }
 
     interface DataSourceGetter {
-        fun dataSource(): ArrayList<CityVM>?
+        fun dataSource(): ArrayList<out CityVM>?
 
     }
 }
