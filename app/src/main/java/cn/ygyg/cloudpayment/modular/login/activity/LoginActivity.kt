@@ -1,5 +1,7 @@
 package cn.ygyg.cloudpayment.modular.login.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.text.InputFilter
 import android.text.InputType
 import android.text.InputType.*
@@ -28,6 +30,7 @@ import kotlinx.android.synthetic.main.include_activity_header.*
 class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.View>(), LoginContract.View {
 
     private var loginType: Int = 0
+    val REQUEST_CODE_REGISTER = 0x11
 
     override fun getContentViewResId(): Int = R.layout.activity_login
 
@@ -81,7 +84,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
         }
 
         tv_right.setOnClickListener {
-            toActivity(RegisterActivity::class.java)
+            toActivityForResult(getViewContext(), RegisterActivity::class.java, REQUEST_CODE_REGISTER)
         }
         btn_login.setOnClickListener {
             mPresenter?.login(loginType, edit_login_phone.text.toString(), edit_login_code.text.toString())
@@ -110,6 +113,19 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
                 btn_pwd.setImageResource(R.mipmap.pwd_close)
             }
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == REQUEST_CODE_REGISTER && resultCode== Activity.RESULT_OK){
+            data?.let {
+                inputTypePassword()
+                val userName = it.getStringExtra("userName")
+                val password = it.getStringExtra("password")
+                edit_login_phone.setText(userName)
+                edit_login_code.setText(password)
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     /**
