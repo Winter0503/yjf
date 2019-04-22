@@ -37,8 +37,8 @@ class AddressSelectorActivityPresenter(view: AddressSelectorActivityContract.Vie
                         e.message?.let { mvpView?.showToast(it) }
                     }
 
-                    override fun onSuccess(tag: Any?, t: CityListResponseEntity) {
-                        t.list?.let {
+                    override fun onSuccess(tag: Any?, t: CityListResponseEntity?) {
+                        t?.list?.let {
                             mvpView?.onLoadCityListSuccess(getSortPinyinCityList(it))
                         }
                     }

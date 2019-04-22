@@ -18,6 +18,7 @@ import cn.ygyg.cloudpayment.modular.internet.adapter.AddressSearchAdapter
 import cn.ygyg.cloudpayment.modular.internet.vm.CityVM
 import cn.ygyg.cloudpayment.utils.BaseViewHolder
 import cn.ygyg.cloudpayment.utils.TextSearchUtils
+import cn.ygyg.cloudpayment.utils.ViewUtils
 import cn.ygyg.cloudpayment.widget.CleanUpEditText
 import cn.ygyg.cloudpayment.widget.EmptyView
 import com.cn.lib.retrofit.network.util.LogUtil
@@ -92,6 +93,12 @@ class SearchAddressDialog(context: Context) : Dialog(context) {
         }
     }
 
+    override fun show() {
+        super.show()
+//        android.support.v7.widget.ViewUtils
+        ViewUtils.showKeyboard(search)
+    }
+
     /**
      * 搜索地址
      */
@@ -112,6 +119,7 @@ class SearchAddressDialog(context: Context) : Dialog(context) {
         searchList.visibility = if (result.size == 0) View.GONE else View.VISIBLE
         adapter.setData(result)
     }
+
 
     interface OnAddressClickListener {
         fun onAddressClicked(city: CityVM)
