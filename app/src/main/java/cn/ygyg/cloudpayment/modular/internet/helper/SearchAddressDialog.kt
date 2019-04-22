@@ -2,6 +2,7 @@ package cn.ygyg.cloudpayment.modular.internet.helper
 
 import android.app.Dialog
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Color
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -32,6 +33,7 @@ class SearchAddressDialog(context: Context) : Dialog(context) {
 
     var onAddressClickListener: OnAddressClickListener? = null
     var getDataSource: DataSourceGetter? = null
+    private var mOnShowListener: DialogInterface.OnShowListener? = null
 
     private val adapter = AddressSearchAdapter()
 
@@ -91,12 +93,14 @@ class SearchAddressDialog(context: Context) : Dialog(context) {
                 searchAddress(search.text.toString())
             }
         }
+        super.setOnShowListener { dialog ->
+            ViewUtils.showKeyboard(search)
+            mOnShowListener?.onShow(dialog)
+        }
     }
 
-    override fun show() {
-        super.show()
-//        android.support.v7.widget.ViewUtils
-        ViewUtils.showKeyboard(search)
+    override fun setOnShowListener(listener: DialogInterface.OnShowListener?) {
+        mOnShowListener = listener
     }
 
     /**

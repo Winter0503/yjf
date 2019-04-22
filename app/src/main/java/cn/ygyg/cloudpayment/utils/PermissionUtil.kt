@@ -3,10 +3,10 @@ package cn.ygego.vientiane.util
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
+import cn.ygyg.cloudpayment.acp.Acp
+import cn.ygyg.cloudpayment.acp.AcpListener
+import cn.ygyg.cloudpayment.acp.AcpOptions
 
-import com.mylhyl.acp.Acp
-import com.mylhyl.acp.AcpListener
-import com.mylhyl.acp.AcpOptions
 import java.util.ArrayList
 
 /**
@@ -142,7 +142,8 @@ object PermissionUtil {
 
         fun build() {
             val array = permissionName.toArray(Array(permissionName.size) { index -> permissionName[index] })
-            Acp.getInstance(context).request(AcpOptions.Builder().setPermissions(*array).build(), object : AcpListener {
+            val options = AcpOptions.Builder().setPermissions(*array).build()
+            Acp.getInstance(context!!).request(options, object : AcpListener {
                 override fun onGranted() {
                     callback?.onGranted()
                 }

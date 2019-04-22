@@ -3,10 +3,11 @@ package cn.ygyg.cloudpayment.modular.internet.entity
 import cn.ygyg.cloudpayment.modular.internet.vm.CityVM
 
 
-
 class CityTitle : CityVM {
     var cityTitle: String? = null
     var cityPinyin: String? = null
+
+    var isLoactionCity = false
 
     override fun cityShowName(): String {
         return if (cityTitle.isNullOrEmpty()) "" else cityTitle!!
@@ -22,5 +23,9 @@ class CityTitle : CityVM {
 
     override fun isRealCity(): Boolean {
         return false
+    }
+
+    override fun getViewType(): CityVM.ViewType {
+        return if (isLoactionCity) CityVM.ViewType.LOCATION else CityVM.ViewType.TITLE
     }
 }

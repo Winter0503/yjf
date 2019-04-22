@@ -34,7 +34,7 @@ class SideBarView : View {
     var itemData: Array<String>? = null
         set(value) {
             field = value
-            invalidate()
+            postInvalidate()
         }
 
     private var selectIndex = -1

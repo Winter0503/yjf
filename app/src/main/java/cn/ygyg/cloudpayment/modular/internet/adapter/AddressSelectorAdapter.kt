@@ -12,6 +12,7 @@ class AddressSelectorAdapter : RecyclerView.Adapter<BaseViewHolder>() {
     private val list: ArrayList<CityVM> by lazy { ArrayList<CityVM>() }
 
     var onItemClickListener: OnItemClickListener? = null
+
     fun setData(list: List<CityVM>?) {
         this.list.clear()
         list?.let {
@@ -44,22 +45,19 @@ class AddressSelectorAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        if (position == 0) {
-            return TYPE_HEADER
-        }
-        return if (getItem(position).isRealCity()) TYPE_CONTENT else TYPE_TITLE
+    fun getItem(position: Int): CityVM {
+        return list[position]
     }
 
-    private fun getItem(position: Int): CityVM {
-        return list[position]
+    override fun getItemViewType(position: Int): Int {
+        return getItem(position).getViewType().ordinal
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
         var layoutId = R.layout.item_address_selector_content
-        if (viewType == TYPE_HEADER) {
+        if (viewType == CityVM.ViewType.LOCATION.ordinal) {
             layoutId = R.layout.layout_address_location_header
-        } else if (viewType == TYPE_TITLE) {
+        } else if (viewType == CityVM.ViewType.TITLE.ordinal) {
             layoutId = R.layout.item_address_selector_title
         }
         val itemView = LayoutInflater.from(parent.context)
@@ -68,15 +66,14 @@ class AddressSelectorAdapter : RecyclerView.Adapter<BaseViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-        val viewType = getItemViewType(position)
         val cityVM = list[position]
-        when (viewType) {
-            TYPE_HEADER -> {
+        when (cityVM.getViewType()) {
+            CityVM.ViewType.LOCATION -> {
                 val location = holder.findViewById<TextView>(R.id.location_city)
                 location.text = cityVM.cityShowName()
                 location.setOnClickListener { onItemClickListener?.onLocationClicked(cityVM) }
             }
-            TYPE_TITLE -> {
+            CityVM.ViewType.TITLE -> {
                 val title = holder.findViewById<TextView>(R.id.item_title)
                 title.text = cityVM.cityShowName()
             }
@@ -90,12 +87,6 @@ class AddressSelectorAdapter : RecyclerView.Adapter<BaseViewHolder>() {
 
     override fun getItemCount(): Int {
         return list.size
-    }
-
-    companion object {
-        private val TYPE_HEADER = 0
-        private val TYPE_TITLE = 1
-        private val TYPE_CONTENT = 2
     }
 
     interface OnItemClickListener {

@@ -43,8 +43,8 @@
             android:name=".modular.login.activity.LoginActivity"
             android:launchMode="singleTask">
             <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
             <!--</intent-filter>-->
         </activity>
         <activity android:name=".modular.register.activity.UserAgreementActivity" />
@@ -62,12 +62,13 @@
         <activity
             android:name=".modular.internet.activity.NewAccountSuccessActivity"
             android:noHistory="true" />
-        <activity
-            android:name=".modular.internet.activity.AddressSelectorActivity"
-            android:noHistory="true" />
+        <activity android:name=".modular.internet.activity.AddressSelectorActivity" />
         <activity android:name=".modular.payments.activity.PaymentsActivity" />
         <activity android:name=".modular.payments.activity.PaymentsHistoryActivity" />
         <activity android:name=".modular.payments.activity.PaymentsCompleteActivity" />
+        <activity
+            android:name=".acp.AcpActivity"
+            android:theme="@style/Theme.Transparent" />
         <!--微信-->
         <activity
             android:name=".wxapi.WXEntryActivity"
