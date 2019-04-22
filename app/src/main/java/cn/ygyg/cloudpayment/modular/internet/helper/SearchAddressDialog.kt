@@ -9,6 +9,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.Gravity
 import android.view.KeyEvent
+import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
@@ -18,12 +19,14 @@ import cn.ygyg.cloudpayment.modular.internet.vm.CityVM
 import cn.ygyg.cloudpayment.utils.BaseViewHolder
 import cn.ygyg.cloudpayment.utils.TextSearchUtils
 import cn.ygyg.cloudpayment.widget.CleanUpEditText
+import cn.ygyg.cloudpayment.widget.EmptyView
 import com.cn.lib.retrofit.network.util.LogUtil
 
 class SearchAddressDialog(context: Context) : Dialog(context) {
     private var searchBtn: TextView
     private var search: CleanUpEditText
     private var searchList: RecyclerView
+    private var emptyView: EmptyView
 
 
     var onAddressClickListener: OnAddressClickListener? = null
@@ -42,6 +45,9 @@ class SearchAddressDialog(context: Context) : Dialog(context) {
         searchBtn = findViewById(R.id.search_btn)
         search = findViewById(R.id.search)
         searchList = findViewById(R.id.search_list)
+        emptyView = findViewById(R.id.empty_view)
+        emptyView.setEmptyText("该城市暂未开通燃气缴费服务")
+        emptyView.setEmptyImageResource(R.mipmap.image_empty_data)
 
         searchList.layoutManager = LinearLayoutManager(context)
         searchList.adapter = adapter
@@ -66,12 +72,16 @@ class SearchAddressDialog(context: Context) : Dialog(context) {
             }
         })
         search.setOnEditorActionListener { v, actionId, event ->
-            if (event.action == KeyEvent.ACTION_UP) {
-                searchAddress(v.text.toString())
+            var click = true
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                event?.let {
+                    click = event.action == KeyEvent.ACTION_UP
+                }
+                if (click) {
+                    searchAddress(v.text.toString())
+                }
             }
-
-
-            actionId == EditorInfo.IME_ACTION_SEARCH
+            click
         }
         searchBtn.setOnClickListener {
             if (search.text.isEmpty()) {
@@ -80,11 +90,6 @@ class SearchAddressDialog(context: Context) : Dialog(context) {
                 searchAddress(search.text.toString())
             }
         }
-    }
-
-    override fun show() {
-        super.show()
-        search.requestFocus()
     }
 
     /**
@@ -103,6 +108,8 @@ class SearchAddressDialog(context: Context) : Dialog(context) {
                 }
             }
         }
+        emptyView.visibility = if (result.size == 0) View.VISIBLE else View.GONE
+        searchList.visibility = if (result.size == 0) View.GONE else View.VISIBLE
         adapter.setData(result)
     }
 
@@ -111,7 +118,7 @@ class SearchAddressDialog(context: Context) : Dialog(context) {
     }
 
     interface DataSourceGetter {
-        fun dataSource(): ArrayList<CityVM>?
+        fun dataSource(): ArrayList<out CityVM>?
 
     }
 }

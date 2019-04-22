@@ -15,6 +15,7 @@
     <string name="read_and_agree">我已阅读并同意</string>
     <string name="protocol_title">《云缴费用户协议》</string>
     <string name="confirm_account">确认充值帐户</string>
+    <string name="company_select">选择燃气集团</string>
     <string name="close">关闭</string>
     <string name="user_name">用户姓名</string>
     <string name="address_msg">地址信息</string>
@@ -69,4 +70,7 @@
     <string name="payment_time">缴费时间</string>
     <string name="loading">加载中...</string>
     <string name="hint_input_city_search">输入城市名/拼音或者字母查询</string>
+
+    <string name="no_company_in_city">该城市暂未开通燃气缴费服务\n请重新选择城市</string>
+    <string name="i_know_it">我知道了</string>
 </resources>

@@ -10,7 +10,7 @@ class AddressSelectorActivityContract {
         /**
          * 加载城市列表
          */
-        fun onLoadCityListSuccess(response: ArrayList<CityVM>)
+        fun onLoadCityListSuccess(response: ArrayList<out CityVM>)
 
         fun addTitleSuccess(response: ArrayList<CityVM>, titlePositionMap: ArrayMap<String, Int>)
     }

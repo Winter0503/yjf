@@ -6,5 +6,7 @@ interface CityVM {
 
     fun cityPinyin(): String
 
+    fun initCityPinyin(pinyin: String)
+
     fun isRealCity(): Boolean
 }

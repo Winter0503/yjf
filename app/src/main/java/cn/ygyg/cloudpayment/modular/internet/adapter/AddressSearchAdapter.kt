@@ -8,7 +8,6 @@ import android.widget.TextView
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.modular.internet.vm.CityVM
 import cn.ygyg.cloudpayment.utils.BaseViewHolder
-import com.cn.lib.retrofit.network.util.LogUtil
 
 class AddressSearchAdapter : RecyclerView.Adapter<BaseViewHolder>() {
     private val list: ArrayList<CityVM> by lazy { ArrayList<CityVM>() }
@@ -20,7 +19,6 @@ class AddressSearchAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         list?.let {
             this.list.addAll(it)
         }
-        LogUtil.i("setData", this.list.size.toString())
         notifyDataSetChanged()
     }
 

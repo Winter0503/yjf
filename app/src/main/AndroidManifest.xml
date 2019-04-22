@@ -57,7 +57,9 @@
         <activity
             android:name=".modular.internet.activity.NewAccountSuccessActivity"
             android:noHistory="true" />
-        <activity android:name=".modular.internet.activity.AddressSelectorActivity" />
+        <activity
+            android:name=".modular.internet.activity.AddressSelectorActivity"
+            android:noHistory="true" />
         <activity android:name=".modular.payments.activity.PaymentsActivity" />
         <activity android:name=".modular.payments.activity.PaymentsHistoryActivity" />
         <activity android:name=".modular.payments.activity.PaymentsCompleteActivity" />

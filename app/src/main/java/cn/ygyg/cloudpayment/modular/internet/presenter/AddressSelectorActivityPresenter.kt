@@ -1,10 +1,16 @@
 package cn.ygyg.cloudpayment.modular.internet.presenter
 
 import android.util.ArrayMap
+import cn.ygyg.cloudpayment.api.RequestManager
+import cn.ygyg.cloudpayment.api.UrlConstants
 import cn.ygyg.cloudpayment.modular.internet.contract.AddressSelectorActivityContract
-import cn.ygyg.cloudpayment.modular.internet.entity.AddressCityEntity
+import cn.ygyg.cloudpayment.modular.internet.entity.CityListResponseEntity
+import cn.ygyg.cloudpayment.modular.internet.entity.CityTitle
 import cn.ygyg.cloudpayment.modular.internet.vm.CityVM
+import cn.ygyg.cloudpayment.utils.ProgressUtil
 import com.cn.lib.basic.BasePresenterImpl
+import com.cn.lib.retrofit.network.callback.ResultCallback
+import com.cn.lib.retrofit.network.exception.ApiThrowable
 import com.github.promeg.pinyinhelper.Pinyin
 import java.util.*
 import kotlin.collections.ArrayList
@@ -13,19 +19,30 @@ class AddressSelectorActivityPresenter(view: AddressSelectorActivityContract.Vie
         BasePresenterImpl<AddressSelectorActivityContract.View>(view),
         AddressSelectorActivityContract.Presenter {
     override fun loadCityList() {
-        var response = ArrayList<CityVM>()
-        response.add(AddressCityEntity().apply { cityName = "北京" })
-        response.add(AddressCityEntity().apply { cityName = "石家庄市" })
-        response.add(AddressCityEntity().apply { cityName = "邯郸市" })
-        response.add(AddressCityEntity().apply { cityName = "重庆" })
-        response.add(AddressCityEntity().apply { cityName = "张家口市" })
-        response.add(AddressCityEntity().apply { cityName = "泊头市" })
-        response.add(AddressCityEntity().apply { cityName = "任丘市" })
-        response.add(AddressCityEntity().apply { cityName = "黄骅市" })
-        response.add(AddressCityEntity().apply { cityName = "潞城市" })
-        response.add(AddressCityEntity().apply { cityName = "巴彦淖尔市" })
-        response = getSortPinyinCityList(response)
-        mvpView?.onLoadCityListSuccess(response)
+
+
+        RequestManager.get(UrlConstants.cityList)
+                .execute("cityList", object : ResultCallback<CityListResponseEntity>() {
+                    override fun onStart(tag: Any?) {
+                        mvpView?.getViewContext()?.let {
+                            ProgressUtil.showProgressDialog(it, "")
+                        }
+                    }
+
+                    override fun onCompleted(tag: Any?) {
+                        ProgressUtil.dismissProgressDialog()
+                    }
+
+                    override fun onError(tag: Any?, e: ApiThrowable) {
+                        e.message?.let { mvpView?.showToast(it) }
+                    }
+
+                    override fun onSuccess(tag: Any?, t: CityListResponseEntity) {
+                        t.list?.let {
+                            mvpView?.onLoadCityListSuccess(getSortPinyinCityList(it))
+                        }
+                    }
+                })
     }
 
     override fun addTitleItem(response: ArrayList<out CityVM>) {
@@ -37,7 +54,7 @@ class AddressSelectorActivityPresenter(view: AddressSelectorActivityContract.Vie
             val c = pinyin[0]
             if (c != char) {
                 titlePositionMap[c.toString()] = result.size
-                result.add(AddressCityEntity().apply { cityName = c.toString() })
+                result.add(CityTitle().apply { cityTitle = c.toString() })
             }
             result.add(ele)
             char = c
@@ -49,12 +66,11 @@ class AddressSelectorActivityPresenter(view: AddressSelectorActivityContract.Vie
 
     }
 
-    private fun getSortPinyinCityList(response: ArrayList<CityVM>): ArrayList<CityVM> {
-        val map = TreeMap<String, AddressCityEntity>()
+    private fun getSortPinyinCityList(response: ArrayList<out CityVM>): ArrayList<CityVM> {
+        val map = TreeMap<String, CityVM>()
         for (ele in response) {
-            ele as AddressCityEntity
             val pinyin = Pinyin.toPinyin(ele.cityShowName(), "")
-            ele.cityPinyin = pinyin
+            ele.initCityPinyin(pinyin)
             map[pinyin] = ele
         }
         return ArrayList(map.values)
