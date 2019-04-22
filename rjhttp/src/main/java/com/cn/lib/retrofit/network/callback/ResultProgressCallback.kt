@@ -41,7 +41,7 @@ abstract class ResultProgressCallback<T> : ResultCallback<T>() {
 
     }
 
-    override fun onSuccess(tag: Any?, t: T) {
+    override fun onSuccess(tag: Any?, t: T?) {
 
     }
 

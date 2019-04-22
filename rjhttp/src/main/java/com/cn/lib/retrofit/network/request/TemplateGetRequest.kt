@@ -2,6 +2,7 @@ package com.cn.lib.retrofit.network.request
 
 import com.cn.lib.retrofit.network.callback.ResponseCallback
 import com.cn.lib.retrofit.network.callback.ResponseClazzCallback
+import com.cn.lib.retrofit.network.config.Optional
 import com.cn.lib.retrofit.network.func.RetryExceptionFunc
 import com.cn.lib.retrofit.network.subscriber.RxCallbackSubscriber
 import com.cn.lib.retrofit.network.subscriber.RxClazzCallbackSubscriber
@@ -16,15 +17,15 @@ import java.lang.reflect.Type
 
 class TemplateGetRequest(url: String) : HttpBodyRequest<TemplateGetRequest>(url) {
 
-    fun <T> execute(type: Type): Observable<T> {
+    fun <T> execute(type: Type): Observable<Optional<T>> {
         return build().generateRequest()
                 .compose<ResponseBody>(if (isSyncRequest) RxUtil._io_main<ResponseBody>() else RxUtil._main())
                 .compose(HandleErrorTransformer<ResponseBody>())
                 .retryWhen(RetryExceptionFunc(mRetryCount, mRetryDelay.toLong(), mRetryIncreaseDelay.toLong()))
-                .compose(HandleClazzBodyTransformer<T>(type, null))
+                .compose(HandleClazzBodyTransformer(type, null))
     }
 
-    fun <T> execute(clazz: Class<T>): Observable<T> {
+    fun <T> execute(clazz: Class<T>): Observable<Optional<T>> {
         return build().generateRequest()
                 .compose<ResponseBody>(if (isSyncRequest) RxUtil._io_main() else RxUtil._main())
                 .compose(HandleErrorTransformer())
@@ -53,7 +54,7 @@ class TemplateGetRequest(url: String) : HttpBodyRequest<TemplateGetRequest>(url)
 
     fun <T> execute(tag: Any, callback: ResponseCallback<T>): Disposable {
         val observable = build().generateObservable(generateRequest())
-        return observable.compose(HandleResponseBodyTransformer(callback, tag))
+        return observable.compose(HandleResponseBodyTransformer(callback))
                 .compose(HandleErrorTransformer())
                 .subscribeWith(RxCallbackSubscriber(mContext, tag, callback))
     }

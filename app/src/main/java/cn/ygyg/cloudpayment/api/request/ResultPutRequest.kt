@@ -15,24 +15,24 @@ import java.lang.reflect.Type
  */
 class ResultPutRequest(url: String) : ApiResultPutRequest(url) {
 
-    override fun <T> execute(clazz: Class<T>): Observable<T> {
-        return execute(object : ResultClazzCallProxy<BaseApiResultEntity<T>, T>(clazz) {})
-    }
-
-    override fun <T> execute(type: Type): Observable<T> {
-        return execute(object : ResultClazzCallProxy<BaseApiResultEntity<T>, T>(type) {})
-    }
-
-    fun <T> getObservable(proxy: ResultClazzCallProxy<out BaseApiResultEntity<T>, T>): Observable<T> {
-        return super.execute(proxy)
-    }
-
-    override fun <T> execute(tag: Any, callback: ResultCallback<T>): Disposable {
-        return super.execute(tag, object : ResultCallbackProxy<BaseApiResultEntity<T>, T>(callback) {})
-    }
-
-    fun <T> executeClazz(tag: Any, proxy: ResultCallbackProxy<out BaseApiResultEntity<T>, T>): Disposable {
-        return super.execute(tag, proxy)
-    }
+//    override fun <T> execute(clazz: Class<T>): Observable<T> {
+//        return execute(object : ResultClazzCallProxy<BaseApiResultEntity<T>, T>(clazz) {})
+//    }
+//
+//    override fun <T> execute(type: Type): Observable<T> {
+//        return execute(object : ResultClazzCallProxy<BaseApiResultEntity<T>, T>(type) {})
+//    }
+//
+//    fun <T> getObservable(proxy: ResultClazzCallProxy<out BaseApiResultEntity<T>, T>): Observable<T> {
+//        return super.execute(proxy)
+//    }
+//
+//    override fun <T> execute(tag: Any, callback: ResultCallback<T>): Disposable {
+//        return super.execute(tag, object : ResultCallbackProxy<BaseApiResultEntity<T>, T>(callback) {})
+//    }
+//
+//    fun <T> executeClazz(tag: Any, proxy: ResultCallbackProxy<out BaseApiResultEntity<T>, T>): Disposable {
+//        return super.execute(tag, proxy)
+//    }
 
 }

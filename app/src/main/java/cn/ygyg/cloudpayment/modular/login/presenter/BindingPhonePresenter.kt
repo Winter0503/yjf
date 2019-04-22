@@ -14,10 +14,13 @@ import com.cn.lib.retrofit.network.exception.ApiThrowable
 import com.cn.lib.retrofit.network.subscriber.ResultCallbackSubscriber
 import com.loc.m
 import io.reactivex.Observable
+import io.reactivex.ObservableSource
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl<BindingPhoneContract.View>(view), BindingPhoneContract.Presenter {
@@ -113,7 +116,7 @@ class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl
                         }
                     }
 
-                    override fun onSuccess(tag: Any?, t: String) {
+                    override fun onSuccess(tag: Any?, t: String?) {
                         //获取验证码成功开始倒计时
                         startCountDown()
                     }

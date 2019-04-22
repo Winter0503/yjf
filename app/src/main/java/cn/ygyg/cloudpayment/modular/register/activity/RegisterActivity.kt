@@ -8,6 +8,7 @@ import cn.ygyg.cloudpayment.modular.register.contract.RegisterContract
 import cn.ygyg.cloudpayment.modular.register.presenter.RegisterPresenter
 import com.cn.lib.util.ResourceUtil
 import com.cn.lib.basic.BaseMvpActivity
+import com.cn.lib.util.ToastUtil
 import kotlinx.android.synthetic.main.activity_register.*
 
 
@@ -78,7 +79,7 @@ class RegisterActivity : BaseMvpActivity<RegisterContract.Presenter, RegisterCon
     }
 
     override fun registerSuccess() {
-        showToast("注册成功")
+        ToastUtil.showSuccessToast(getViewContext(), "注册成功")
         this.finish()
     }
 

@@ -172,7 +172,7 @@ class RegisterPresenter(view: RegisterContract.View) : RegisterContract.Presente
                         }
                     }
 
-                    override fun onSuccess(tag: Any?, t: String) {
+                    override fun onSuccess(tag: Any?, t: String?) {
                         mvpView?.checkPhoneSuccess()
                     }
                 }))
@@ -181,7 +181,7 @@ class RegisterPresenter(view: RegisterContract.View) : RegisterContract.Presente
     override fun submitRegister(phone: String, password: String, code: String) {
         val reg = "^(?![a-zA-Z]+\$)(?!\\d+\$)\\S{6,}\$"
         if (!StringUtil.match(reg, password)) {
-            mvpView?.showToast("密码设置6-20位必须包含数字和字母")
+            mvpView?.showToast("密码设置：必须包含数字和字母")
             return
         }
         RequestManager.post(UrlConstants.register)
@@ -205,7 +205,7 @@ class RegisterPresenter(view: RegisterContract.View) : RegisterContract.Presente
                         }
                     }
 
-                    override fun onSuccess(tag: Any?, t: String) {
+                    override fun onSuccess(tag: Any?, t: String?) {
                         mvpView?.registerSuccess()
                     }
                 })

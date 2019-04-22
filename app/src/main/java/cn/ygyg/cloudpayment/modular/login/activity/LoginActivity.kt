@@ -1,8 +1,10 @@
 package cn.ygyg.cloudpayment.modular.login.activity
 
 import android.text.InputFilter
+import android.text.InputType
 import android.text.InputType.*
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.app.MyApplication
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
@@ -99,6 +101,15 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
                 MyApplication.getApplication().mWxApi.sendReq(req)
             }
         }
+        btn_pwd.setOnClickListener {
+            if (edit_login_code.inputType != EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) { //显示密码
+                edit_login_code.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                btn_pwd.setImageResource(R.mipmap.pwd_open)
+            } else {//隐藏密码
+                edit_login_code.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                btn_pwd.setImageResource(R.mipmap.pwd_close)
+            }
+        }
     }
 
     /**
@@ -109,7 +120,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
         edit_login_code.apply {
             hint = ResourceUtil.getString(getViewContext(), R.string.input_password)
             addTextChangedListener(mPresenter?.getPasswordTextChangeListener())
-            inputType = TYPE_TEXT_VARIATION_PASSWORD
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             filters = arrayOf(InputFilter.LengthFilter(20))
         }
         btn_retrieve_password.visibility = View.VISIBLE

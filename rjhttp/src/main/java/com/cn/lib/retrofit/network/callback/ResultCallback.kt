@@ -29,5 +29,5 @@ abstract class ResultCallback<T> : IResultType<T> {
 
     abstract fun onError(tag: Any?, e: ApiThrowable)
 
-    abstract fun onSuccess(tag: Any?, t: T)
+    abstract fun onSuccess(tag: Any?, t: T?)
 }

@@ -54,6 +54,10 @@ class ActivityListUtil {
         }
     }
 
+    fun removeActivity(activity: Activity?){
+        activityStack.remove(activity)
+    }
+
     /**
      * 结束指定类名的Activity
      */

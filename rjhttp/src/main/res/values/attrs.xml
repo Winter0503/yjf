@@ -42,4 +42,12 @@
         <!-- Tab之间竖线高度所占总高度的比值（2-9） -->
         <attr name="indicator_verticalLineHeightRatio" format="integer" />
     </declare-styleable>
+
+    <declare-styleable name="CardViewShadow">
+        <!-- Default Paint Color (color). -->
+        <attr name="startColor" format="reference|color"/>
+        <!-- Selected Paint Color (color). -->
+        <attr name="endColor" format="reference|color"/>
+        <attr name="topDelta" format="float"/>
+    </declare-styleable>
 </resources>

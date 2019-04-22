@@ -3,9 +3,10 @@ package com.cn.lib.retrofit.network.subscriber
 import android.content.Context
 
 import com.cn.lib.retrofit.network.callback.ResponseCallback
+import com.cn.lib.retrofit.network.config.Optional
 import com.cn.lib.retrofit.network.exception.ApiThrowable
 
-class RxCallbackSubscriber<T> : BaseSubscriber<T> {
+class RxCallbackSubscriber<T> : BaseSubscriber<Optional<T>> {
 
     private var mCallback: ResponseCallback<T>? = null
     private var mTag: Any? = null
@@ -27,10 +28,9 @@ class RxCallbackSubscriber<T> : BaseSubscriber<T> {
         }
     }
 
-    override fun onNext(result: T) {
-        super.onNext(result)
+    override fun onNext(result: Optional<T>) {
         mCallback?.run {
-            onSuccess(mTag, result)
+            onSuccess(mTag, result.getIncludeNull())
         }
     }
 

@@ -1,6 +1,7 @@
 package com.cn.lib.util
 
 import android.content.Context
+import android.support.annotation.DrawableRes
 import android.util.Log
 import android.view.Gravity
 import android.view.View
@@ -22,6 +23,13 @@ object ToastUtil {
     private var toast: Toast? = null
     private var oneTime: Long = 0
     private var twoTime: Long = 0
+    private var successImageResId = 0
+    private var errorImageResId = 0
+
+    fun initResId(@DrawableRes successImageResId: Int, @DrawableRes errorImageResId: Int) {
+        this.successImageResId = successImageResId
+        this.errorImageResId = errorImageResId
+    }
 
     /**
      * 弹一个Toast
@@ -61,7 +69,7 @@ object ToastUtil {
      * @param msgResId 要展示信息资源ID
      */
     fun showSuccessToast(context: Context, msgResId: Int) {
-        showImageToast(context, 0, msgResId)
+        showImageToast(context, successImageResId, msgResId)
     }
 
     /**
@@ -70,7 +78,7 @@ object ToastUtil {
      * @param msg 要展示信息
      */
     fun showSuccessToast(context: Context, msg: String) {
-        showImageToast(context, 0, msg)
+        showImageToast(context, successImageResId, msg)
     }
 
     /**
@@ -79,7 +87,7 @@ object ToastUtil {
      * @param msgResId 要展示信息资源ID
      */
     fun showErrorToast(context: Context, msgResId: Int) {
-        showImageToast(context, 0, msgResId)
+        showImageToast(context, errorImageResId, msgResId)
     }
 
     /**
@@ -88,7 +96,7 @@ object ToastUtil {
      * @param msg 要展示信息
      */
     fun showErrorToast(context: Context, msg: String) {
-        showImageToast(context, 0, msg)
+        showImageToast(context, errorImageResId, msg)
     }
 
     /**
@@ -123,7 +131,7 @@ object ToastUtil {
                 it.setText(msg)
                 it.show()
             }
-        }?:also {
+        } ?: also {
             toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT)
             toast?.let {
                 val view = it.view as LinearLayout
@@ -134,7 +142,7 @@ object ToastUtil {
                 val padding = DensityUtil.dip2px(context, 10f)
                 view.setPadding(padding, padding, padding, padding)
                 //设置透明度
-                view.background.alpha = 150
+//                view.background.alpha = 153
                 //设置Toast提示消息在屏幕上的位置
                 it.setGravity(Gravity.CENTER, 0, 0)
                 it.show()
@@ -199,10 +207,10 @@ object ToastUtil {
             //设置圆角背景
             toastView.setBackgroundResource(R.drawable.shape_stroke_black)
             //设置透明度
-            toastView.background.alpha = 150
+//            toastView.background.alpha = 153
             //获得文本View
             val childAt = toastView.getChildAt(0) as TextView
-            childAt.setTextColor(ResourceUtil.getColor(context,android.R.color.white))
+            childAt.setTextColor(ResourceUtil.getColor(context, android.R.color.white))
             //获得顶部的间距
             val paddingMid = DensityUtil.dip2px(context, 10f)
             //根据屏幕计算左右padding
@@ -215,7 +223,7 @@ object ToastUtil {
             params.topMargin = padding
             childAt.layoutParams = params
             childAt.gravity = Gravity.CENTER
-            childAt.setCompoundDrawablesWithIntrinsicBounds(null, ResourceUtil.getDrawable(context,imageResourceId), null, null)
+            childAt.setCompoundDrawablesWithIntrinsicBounds(null, ResourceUtil.getDrawable(context, imageResourceId), null, null)
             childAt.compoundDrawablePadding = paddingMid
             toast.show()
             return toast

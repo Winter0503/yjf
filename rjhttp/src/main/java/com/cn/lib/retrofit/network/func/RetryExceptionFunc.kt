@@ -10,10 +10,11 @@ import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 
 import io.reactivex.Observable
+import io.reactivex.ObservableSource
 import io.reactivex.functions.BiFunction
 import io.reactivex.functions.Function
 
-class RetryExceptionFunc : Function<Observable<out Throwable>, Observable<*>> {
+class RetryExceptionFunc : Function<Observable<out Throwable>, ObservableSource<*>> {
     /* retry次数*/
     private var count = 0
     /*延迟*/

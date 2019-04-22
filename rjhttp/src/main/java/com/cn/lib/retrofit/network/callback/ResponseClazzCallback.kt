@@ -10,7 +10,7 @@ import com.cn.lib.retrofit.network.exception.ServerException
 
 import okhttp3.ResponseBody
 
-abstract class ResponseClazzCallback<D> : IResponseCallback<String> {
+abstract class ResponseClazzCallback<in D> : IResponseCallback<String> {
 
     @Throws(Exception::class)
     override fun onTransformationResponse(body: ResponseBody): String {

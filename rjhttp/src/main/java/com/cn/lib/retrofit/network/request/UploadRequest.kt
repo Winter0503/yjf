@@ -7,6 +7,7 @@ import com.cn.lib.retrofit.network.callback.ResultCallback
 import com.cn.lib.retrofit.network.proxy.ResultCallbackProxy
 import com.cn.lib.retrofit.network.proxy.ResultClazzCallProxy
 import com.cn.lib.retrofit.network.callback.ResultProgressCallback
+import com.cn.lib.retrofit.network.config.Optional
 import com.cn.lib.retrofit.network.entity.ApiResultEntity
 import com.cn.lib.retrofit.network.entity.FileEntity
 import com.cn.lib.retrofit.network.func.ApiResultFunc
@@ -104,22 +105,22 @@ open class UploadRequest(url: String) : HttpBodyRequest<UploadRequest>(url) {
     }
 
 
-     fun <T> execute(clazz: Class<T>, callback: ResultProgressCallback<T>): Observable<T> {
+     fun <T> execute(clazz: Class<T>, callback: ResultProgressCallback<T>): Observable<Optional<T>> {
         return execute(object : ResultClazzCallProxy<ApiResultEntity<T>, T>(clazz) {
 
         }, callback)
     }
 
-     fun <T> execute(type: Type, callback: ResultProgressCallback<T>): Observable<T> {
+     fun <T> execute(type: Type, callback: ResultProgressCallback<T>): Observable<Optional<T>> {
         return execute(object : ResultClazzCallProxy<ApiResultEntity<T>, T>(type) {
 
         }, callback)
     }
 
-    private fun <T> execute(proxy: ResultClazzCallProxy<out ApiResultEntity<T>, T>, callback: ResultProgressCallback<T>): Observable<T> {
+    private fun <T> execute(proxy: ResultClazzCallProxy<out ApiResultEntity<T>, T>, callback: ResultProgressCallback<T>): Observable<Optional<T>> {
         return addInterceptor(ProgressRequestInterceptor(null, callback)).build().generateRequest()
                 .map(ApiResultFunc<T>(proxy.getType()))
-                .compose<T>(if (isSyncRequest) RxUtil._io_main_result() else RxUtil._main_result())
+                .compose<Optional<T>>(if (isSyncRequest) RxUtil._io_main_result() else RxUtil._main_result())
                 .retryWhen(RetryExceptionFunc(mRetryCount, mRetryDelay.toLong(), mRetryIncreaseDelay.toLong()))
     }
 
@@ -136,9 +137,9 @@ open class UploadRequest(url: String) : HttpBodyRequest<UploadRequest>(url) {
         return observable.subscribeWith(ResultCallbackSubscriber(tag, callback))
     }
 
-    private fun <T> generateObservable(observable: Observable<ResponseBody>, proxy: ResultCallbackProxy<out ApiResultEntity<T>, T>): Observable<T> {
+    private fun <T> generateObservable(observable: Observable<ResponseBody>, proxy: ResultCallbackProxy<out ApiResultEntity<T>, T>): Observable<Optional<T>> {
         return observable.map(ApiResultFunc<T>(proxy.getType()))
-                .compose<T>(if (isSyncRequest) RxUtil._io_main_result() else RxUtil._main_result())
+                .compose<Optional<T>>(if (isSyncRequest) RxUtil._io_main_result() else RxUtil._main_result())
                 .retryWhen(RetryExceptionFunc(mRetryCount, mRetryDelay.toLong(), mRetryIncreaseDelay.toLong()))
     }
 

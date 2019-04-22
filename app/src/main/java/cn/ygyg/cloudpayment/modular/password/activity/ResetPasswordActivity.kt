@@ -10,11 +10,12 @@ import cn.ygyg.cloudpayment.modular.password.presenter.ResetPasswordPresenter
 import com.cn.lib.util.ResourceUtil
 import com.cn.lib.basic.BaseMvpActivity
 import com.cn.lib.util.ActivityListUtil
+import com.cn.lib.util.ToastUtil
 import kotlinx.android.synthetic.main.activity_reset_password.*
 
 class ResetPasswordActivity : BaseMvpActivity<ResetPasswordContract.Presenter, ResetPasswordContract.View>(), ResetPasswordContract.View {
-    override fun modifyPasswordSuccess() {
-        showToast("修改密码成功，请使用新密码登录")
+    override fun forgetPasswordSuccess() {
+       ToastUtil.showSuccessToast(getViewContext(), "重置密码成功")
         ActivityListUtil.INSTANCE.finishAllActivity(true)
         toActivity(LoginActivity::class.java)
     }

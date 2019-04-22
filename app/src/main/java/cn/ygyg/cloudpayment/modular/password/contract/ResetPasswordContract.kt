@@ -13,7 +13,7 @@ class ResetPasswordContract {
         /**
          * 修改密码成功
          */
-        fun modifyPasswordSuccess()
+        fun forgetPasswordSuccess()
 
     }
 

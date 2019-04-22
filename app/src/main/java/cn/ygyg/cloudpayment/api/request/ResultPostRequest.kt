@@ -2,6 +2,8 @@ package cn.ygyg.cloudpayment.api.request
 
 import cn.ygyg.cloudpayment.api.BaseApiResultEntity
 import com.cn.lib.retrofit.network.callback.ResultCallback
+import com.cn.lib.retrofit.network.config.Optional
+import com.cn.lib.retrofit.network.entity.ApiResultEntity
 import com.cn.lib.retrofit.network.proxy.ResultCallbackProxy
 import com.cn.lib.retrofit.network.proxy.ResultClazzCallProxy
 import com.cn.lib.retrofit.network.request.ApiResultPostRequest
@@ -15,12 +17,12 @@ import java.lang.reflect.Type
  */
 class ResultPostRequest(url: String) : ApiResultPostRequest(url) {
 
-    override fun <T> execute(clazz: Class<T>): Observable<T> {
+    override fun <T> execute(clazz: Class<T>): Observable<Optional<T>> {
         return super.execute(object : ResultClazzCallProxy<BaseApiResultEntity<T>, T>(clazz) {})
     }
 
-    override fun <T> execute(type: Type): Observable<T> {
-        return super.execute(object : ResultClazzCallProxy<BaseApiResultEntity<T>, T>(type) {})
+    override fun <T> execute(type: Type): Observable<Optional<T>> {
+        return execute(object : ResultClazzCallProxy<BaseApiResultEntity<T>, T>(type) {})
     }
 
     override fun <T> execute(tag: Any, callback: ResultCallback<T>): Disposable {

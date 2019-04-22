@@ -1,13 +1,13 @@
 {
-  "codeKey": "status",
-  "msgKey": "msg",
+  "codeKey": "retCode",
+  "msgKey": "retMsg",
   "dataKey": [
     "rspBody",
     "resultData",
-    "results"
+    "result"
   ],
   "successCode": [
-    "0000000",
+    "000000",
     "1001"
   ],
   "error": {

@@ -2,8 +2,10 @@ package cn.ygyg.cloudpayment.app
 
 import android.annotation.SuppressLint
 import android.app.Application
+import cn.ygyg.cloudpayment.R
 import com.alibaba.fastjson.support.retrofit.Retrofit2ConverterFactory
 import com.cn.lib.retrofit.network.RxHttp
+import com.cn.lib.util.ToastUtil
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
@@ -14,9 +16,11 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory
  */
 class MyApplication : Application() {
     open lateinit var mWxApi: IWXAPI
+
     companion object {
         @SuppressLint("StaticFieldLeak")
         private lateinit var mApp: MyApplication
+
         fun getApplication(): MyApplication {
             return mApp
         }
@@ -27,6 +31,7 @@ class MyApplication : Application() {
         mApp = this
         initRequestBase()
         registerToWX()
+        ToastUtil.initResId(R.mipmap.toast_success, 0)
     }
 
     private fun registerToWX() {

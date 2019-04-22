@@ -169,7 +169,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
     override fun getVerificationCode(phone: String) {
         RequestManager.post(UrlConstants.captcha)
                 .param("phone",phone)
-                .execute("captcha", object : ResultCallback<String>() {
+                .execute("login", object : ResultCallback<String>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.getViewContext()?.let {
                             ProgressUtil.showProgressDialog(it, "获取验证码中...")
@@ -186,7 +186,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
                         }
                     }
 
-                    override fun onSuccess(tag: Any?, t: String) {
+                    override fun onSuccess(tag: Any?, t: String?) {
                         //获取验证码成功开始倒计时
                         startCountDown()
                     }
@@ -231,7 +231,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
                 }
             }
 
-            override fun onSuccess(tag: Any?, t: String) {
+            override fun onSuccess(tag: Any?, t: String?) {
                 mvpView?.loginSuccess()
             }
 

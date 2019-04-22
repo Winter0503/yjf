@@ -23,7 +23,7 @@ object UrlConstants {
     /**
      * 验证码登录
      */
-    const val captchalogin = "chaoscloud-customerapi/customerapi/user/captchalogin"
+    const val captchalogin = "chaoscloud-customerapi/customerapi/user/captchaLogin"
     /**
      * 忘记密码修改密码
      */

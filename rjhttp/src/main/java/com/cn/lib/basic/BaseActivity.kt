@@ -42,6 +42,11 @@ abstract class BaseActivity : FragmentActivity(), View.OnClickListener, IBaseVie
         initData()
     }
 
+    override fun finish() {
+        ActivityListUtil.INSTANCE.removeActivity(this)
+        super.finish()
+    }
+
 
     override fun onClick(v: View) {
         if (CommonUtil.isFastDoubleClick) {

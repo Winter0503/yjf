@@ -17,6 +17,7 @@ import com.cn.lib.retrofit.network.entity.UploadFileType
 import com.cn.lib.retrofit.network.callback.ResponseTemplateCallback
 import com.cn.lib.retrofit.network.proxy.ResultCallbackProxy
 import com.cn.lib.retrofit.network.callback.ResultProgressCallback
+import com.cn.lib.retrofit.network.config.Optional
 import com.cn.lib.retrofit.network.config.ResultConfigLoader
 import com.cn.lib.retrofit.network.exception.ApiThrowable
 import com.cn.lib.retrofit.network.request.CommPostRequest
@@ -54,19 +55,20 @@ class MainActivity : AppCompatActivity() {
             param["pageNum"] = 10
             RxHttp.templatePost("home/hotnews")
                     .jsonObj(param)
-                    .execute(String::class.java).subscribeWith(object : DisposableObserver<String>() {
-                override fun onNext(s: String) {
-                    LogUtil.e("MainActivity", "result=$s")
-                }
+                    .execute(String::class.java)
+                    .subscribeWith(object : DisposableObserver<Optional<String>>() {
+                        override fun onNext(t: Optional<String>) {
 
-                override fun onError(e: Throwable) {
-                    LogUtil.e("MainActivity", "onError=$e")
-                }
+                        }
 
-                override fun onComplete() {
+                        override fun onError(e: Throwable) {
+                            LogUtil.e("MainActivity", "onError=$e")
+                        }
 
-                }
-            })
+                        override fun onComplete() {
+
+                        }
+                    })
         }
     }
 
@@ -146,7 +148,7 @@ class MainActivity : AppCompatActivity() {
                         Log.e("tag", "onError=" + throwable.message)
                     }
 
-                    override fun onSuccess(tag: Any?, s: String) {
+                    override fun onSuccess(tag: Any?, s: String?) {
                         Log.e("tag", "onSuccess=$s")
                     }
                 }) {
@@ -180,33 +182,33 @@ class MainActivity : AppCompatActivity() {
                 File.separator + "1.jpg")
         val file2 = File(Environment.getExternalStorageDirectory().toString() +
                 File.separator + "2.jpg")
-        CommPostRequest("upload5273")
-                .param("appId", "27")
-                .baseUrl("http://business-workbench.qingtian.ygego.alpha3/rest/")
-                .uploadType(UploadFileType.PART_FROM)
-                .params("file", file)
-//                .params("file", file2)
-                .execute("upload", object : ResultProgressCallback<String>() {
-                    override fun onStart(tag: Any?) {
-                        Toast.makeText(this@MainActivity, "开始上传", Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onCompleted(tag: Any?) {
-
-                    }
-
-                    override fun onError(tag: Any?, e: ApiThrowable) {
-
-                    }
-
-                    override fun onSuccess(tag: Any?, s: String) {
-                        Toast.makeText(this@MainActivity, s, Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onUIProgressChanged(tag: Any?, numBytes: Long, totalBytes: Long, percent: Float, speed: Float) {
-                        Toast.makeText(this@MainActivity, "numBytes=$numBytes  totalBytes=$totalBytes  percent=$percent  speed=$speed", Toast.LENGTH_SHORT).show()
-                    }
-                })
+//        CommPostRequest("upload5273")
+//                .param("appId", "27")
+//                .baseUrl("http://business-workbench.qingtian.ygego.alpha3/rest/")
+//                .uploadType(UploadFileType.PART_FROM)
+//                .params("file", file)
+////                .params("file", file2)
+//                .execute("upload", object : ResultProgressCallback<String>() {
+//                    override fun onStart(tag: Any?) {
+//                        Toast.makeText(this@MainActivity, "开始上传", Toast.LENGTH_SHORT).show()
+//                    }
+//
+//                    override fun onCompleted(tag: Any?) {
+//
+//                    }
+//
+//                    override fun onError(tag: Any?, e: ApiThrowable) {
+//
+//                    }
+//
+//                    override fun onSuccess(tag: Any?, s: String?) {
+//                        Toast.makeText(this@MainActivity, s, Toast.LENGTH_SHORT).show()
+//                    }
+//
+//                    override fun onUIProgressChanged(tag: Any?, numBytes: Long, totalBytes: Long, percent: Float, speed: Float) {
+//                        Toast.makeText(this@MainActivity, "numBytes=$numBytes  totalBytes=$totalBytes  percent=$percent  speed=$speed", Toast.LENGTH_SHORT).show()
+//                    }
+//                })
     }
 
     fun uploadBodyFile(v: View) {
@@ -217,43 +219,44 @@ class MainActivity : AppCompatActivity() {
                 .addFormDataPart("file", file.name, RequestBody.create(MediaType.parse("image/*"), file))
 //                .addFormDataPart("file", file2.name, RequestBody.create(MediaType.parse("image/*"), file))
                 .build()
-        UploadRequest("upload5273")
-                .baseUrl("http://business-workbench.qingtian.ygego.alpha3/rest/")
-                .uploadType(UploadFileType.BODY)
-                .requestBody(requestBody1)
-                .execute("upload", object : ResultCallbackProxy<CommResultEntity<String>, String>(object : ResultProgressCallback<String>() {
-                    override fun onStart(tag: Any?) {
-                        Toast.makeText(this@MainActivity, "开始上传", Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onCompleted(tag: Any?) {
-
-                    }
-
-                    override fun onError(tag: Any?, e: ApiThrowable) {
-
-                    }
-
-                    override fun onSuccess(tag: Any?, s: String) {
-                        Toast.makeText(this@MainActivity, s, Toast.LENGTH_SHORT).show()
-                    }
-
-                    override fun onUIProgressChanged(tag: Any?, numBytes: Long, totalBytes: Long, percent: Float, speed: Float) {
-                        Toast.makeText(this@MainActivity, "numBytes=$numBytes  totalBytes=$totalBytes  percent=$percent  speed=$speed", Toast.LENGTH_SHORT).show()
-                    }
-                }) {})
+//        UploadRequest("upload5273")
+//                .baseUrl("http://business-workbench.qingtian.ygego.alpha3/rest/")
+//                .uploadType(UploadFileType.BODY)
+//                .requestBody(requestBody1)
+//                .execute("upload", object : ResultCallbackProxy<CommResultEntity<String>, String>(object : ResultProgressCallback<String>() {
+//                    override fun onStart(tag: Any?) {
+//                        Toast.makeText(this@MainActivity, "开始上传", Toast.LENGTH_SHORT).show()
+//                    }
+//
+//                    override fun onCompleted(tag: Any?) {
+//
+//                    }
+//
+//                    override fun onError(tag: Any?, e: ApiThrowable) {
+//
+//                    }
+//
+//                    override fun onSuccess(tag: Any?, s: String?) {
+//                        Toast.makeText(this@MainActivity, s, Toast.LENGTH_SHORT).show()
+//                    }
+//
+//                    override fun onUIProgressChanged(tag: Any?, numBytes: Long, totalBytes: Long, percent: Float, speed: Float) {
+//                        Toast.makeText(this@MainActivity, "numBytes=$numBytes  totalBytes=$totalBytes  percent=$percent  speed=$speed", Toast.LENGTH_SHORT).show()
+//                    }
+//                }) {})
     }
 
     fun downFile(v: View) {
         RxHttp.download("http://yun.ygego.cn/ygego/ygego.apk")
                 .savePath(Environment.getExternalStorageDirectory().absolutePath)
                 .execute("file", object : DownloadProgressCallBack() {
-                    override fun onProgress(tag: Any?, bytesRead: Long, fileSize: Long, progress: Float) {
-                        Log.e("TAG", "bytesRead=$bytesRead fileSize=$fileSize progress=$progress")
+
+                    override fun onSuccess(tag: Any?, filePath: String?) {
+
                     }
 
-                    override fun onSuccess(tag: Any?, filePath: String) {
-
+                    override fun onProgress(tag: Any?, bytesRead: Long, fileSize: Long, progress: Float) {
+                        Log.e("TAG", "bytesRead=$bytesRead fileSize=$fileSize progress=$progress")
                     }
 
                     override fun onStart(tag: Any?) {

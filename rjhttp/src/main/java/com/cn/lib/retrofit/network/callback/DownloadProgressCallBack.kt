@@ -19,7 +19,7 @@ abstract class DownloadProgressCallBack : ResultCallback<String>() {
      * @param tag      标识
      * @param filePath 存储的文件路径
      */
-    abstract override fun onSuccess(tag: Any?, filePath: String)
+    abstract override fun onSuccess(tag: Any?, filePath: String?)
 
     override fun onCompleted(tag: Any?) {
 

@@ -123,7 +123,7 @@ class ResetPasswordPresenter(view: ResetPasswordContract.View) : BasePresenterIm
                         }
                     }
 
-                    override fun onSuccess(tag: Any?, t: String) {
+                    override fun onSuccess(tag: Any?, t: String?) {
                         //获取验证码成功开始倒计时
                         startCountDown()
                     }
@@ -184,8 +184,8 @@ class ResetPasswordPresenter(view: ResetPasswordContract.View) : BasePresenterIm
                         }
                     }
 
-                    override fun onSuccess(tag: Any?, t: String) {
-                        mvpView?.modifyPasswordSuccess()
+                    override fun onSuccess(tag: Any?, t: String?) {
+                        mvpView?.forgetPasswordSuccess()
                     }
 
                 })

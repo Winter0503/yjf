@@ -1,11 +1,12 @@
 package com.cn.lib.retrofit.network.request
 
 import com.cn.lib.retrofit.network.callback.ResultCallback
-import com.cn.lib.retrofit.network.proxy.ResultCallbackProxy
-import com.cn.lib.retrofit.network.proxy.ResultClazzCallProxy
+import com.cn.lib.retrofit.network.config.Optional
 import com.cn.lib.retrofit.network.entity.ApiResultEntity
 import com.cn.lib.retrofit.network.func.ApiResultFunc
 import com.cn.lib.retrofit.network.func.RetryExceptionFunc
+import com.cn.lib.retrofit.network.proxy.ResultCallbackProxy
+import com.cn.lib.retrofit.network.proxy.ResultClazzCallProxy
 import com.cn.lib.retrofit.network.subscriber.ResultCallbackSubscriber
 import com.cn.lib.retrofit.network.util.RxUtil
 import com.cn.lib.retrofit.network.util.Util
@@ -17,18 +18,18 @@ import java.lang.reflect.Type
 
 open class ApiResultDeleteRequest(url: String) : HttpBodyRequest<ApiResultDeleteRequest>(url) {
 
-    open fun <T> execute(clazz: Class<T>): Observable<T> {
+    open fun <T> execute(clazz: Class<T>): Observable<Optional<T>> {
         return execute(object : ResultClazzCallProxy<ApiResultEntity<T>, T>(clazz) {})
     }
 
-    open fun <T> execute(type: Type): Observable<T> {
+    open fun <T> execute(type: Type): Observable<Optional<T>> {
         return execute(object : ResultClazzCallProxy<ApiResultEntity<T>, T>(type) {})
     }
 
-    fun <T> execute(proxy: ResultClazzCallProxy<out ApiResultEntity<T>, T>): Observable<T> {
+    fun <T> execute(proxy: ResultClazzCallProxy<out ApiResultEntity<T>, T>): Observable<Optional<T>> {
         return build().generateRequest()
                 .map(ApiResultFunc<T>(proxy.getType()))
-                .compose<T>(if (isSyncRequest) RxUtil._io_main_result() else RxUtil._main_result())
+                .compose<Optional<T>>(if (isSyncRequest) RxUtil._io_main_result() else RxUtil._main_result())
                 .retryWhen(RetryExceptionFunc(mRetryCount, mRetryDelay.toLong(), mRetryIncreaseDelay.toLong()))
     }
 
@@ -41,10 +42,10 @@ open class ApiResultDeleteRequest(url: String) : HttpBodyRequest<ApiResultDelete
         return observable.subscribeWith(ResultCallbackSubscriber(tag, proxy.callback))
     }
 
-    private fun <T> generateObservable(observable: Observable<ResponseBody>, proxy: ResultCallbackProxy<out ApiResultEntity<T>, T>): Observable<T> {
+    private fun <T> generateObservable(observable: Observable<ResponseBody>, proxy: ResultCallbackProxy<out ApiResultEntity<T>, T>): Observable<Optional<T>> {
         return observable
                 .map(ApiResultFunc<T>(proxy.getType()))
-                .compose<T>(if (isSyncRequest) RxUtil._io_main_result() else RxUtil._main_result())
+                .compose<Optional<T>>(if (isSyncRequest) RxUtil._io_main_result() else RxUtil._main_result())
                 .retryWhen(RetryExceptionFunc(mRetryCount, mRetryDelay.toLong(), mRetryIncreaseDelay.toLong()))
     }
 
