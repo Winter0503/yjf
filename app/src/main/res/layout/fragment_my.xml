@@ -42,6 +42,7 @@
                     android:src="@drawable/avatar1" />
 
                 <TextView
+                    android:id="@+id/tv_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -119,6 +120,12 @@
         android:text="@string/logout"
         android:textColor="@color/text_color"
         android:textSize="15sp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/line_color" />
 
 
 </LinearLayout>

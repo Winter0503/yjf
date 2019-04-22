@@ -114,6 +114,7 @@
         android:enabled="false"
         android:gravity="center"
         android:text="登录"
+        android:textStyle="bold"
         android:textColor="@color/white"
         android:textSize="16sp" />
 

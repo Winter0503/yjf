@@ -6,6 +6,7 @@ import android.view.View
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.login.activity.LoginActivity
+import cn.ygyg.cloudpayment.modular.login.entity.LoginEntity
 import cn.ygyg.cloudpayment.modular.my.contract.MyContract
 import cn.ygyg.cloudpayment.modular.my.presenter.MyPresenter
 import cn.ygyg.cloudpayment.modular.payments.activity.PaymentsHistoryActivity
@@ -64,12 +65,18 @@ class MyFragment : BaseMvpFragment<MyContract.Presenter, MyContract.View>(), MyC
     }
 
     override fun loaderData() {
-
+        mPresenter?.loaderPageData()
     }
 
     override fun logoutSuccess() {
         toActivity(LoginActivity::class.java)
         ActivityListUtil.INSTANCE.finishAllActivity(false)
+    }
+
+    override fun loaderPageDataSuccess(entity: LoginEntity?) {
+        entity?.let {
+            tv_phone.text = entity.cellPhone
+        }
     }
 
 }

@@ -23,6 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="20dp"
+            android:lineSpacingMultiplier="1.4"
             android:text="
 一、总则燃气营业厅会员服务协议（以下简称“本协议”）双方为燃气营业厅与燃气营业厅用户（以下简称“用户”）。本协议用于规范双方之间全部的法律关系及权利义务，具有合同效力。燃气营业厅旨在利用因特网科技所具有的便利性，为燃气营业厅用户提供自助方式的网上账单查询、账单缴费、账户充值、账户查询、缴费查询等服务。\n\n
 二、服务内容\n

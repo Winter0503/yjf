@@ -3,6 +3,7 @@ package com.cn.lib.retrofit.network.util
 import com.cn.lib.retrofit.network.config.Optional
 import com.cn.lib.retrofit.network.entity.ApiResultEntity
 import com.cn.lib.retrofit.network.func.HandleResultFunc
+import com.cn.lib.retrofit.network.transformer.HandleErrorTransformer
 
 import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -39,6 +40,7 @@ object RxUtil {
                     .unsubscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .flatMap(HandleResultFunc())
+                    .compose(HandleErrorTransformer())
                     .doOnSubscribe { disposable -> LogUtil.i("+++doOnSubscribe+++" + disposable.isDisposed) }
                     .doFinally { LogUtil.i("+++doFinally+++") }
         }
@@ -47,8 +49,7 @@ object RxUtil {
 
     fun <T> _main(): ObservableTransformer<T, T> {
         return ObservableTransformer { upstream ->
-            upstream
-                    .doOnSubscribe { disposable -> LogUtil.i("+++doOnSubscribe+++" + disposable.isDisposed) }
+            upstream.doOnSubscribe { disposable -> LogUtil.i("+++doOnSubscribe+++" + disposable.isDisposed) }
                     .doFinally { LogUtil.i("+++doFinally+++") }
         }
     }
@@ -57,6 +58,7 @@ object RxUtil {
         return ObservableTransformer { upstream ->
             upstream
                     .flatMap(HandleResultFunc())
+                    .compose(HandleErrorTransformer())
                     .doOnSubscribe { disposable -> LogUtil.i("+++doOnSubscribe+++" + disposable.isDisposed) }
                     .doFinally { LogUtil.i("+++doFinally+++") }
         }

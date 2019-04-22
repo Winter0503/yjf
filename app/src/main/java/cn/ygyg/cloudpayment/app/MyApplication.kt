@@ -3,6 +3,7 @@ package cn.ygyg.cloudpayment.app
 import android.annotation.SuppressLint
 import android.app.Application
 import cn.ygyg.cloudpayment.R
+import cn.ygyg.cloudpayment.utils.SharePreUtil
 import com.alibaba.fastjson.support.retrofit.Retrofit2ConverterFactory
 import com.cn.lib.retrofit.network.RxHttp
 import com.cn.lib.util.ToastUtil
@@ -32,6 +33,7 @@ class MyApplication : Application() {
         initRequestBase()
         registerToWX()
         ToastUtil.initResId(R.mipmap.toast_success, 0)
+        SharePreUtil.init(context = baseContext)
     }
 
     private fun registerToWX() {

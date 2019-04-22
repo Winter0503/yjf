@@ -47,7 +47,7 @@
             android:padding="15dp"
             android:text="是否删除该记录？"
             android:textColor="@color/text_color"
-            android:textSize="16sp" />
+            android:textSize="17sp" />
 
         <View
             android:id="@+id/view2"
@@ -64,7 +64,7 @@
             android:padding="15dp"
             android:text="确定"
             android:textColor="@color/text_blue_color"
-            android:textSize="18sp" />
+            android:textSize="17sp" />
     </LinearLayout>
 
 
@@ -79,5 +79,5 @@
         android:padding="15dp"
         android:text="取消"
         android:textColor="@color/text_blue_color"
-        android:textSize="18sp" />
+        android:textSize="17sp" />
 </LinearLayout>
