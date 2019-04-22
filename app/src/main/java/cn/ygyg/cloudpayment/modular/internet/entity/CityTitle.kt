@@ -2,6 +2,8 @@ package cn.ygyg.cloudpayment.modular.internet.entity
 
 import cn.ygyg.cloudpayment.modular.internet.vm.CityVM
 
+
+
 class CityTitle : CityVM {
     var cityTitle: String? = null
     var cityPinyin: String? = null
