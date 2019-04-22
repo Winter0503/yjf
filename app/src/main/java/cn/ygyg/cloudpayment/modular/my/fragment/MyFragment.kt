@@ -77,6 +77,7 @@ class MyFragment : BaseMvpFragment<MyContract.Presenter, MyContract.View>(), MyC
         entity?.let {
             tv_phone.text = entity.cellPhone
         }
+        setHasLoadedOnce(true)
     }
 
 }

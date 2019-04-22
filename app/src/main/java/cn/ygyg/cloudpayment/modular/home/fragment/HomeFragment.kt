@@ -24,7 +24,6 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
         mutableList?.let {
             //不为空时执行
             mAdapter.setNewList(mutableList)
-
         } ?: let {
             //为空时执行
             val firstView = layoutInflater.inflate(R.layout.layout_first_into, recycler_view, false)
@@ -36,6 +35,7 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
                 toActivity(AddressSelectorActivity::class.java)
             }
         }
+        setHasLoadedOnce(true)
     }
 
     override fun createPresenter(): HomeContract.Presenter = HomePresenter(this)
@@ -63,14 +63,12 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
         refreshLayout?.setOnRefreshListener(object : RefreshListenerAdapter() {
             override fun onRefresh(refreshLayout: TwinklingRefreshLayout) {
                 Handler().postDelayed({
-
                     refreshLayout.finishRefreshing()
                 }, 2000)
             }
 
             override fun onLoadMore(refreshLayout: TwinklingRefreshLayout) {
                 Handler().postDelayed({
-
                     refreshLayout.finishLoadmore()
                 }, 2000)
             }

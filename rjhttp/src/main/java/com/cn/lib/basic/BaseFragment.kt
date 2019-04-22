@@ -173,6 +173,10 @@ abstract class BaseFragment : Fragment(), IBaseView {
         startActivityForResult(intent, requestCode)
     }
 
+    protected fun setHasLoadedOnce(hasLoadedOnce: Boolean){
+        this.isHasLoadedOnce = hasLoadedOnce
+    }
+
     /**
      * 初始化控件
      */

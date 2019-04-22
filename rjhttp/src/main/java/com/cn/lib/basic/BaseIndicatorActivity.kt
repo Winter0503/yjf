@@ -45,9 +45,7 @@ abstract class BaseIndicatorActivity : BaseActivity(), OnPageChangeListener, Tab
     override fun onDestroy() {
         mTabs.clear()
         if (mPager != null) {
-            myAdapter!!.notifyDataSetChanged()
             myAdapter = null
-            mPager?.adapter = null
             mPager = null
         }
         mIndicator = null
