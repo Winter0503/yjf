@@ -34,11 +34,13 @@ class SideBarView : View {
     var itemData: Array<String>? = null
         set(value) {
             field = value
-            requestLayout()
+            invalidate()
         }
 
     private var selectIndex = -1
     private var isTouching = false
+    private var touchDown: Boolean = false
+
 
     constructor(context: Context) : super(context) {
         initAttrs(null)
@@ -154,6 +156,7 @@ class SideBarView : View {
         }
     }
 
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onTouchEvent(event: MotionEvent): Boolean {
         if (itemData != null && itemData!!.isNotEmpty()) {
@@ -173,7 +176,9 @@ class SideBarView : View {
                     if (oldChoose != newChoose) {
                         if (newChoose >= 0 && newChoose < itemData!!.size) {
                             selectIndex = newChoose
-                            onSideBarTouchListener?.onTouchChanged(itemData!![newChoose], newChoose)
+                            if (touchDown) {
+                                onSideBarTouchListener?.onTouchChanged(itemData!![newChoose], newChoose)
+                            }
                         }
                     }
                     //如果是cancel也要调用onLetterUpListener 通知
@@ -181,11 +186,11 @@ class SideBarView : View {
                         isTouching = false
                         onSideBarTouchListener?.onTouching(isTouching)
                     } else if (event.action == MotionEvent.ACTION_DOWN) {//按下调用 onLetterDownListener
-                        if (event.x > charRect.left && event.x < charRect.right) {
-                            isTouching = true
+                        touchDown = event.x > charRect.left && event.x < charRect.right
+                        isTouching = touchDown
+                        if (touchDown) {
                             onSideBarTouchListener?.onTouching(isTouching)
                         } else {
-                            return false
                         }
 
                     }
@@ -193,7 +198,7 @@ class SideBarView : View {
             }
         }
         invalidate()
-        return true
+        return isTouching && touchDown
     }
 
     /**
