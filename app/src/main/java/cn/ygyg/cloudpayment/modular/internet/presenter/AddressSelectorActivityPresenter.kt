@@ -19,18 +19,18 @@ class AddressSelectorActivityPresenter(view: AddressSelectorActivityContract.Vie
         BasePresenterImpl<AddressSelectorActivityContract.View>(view),
         AddressSelectorActivityContract.Presenter {
     override fun loadCityList() {
-
-
+//        return
         RequestManager.get(UrlConstants.cityList)
+                .param("pageSize", "20")
                 .execute("cityList", object : ResultCallback<CityListResponseEntity>() {
                     override fun onStart(tag: Any?) {
-                        mvpView?.getViewContext()?.let {
-                            ProgressUtil.showProgressDialog(it, "")
-                        }
+//                        mvpView?.getViewContext()?.let {
+//                            ProgressUtil.showProgressDialog(it, "")
+//                        }
                     }
 
                     override fun onCompleted(tag: Any?) {
-                        ProgressUtil.dismissProgressDialog()
+//                        ProgressUtil.dismissProgressDialog()
                     }
 
                     override fun onError(tag: Any?, e: ApiThrowable) {
