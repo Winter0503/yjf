@@ -1,7 +1,10 @@
 package cn.ygyg.cloudpayment.modular.payments.activity
 
-import android.widget.CompoundButton
+import android.content.Intent
+import android.net.Uri
+import android.view.View
 import cn.ygyg.cloudpayment.R
+import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsActivityContract
 import cn.ygyg.cloudpayment.modular.payments.presenter.PaymentsActivityPresenter
 import cn.ygyg.cloudpayment.utils.DecimalDigitsInputFilter
@@ -11,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_payments.*
 
 class PaymentsActivity :
         BaseMvpActivity<PaymentsActivityContract.Presenter, PaymentsActivityContract.View>(),
-        PaymentsActivityContract.View, CompoundButton.OnCheckedChangeListener {
+        PaymentsActivityContract.View {
     override fun createPresenter(): PaymentsActivityContract.Presenter = PaymentsActivityPresenter(this)
 
     override fun getContentViewResId(): Int = R.layout.activity_payments
@@ -27,18 +30,45 @@ class PaymentsActivity :
     override fun initListener() {
         payments_history.setOnClickListener { toActivity(PaymentsHistoryActivity::class.java) }
         payments.setOnClickListener { toActivity(PaymentsCompleteActivity::class.java) }
-        selector_rmb100.setOnCheckedChangeListener(this)
-        selector_rmb300.setOnCheckedChangeListener(this)
-        selector_rmb800.setOnCheckedChangeListener(this)
-        input_amount.setOnFocusChangeListener { v, hasFocus ->
-            v.isSelected = hasFocus
-            onCheckedChanged(null, false)
-        }
-    }
 
-    override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
-        selector_rmb100.isChecked = buttonView == selector_rmb100
-        selector_rmb300.isChecked = buttonView == selector_rmb300
-        selector_rmb800.isChecked = buttonView == selector_rmb800
+        val singleChose = View.OnClickListener { v ->
+            selector_rmb100.isChecked = selector_rmb100 == v
+            selector_rmb300.isChecked = selector_rmb300 == v
+            selector_rmb800.isChecked = selector_rmb800 == v
+            input_amount.clearFocus()
+        }
+        selector_rmb100.setOnClickListener(singleChose)
+        selector_rmb300.setOnClickListener(singleChose)
+        selector_rmb800.setOnClickListener(singleChose)
+        input_amount.setOnFocusChangeListener { v, hasFocus ->
+            input_layout.isSelected = hasFocus
+            singleChose.onClick(v)
+        }
+        contact_service.setOnClickListener {
+            DefaultPromptDialog.builder()
+                    .setContext(getViewContext())
+                    .setAffirmText("呼叫")
+                    .setCancelText("取消")
+                    .setContentText("0317-20725341")
+                    .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
+                        override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
+                            val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:0317-20725341"))
+                            startActivity(dialIntent)
+                            return super.clickPositiveButton(dialog)
+                        }
+                    })
+                    .build()
+                    .show()
+        }
+
+        ali_pay.setOnClickListener {
+            wx_pay_select.visibility = View.GONE
+            ali_pay_select.visibility = View.VISIBLE
+        }
+        wx_pay.setOnClickListener {
+            ali_pay_select.visibility = View.GONE
+            wx_pay_select.visibility = View.VISIBLE
+
+        }
     }
 }

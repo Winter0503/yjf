@@ -27,6 +27,8 @@ import com.cn.lib.basic.BaseMvpActivity
 import com.cn.lib.util.ToastUtil
 import com.github.promeg.pinyinhelper.Pinyin
 import com.github.promeg.tinypinyin.lexicons.android.cncity.CnCityDict
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import kotlinx.android.synthetic.main.activity_address_selector.*
 
 class AddressSelectorActivity :
@@ -144,7 +146,11 @@ class AddressSelectorActivity :
             }
 
         }
-
+        refreshLayout.setOnRefreshListener(object : RefreshListenerAdapter() {
+            override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
+                mPresenter?.loadCityList()
+            }
+        })
     }
 
     override fun initData() {
@@ -179,6 +185,7 @@ class AddressSelectorActivity :
     override fun onLoadCityListSuccess(response: ArrayList<out CityVM>) {
         this.dataSource = response
         mPresenter?.addTitleItem(response)
+        refreshLayout.finishRefreshing()
     }
 
     override fun addTitleSuccess(response: ArrayList<CityVM>, titlePositionMap: ArrayMap<String, Int>) {

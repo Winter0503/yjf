@@ -43,7 +43,7 @@
                     android:layout_marginEnd="20dp"
                     android:gravity="center_vertical"
                     android:text="@string/account_name"
-                    android:textColor="@color/text_gray_dark_color"
+                    android:textColor="@color/text_color"
                     android:textSize="@dimen/ts_content" />
 
                 <TextView
@@ -72,7 +72,7 @@
                     android:layout_marginEnd="20dp"
                     android:gravity="center_vertical"
                     android:text="@string/payments_account"
-                    android:textColor="@color/text_gray_dark_color"
+                    android:textColor="@color/text_color"
                     android:textSize="@dimen/ts_content" />
 
                 <TextView
@@ -101,7 +101,7 @@
                     android:layout_marginEnd="20dp"
                     android:gravity="center_vertical"
                     android:text="@string/address_msg"
-                    android:textColor="@color/text_gray_dark_color"
+                    android:textColor="@color/text_color"
                     android:textSize="@dimen/ts_content" />
 
                 <TextView
@@ -130,7 +130,7 @@
                     android:layout_marginEnd="20dp"
                     android:gravity="center_vertical"
                     android:text="@string/account_funds"
-                    android:textColor="@color/text_gray_dark_color"
+                    android:textColor="@color/text_color"
                     android:textSize="@dimen/ts_content" />
 
                 <TextView
@@ -148,7 +148,8 @@
             <View
                 style="@style/div_horizontal"
                 android:layout_height="10dp"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:background="@color/div_wide" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -215,6 +216,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/input_layout"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginEnd="20dp"
@@ -262,7 +264,8 @@
             <View
                 style="@style/div_horizontal"
                 android:layout_height="10dp"
-                android:layout_marginTop="16dp" />
+                android:layout_marginTop="16dp"
+                android:background="@color/div_wide" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -294,14 +297,17 @@
                 <ImageView
                     android:id="@+id/wx_pay_select"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_item_selector"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
             <View
                 style="@style/div_horizontal"
                 android:layout_marginEnd="20dp"
-                android:layout_marginStart="20dp" />
+                android:layout_marginStart="20dp"
+                android:background="@color/div_wide" />
 
             <LinearLayout
                 android:id="@+id/ali_pay"
@@ -323,7 +329,9 @@
                 <ImageView
                     android:id="@+id/ali_pay_select"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_item_selector"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
@@ -356,20 +364,23 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:gravity="end"
-                    android:padding="10dp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
                     android:text="@string/payments_history"
                     android:textColor="@color/text_green_color"
-                    android:textSize="@dimen/ts_note" />
+                    android:textSize="@dimen/ts_content" />
 
 
                 <TextView
+                    android:id="@+id/contact_service"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:padding="10dp"
-                    android:text="联系客服"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="@string/contact_customer_service"
                     android:textColor="@color/text_green_color"
-                    android:textSize="@dimen/ts_note" />
+                    android:textSize="@dimen/ts_content" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
