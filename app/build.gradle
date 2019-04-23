@@ -12,12 +12,7 @@ android {
         versionCode version_code
         versionName version_name
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
-    }
+
     signingConfigs {
         release {
             keyAlias 'cloudpayment'
@@ -31,6 +26,28 @@ android {
             keyPassword 'alias-1qaz2wsx'
             storeFile file('./releasekey.jks')
             storePassword 'android*1qaz2wsx'
+        }
+    }
+
+    buildTypes {
+        release {
+            //混淆
+            minifyEnabled false
+            // 移除无用的resource文件
+            shrinkResources false
+            //Zipalign优化
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        debug {
+            minifyEnabled false
+            // 移除无用的resource文件
+            shrinkResources false
+            //Zipalign优化
+            zipAlignEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
 
@@ -53,5 +70,4 @@ dependencies {
     //拼音 中国城市词库
     implementation 'com.github.promeg:tinypinyin:2.0.3'
     implementation 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.3'
-
 }

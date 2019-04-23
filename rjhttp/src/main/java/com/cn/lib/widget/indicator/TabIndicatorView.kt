@@ -38,7 +38,7 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
     /**
      * 选项卡列表
      */
-    private var mTabs: List<TabInfo>? = null
+    private var mTabs: List<TabInfo> = mutableListOf()
 
     /**
      * 选项卡所依赖的ViewPager
@@ -238,7 +238,7 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
      */
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        if (mTabs == null || mTabs!!.isEmpty()) {
+        if (mTabs.isEmpty()) {
             return
         }
         // 单个选项卡的宽度
@@ -280,13 +280,13 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
             var left_x = 0f
             var right_x = 0f
             // 根据选中的Tab的位置计算下划线绘制时的开始与结束位置
-            if (mSelectedTab != 0 && mSelectedTab < mTabs!!.size - 1) {
+            if (mSelectedTab != 0 && mSelectedTab < mTabs.size - 1) {
                 // 当选中的Tab在中间时
                 left_x = (mSelectedTab * mPerItemWidth + scroll_x
                         + mVerticalLineWidth / 2 + offset)
                 right_x = ((mSelectedTab + 1) * mPerItemWidth + scroll_x
                         - mVerticalLineWidth / 2 - offset)
-            } else if (mSelectedTab == mTabs!!.size - 1) {
+            } else if (mSelectedTab == mTabs.size - 1) {
                 // 当选中的Tag在最后一个时
                 left_x = (mSelectedTab * mPerItemWidth + scroll_x
                         + mVerticalLineWidth + offset)
@@ -307,7 +307,7 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
             mPaintFooterLine.strokeWidth = mFooterLineHeight
             mPaintFooterLine.color = footerColor
 
-            canvas.drawRect(left_x, top_y, right_x, bottom_y, mPaintFooterLine!!)
+            canvas.drawRect(left_x, top_y, right_x, bottom_y, mPaintFooterLine)
         }
 
         // 判断是否显示Tab中间的竖线
@@ -319,15 +319,14 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
                 0).toFloat()
             // 计算绘制竖线Y轴的结束位置
             val stopY = height.toFloat() - startY - mFooterLineHeight
-            for (i in mTabs!!.indices) {
-                val index = i + 1
-                if (index != mTabs!!.size) {
-                    val temp = mPerItemWidth * index - 0.5f
-                    // 计算分割线X轴的开始位置
-                    canvas.drawLine(temp, startY, temp, stopY, mPaintTabtip!!)
-                }
-
-            }
+            mTabs.indices
+                    .map { it + 1 }
+                    .filter { it != mTabs.size }
+                    .map {
+                        mPerItemWidth * it - 0.5f
+                        // 计算分割线X轴的开始位置
+                    }
+                    .forEach { canvas.drawLine(it, startY, it, stopY, mPaintTabtip) }
         }
     }
 
@@ -338,7 +337,7 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
         // Set the default Tab
         var tab: String = "Tab " + pos
         // If the TabProvider exist
-        mTabs?.let {
+        mTabs.let {
             tab = it[pos].name!!
         }
         return tab
@@ -349,8 +348,8 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
      */
     private fun getSelectedIcon(pos: Int): Int {
         var ret = 0
-        if (mTabs != null && mTabs!!.size > pos) {
-            ret = mTabs!![pos].selectedIcon
+        if ( mTabs.size > pos) {
+            ret = mTabs[pos].selectedIcon
         }
         return ret
     }
@@ -360,8 +359,8 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
      */
     private fun getNormalIcon(pos: Int): Int {
         var ret = 0
-        if (mTabs != null && mTabs!!.size > pos) {
-            ret = mTabs!![pos].normalIcon
+        if (mTabs.size > pos) {
+            ret = mTabs[pos].normalIcon
         }
         return ret
     }
@@ -391,7 +390,7 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
         removeAllViews()
         this.mViewPager = mViewPager
         this.mTabs = tabs
-        if (mTabs!!.isNotEmpty()) {
+        if (mTabs.isNotEmpty()) {
             this.mTotal = tabs.size
         }
         var i = 0
@@ -539,13 +538,13 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
             for (i in 0 until childCount) {
                 val view = getChildAt(i)
                 val lP = view.layoutParams as LinearLayout.LayoutParams
-                if (i == 0) {
-                    lP.rightMargin = mVerticalLineWidth.toInt()
-                } else if (i == count - 1) {
-                    lP.leftMargin = mVerticalLineWidth.toInt()
-                } else {
-                    lP.rightMargin = mVerticalLineWidth.toInt() / 2
-                    lP.leftMargin = mVerticalLineWidth.toInt() / 2
+                when (i) {
+                    0 -> lP.rightMargin = mVerticalLineWidth.toInt()
+                    count - 1 -> lP.leftMargin = mVerticalLineWidth.toInt()
+                    else -> {
+                        lP.rightMargin = mVerticalLineWidth.toInt() / 2
+                        lP.leftMargin = mVerticalLineWidth.toInt() / 2
+                    }
                 }
 
             }

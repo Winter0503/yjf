@@ -46,7 +46,6 @@ object StringUtil {
             } catch (e: Exception) {
                 e.printStackTrace()
             }
-
             number = number.replace(" ".toRegex(), "")
             number = number.replace("-".toRegex(), "")
             number = number.replace("_".toRegex(), "")
@@ -96,7 +95,6 @@ object StringUtil {
         val regex = "(\\+\\d+)?1[345789]\\d{9}$"
         return Pattern.matches(regex, mobile)
     }
-
 
     /**
      * 判断字符串是不是全是中文
@@ -163,7 +161,7 @@ object StringUtil {
         var len = 0
         var i = 0
         while (i < arg.length && len < subLen) {
-           val item = arg.substring(i, i + 1)
+            val item = arg.substring(i, i + 1)
             sb.append(item)
             if (Pattern.matches("([/d/D]*)", item)) {
                 len += 2
@@ -219,6 +217,15 @@ object StringUtil {
         val pattern = Pattern.compile(regex)
         val matcher = pattern.matcher(str)
         return matcher.matches()
+    }
+
+    fun blurPhone(phone: String): String {
+        val phoneBlurReplaceRegex = "$1****$2"
+        val phoneBlurRegex = "(\\d{3})\\d{4}(\\d{4})"
+        if (checkCellPhone(phone)) {
+            phone.replace(phoneBlurRegex, phoneBlurReplaceRegex)
+        }
+        return phone
     }
 
 }

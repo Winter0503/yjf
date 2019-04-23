@@ -171,7 +171,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
     override fun changeCodeBtnState(state: Boolean) {
         btn_login_code.text = ResourceUtil.getString(getViewContext(), R.string.get_verification_code)
         btn_login_code.isEnabled = state
-        btn_login_code.setTextColor(ResourceUtil.getColor(getViewContext(), if (state) R.color.text_green_color else R.color.text_gray_color))
+        btn_login_code.setTextColor(ResourceUtil.getColor(getViewContext(), if (state) R.color.text_green_color else R.color.text_hint_color))
     }
 
     override fun changeCodeBtnText(aLong: Long) {

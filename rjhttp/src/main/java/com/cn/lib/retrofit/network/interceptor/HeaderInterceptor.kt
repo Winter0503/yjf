@@ -11,35 +11,33 @@ import okhttp3.Response
 class HeaderInterceptor(private var map: MutableMap<String, String>) : Interceptor {
 
     fun addHeaderMap(map: Map<String, String>) {
-        if (this.map == null) {
-            this.map = HashMap()
-        }
-        this.map!!.putAll(map)
+        this.map.putAll(map)
     }
 
     fun addHeader(key: String, value: String) {
-        this.map!![key] = value
+        this.map[key] = value
     }
 
     fun clearAll() {
-        if (this.map != null) {
-            this.map!!.clear()
-        }
+        this.map.clear()
     }
 
     fun remove(key: String) {
-        if (this.map != null && map!!.containsKey(key)) {
-            this.map!!.remove(key)
+        if (this.map.containsKey(key)) {
+            this.map.remove(key)
         }
     }
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val builder = chain.request().newBuilder()
-        if (map != null && map!!.size > 0) {
-            val keys = map!!.keys
+        if (this.map.isNotEmpty()) {
+            val keys = this.map.keys
             for (headerKey in keys) {
-                builder.addHeader(headerKey, if (map!![headerKey] == null) "" else map!![headerKey]).build()
+                val value = if (!this.map.containsKey(headerKey)) "" else this.map[headerKey]
+                value?.let {
+                    builder.addHeader(headerKey, it).build()
+                }
             }
         }
         LogUtil.i("RxHttp", "-->>headers：" + builder.build().headers().toString())

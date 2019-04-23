@@ -116,7 +116,7 @@ class SerializableCookie : Serializable {
     }
 
     companion object {
-        private val TAG = SerializableCookie::class.java!!.getSimpleName()
+        private val TAG = SerializableCookie::class.java.simpleName
 
         private const val serialVersionUID = -8594045714036645534L
 

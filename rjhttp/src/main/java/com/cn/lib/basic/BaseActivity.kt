@@ -124,7 +124,6 @@ abstract class BaseActivity : FragmentActivity(), View.OnClickListener, IBaseVie
          */
         val ACTIVITY_BUNDLE = "ACTIVITY_BUNDLE"
 
-        private val LOGIN = 0x9999
     }
 
 

@@ -9,7 +9,7 @@ object Constants {
     }
 
     object WX {
-        val WEIXIN_APP_ID: String = ""
+        val WEIXIN_APP_ID: String = "wx14581fdc873a1818"
 
     }
 }

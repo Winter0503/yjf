@@ -7,10 +7,8 @@
 
     <include layout="@layout/layout_first_recharge" />
 
-    <include layout="@layout/layout_add_account"
-        android:id="@+id/layout_add_account"/>
+    <include layout="@layout/layout_add_account" android:id="@+id/layout_add_account"/>
 
-    <include
-        layout="@layout/layout_function_development" />
+    <include layout="@layout/layout_function_development" />
 
 </LinearLayout>

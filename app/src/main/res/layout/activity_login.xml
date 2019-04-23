@@ -25,7 +25,7 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/et_underline"
         android:hint="@string/phone_prompt"
-        android:inputType="phone"
+        android:inputType="number"
         android:maxLines="1"
         android:paddingBottom="13dp"
         android:paddingTop="13dp"
@@ -70,7 +70,7 @@
                 android:paddingBottom="13dp"
                 android:paddingTop="13dp"
                 android:text="@string/get_verification_code"
-                android:textColor="@color/text_gray_color"
+                android:textColor="@color/text_hint_color"
                 android:visibility="gone" />
 
             <ImageView

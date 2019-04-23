@@ -136,7 +136,7 @@ class RxDownloadSubscriber<ResponseBody : okhttp3.ResponseBody>(private val mTag
         var pattern = Pattern.compile(urlReg)
         var matcher = pattern.matcher(url)
         if (matcher.matches()) {
-            val nameReg = "([^<>/\\\\\\|:\\'\\'\\*\\?\\&\\=]+)((.(w+)\\?)|(.(\\w+)$))"
+            val nameReg = "([^<>/\\\\\\|:\\''\\*\\?\\&\\=]+)((.(w+)\\?)|(.(\\w+)$))"
             pattern = Pattern.compile(nameReg)
             matcher = pattern.matcher(url)
             if (matcher.find()) {
