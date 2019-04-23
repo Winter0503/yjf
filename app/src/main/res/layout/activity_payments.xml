@@ -236,12 +236,13 @@
                     android:textColorHint="@color/text_hint_color"
                     android:textSize="@dimen/ts_content" />
 
-                <cn.ygyg.cloudpayment.widget.CleanUpEditText
+                <EditText
                     android:id="@+id/input_amount"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@color/transparent"
+                    android:focusable="false"
                     android:gravity="center_vertical|end"
                     android:hint="@string/input_amount_hint"
                     android:inputType="numberDecimal"

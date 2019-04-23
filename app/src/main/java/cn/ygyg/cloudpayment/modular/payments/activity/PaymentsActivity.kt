@@ -32,17 +32,21 @@ class PaymentsActivity :
         payments.setOnClickListener { toActivity(PaymentsCompleteActivity::class.java) }
 
         val singleChose = View.OnClickListener { v ->
+            if (v != null) {
+                input_amount.clearFocus()
+            }
             selector_rmb100.isChecked = selector_rmb100 == v
             selector_rmb300.isChecked = selector_rmb300 == v
             selector_rmb800.isChecked = selector_rmb800 == v
-            input_amount.clearFocus()
         }
         selector_rmb100.setOnClickListener(singleChose)
         selector_rmb300.setOnClickListener(singleChose)
         selector_rmb800.setOnClickListener(singleChose)
-        input_amount.setOnFocusChangeListener { v, hasFocus ->
+        input_amount.setOnFocusChangeListener { _, hasFocus ->
             input_layout.isSelected = hasFocus
-            singleChose.onClick(v)
+            if (hasFocus) {
+                singleChose.onClick(null)
+            }
         }
         contact_service.setOnClickListener {
             DefaultPromptDialog.builder()
