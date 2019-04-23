@@ -71,7 +71,8 @@ abstract class BaseRecyclerAdapter<T> @JvmOverloads constructor(protected var co
         } else {
             this.data.add(newElem)
         }
-        notifyDataSetChanged()
+        val position = indexOf + getHeaderLayoutCount()
+        notifyItemChanged(position)
     }
 
     fun getItem(position: Int): T? {
@@ -83,13 +84,20 @@ abstract class BaseRecyclerAdapter<T> @JvmOverloads constructor(protected var co
         }
     }
 
-    fun removeItem(position: Int = -1) {
-        if (position < data.size && position > -1) {
+    /**
+     * 根据下标删除数据，如果有头布局会加上头布局的下标
+     */
+    fun removeItem(index: Int = -1) {
+        val position = index + getHeaderLayoutCount()
+        if (position < itemCount && position > -1) {
             this.data.removeAt(position)
             notifyItemRemoved(position)
         }
     }
 
+    /**
+     * 删除某一条数据
+     */
     fun removeItem(item: T) {
         val index = this.data.indexOf(item)
         if (index > -1) {
@@ -97,6 +105,9 @@ abstract class BaseRecyclerAdapter<T> @JvmOverloads constructor(protected var co
         }
     }
 
+    /**
+     * 获取列表数据
+     */
     fun getList(): MutableList<T> {
         return data
     }
@@ -104,8 +115,9 @@ abstract class BaseRecyclerAdapter<T> @JvmOverloads constructor(protected var co
     /**
      * 插入元素操作
      */
-    fun insertItem(position: Int, newElem: T) {
-        this.data.add(position, newElem)
+    fun insertItem(index: Int, newElem: T) {
+        this.data.add(index, newElem)
+        val position = index + getHeaderLayoutCount()
         notifyItemInserted(position)
     }
 
@@ -201,13 +213,36 @@ abstract class BaseRecyclerAdapter<T> @JvmOverloads constructor(protected var co
         return addIndex
     }
 
+    /**
+     * 清空尾布局
+     */
     fun clearFooterViews() {
         mFooterLayout.removeAllViews()
     }
 
+    /**
+     * 清空头布局
+     */
     fun clearHeaderViews() {
         mHeaderLayout.removeAllViews()
+    }
 
+    /**
+     * 根据下标删除头部布局
+     */
+    fun removeHeaderAt(index: Int) {
+        if (index < mHeaderLayout.childCount && index > -1) {
+            mHeaderLayout.removeViewAt(index)
+        }
+    }
+
+    /**
+     * 根据下标删除尾部布局
+     */
+    fun removeFooterAt(index: Int) {
+        if (index < mFooterLayout.childCount && index > -1) {
+            mFooterLayout.removeViewAt(index)
+        }
     }
 
     /*根据位置来返回不同的item类型*/
