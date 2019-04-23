@@ -10,7 +10,7 @@
     <string name="pay_cost_company">缴费单位</string>
     <string name="pay_account">缴费户号</string>
     <string name="hint_input_pay_account">请输入缴费户号</string>
-    <string name="input_account_help">如何查阅户号</string>
+    <string name="input_account_help">如何查户号</string>
     <string name="input_account_alert">目前仅支持物联卡表缴费</string>
     <string name="read_and_agree">我已阅读并同意</string>
     <string name="protocol_title">《云缴费用户协议》</string>
@@ -73,4 +73,5 @@
 
     <string name="no_company_in_city">该城市暂未开通燃气缴费服务\n请重新选择城市</string>
     <string name="i_know_it">我知道了</string>
+    <string name="commit">提交</string>
 </resources>

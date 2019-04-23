@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android">
-
-
-    <stroke
-        android:width="0.5dp"
-        android:color="@color/btn_bg_gary" />
-</shape> 
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <shape>
+            <stroke android:width="0.5dp" android:color="@color/text_green_color" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <stroke android:width="0.5dp" android:color="@color/btn_bg_gary" />
+        </shape>
+    </item>
+</selector>

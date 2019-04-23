@@ -169,6 +169,7 @@
                 android:orientation="horizontal">
 
                 <CheckBox
+                    android:id="@+id/selector_rmb100"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="3dp"
@@ -183,6 +184,7 @@
                     android:textSize="@dimen/ts_btn" />
 
                 <CheckBox
+                    android:id="@+id/selector_rmb300"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="3dp"
@@ -197,6 +199,7 @@
                     android:textSize="@dimen/ts_btn" />
 
                 <CheckBox
+                    android:id="@+id/selector_rmb800"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
                     android:layout_marginEnd="3dp"
@@ -231,7 +234,7 @@
                     android:textColorHint="@color/text_hint_color"
                     android:textSize="@dimen/ts_content" />
 
-                <EditText
+                <cn.ygyg.cloudpayment.widget.CleanUpEditText
                     android:id="@+id/input_amount"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
