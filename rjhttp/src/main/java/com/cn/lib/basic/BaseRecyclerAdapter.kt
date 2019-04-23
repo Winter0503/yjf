@@ -29,8 +29,8 @@ abstract class BaseRecyclerAdapter<T> @JvmOverloads constructor(protected var co
     /**
      * @return 除去头布局和脚布局长度的真实数据长度
      */
-    private fun getRealItemCount(): Int {
-        return data?.size ?: 0
+    fun getRealItemCount(): Int {
+        return data.size
     }
 
     fun getHeaderLayoutCount(): Int {
@@ -60,12 +60,12 @@ abstract class BaseRecyclerAdapter<T> @JvmOverloads constructor(protected var co
         notifyDataSetChanged()
     }
 
-    operator fun set(oldElem: T, newElem: T) {
+    fun set(oldElem: T, newElem: T) {
         val index = data.indexOf(oldElem)
         set(index, newElem)
     }
 
-    operator fun set(indexOf: Int = -1, newElem: T) {
+    fun set(indexOf: Int = -1, newElem: T) {
         if (indexOf > 0) {
             this.data[indexOf] = newElem
         } else {
