@@ -55,8 +55,8 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
         }
         mAdapter.addHeaderView(layoutInflater.inflate(R.layout.layout_banner, recycler_view, false))
         refreshLayout = findViewById(R.id.layout_refresh)
-        refreshLayout?.setHeaderView(ProgressHeaderView(getViewContext()).setTextVisibility(false))
-        refreshLayout?.setBottomView(LoadMoreView(getViewContext()))
+//        refreshLayout?.setHeaderView(ProgressHeaderView(getViewContext()).setTextVisibility(false))
+//        refreshLayout?.setBottomView(LoadMoreView(getViewContext()))
     }
 
     override fun initListener(v: View) {
@@ -70,6 +70,8 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
             override fun onLoadMore(refreshLayout: TwinklingRefreshLayout) {
                 Handler().postDelayed({
                     refreshLayout.finishLoadmore()
+                    refreshLayout.setEnableLoadmore(false)
+                    refreshLayout.setEnableOverScroll(false)
                 }, 2000)
             }
         })
