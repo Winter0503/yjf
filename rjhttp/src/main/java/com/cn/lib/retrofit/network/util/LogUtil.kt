@@ -229,8 +229,6 @@ object LogUtil {
             } else {
                 Log.w(aTag, aMessage, aThrow)
             }
-            else -> {
-            }
         }
 
         if (mIsLogToFile) {

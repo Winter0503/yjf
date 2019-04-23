@@ -54,7 +54,7 @@ class ActivityListUtil {
         }
     }
 
-    fun removeActivity(activity: Activity?){
+    fun removeActivity(activity: Activity?) {
         activityStack.remove(activity)
     }
 
@@ -74,14 +74,13 @@ class ActivityListUtil {
      */
     @JvmOverloads
     fun finishAllActivity(isFinishMainActivity: Boolean = false) {
-        for (i in activityStack.indices) {
-            if (null != activityStack[i]) {
-                if (mainActivity == activityStack[i].javaClass && !isFinishMainActivity) {
-                    continue
+        activityStack.indices
+                .filter {
+                    null != activityStack[it] && !(mainActivity == activityStack[it].javaClass && !isFinishMainActivity)
                 }
-                activityStack[i].finish()
-            }
-        }
+                .forEach {
+                    activityStack[it].finish()
+                }
         activityStack.clear()
     }
 

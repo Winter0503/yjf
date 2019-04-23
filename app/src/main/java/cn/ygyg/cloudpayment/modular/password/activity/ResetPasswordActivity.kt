@@ -28,7 +28,7 @@ class ResetPasswordActivity : BaseMvpActivity<ResetPasswordContract.Presenter, R
     override fun changeCodeBtnState(state: Boolean) {
         btn_reset_code.text = "获取验证码"
         btn_reset_code.isEnabled = state
-        btn_reset_code.setTextColor(ResourceUtil.getColor(getViewContext(), if (state) R.color.text_green_color else R.color.text_gray_color))
+        btn_reset_code.setTextColor(ResourceUtil.getColor(getViewContext(), if (state) R.color.text_green_color else R.color.text_hint_color))
     }
 
     override fun createPresenter(): ResetPasswordContract.Presenter = ResetPasswordPresenter(this)

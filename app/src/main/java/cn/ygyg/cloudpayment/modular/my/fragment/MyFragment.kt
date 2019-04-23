@@ -70,7 +70,7 @@ class MyFragment : BaseMvpFragment<MyContract.Presenter, MyContract.View>(), MyC
 
     override fun logoutSuccess() {
         toActivity(LoginActivity::class.java)
-        ActivityListUtil.INSTANCE.finishAllActivity(false)
+        ActivityListUtil.INSTANCE.finishAllActivity(true)
     }
 
     override fun loaderPageDataSuccess(entity: LoginEntity?) {

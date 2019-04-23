@@ -79,6 +79,7 @@ class WXEntryActivity : BaseActivity(), IWXAPIEventHandler {
                     ToastUtil.showToast(getViewContext(), "微信分享成功")
                 }
         }
+        finish()
     }
 
 }

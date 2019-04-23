@@ -42,8 +42,10 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="20dp"
+                android:text="Hello,150****281"
                 android:textColor="@color/text_color"
-                android:textSize="22sp" />
+                android:textSize="22sp"
+                android:textStyle="bold" />
 
         </com.cn.lib.widget.shadowlayout.ShadowLinearLayout>
 
