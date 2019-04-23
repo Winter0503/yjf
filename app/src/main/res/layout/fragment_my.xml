@@ -14,45 +14,38 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="34dp"
             android:scaleType="fitXY"
-            android:src="@mipmap/bg_my"/>
+            android:src="@mipmap/bg_my" />
 
-        <com.cn.lib.widget.card.CardView
+        <com.cn.lib.widget.shadowlayout.ShadowLinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginTop="67dp"
-            android:layout_alignParentBottom="true"
-            app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="5dp"
-            android:layout_marginBottom="15dp"
-            app:cardElevation="8dp">
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:padding="25dp"
+            app:l_radius="5dp"
+            app:l_shadowAlpha="0.2"
+            app:l_shadowElevation="5dp">
 
-            <LinearLayout
+            <cn.ygyg.cloudpayment.widget.CircleImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@drawable/avatar1" />
+
+            <TextView
+                android:id="@+id/tv_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
-                android:orientation="horizontal"
-                android:padding="25dp">
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/text_color"
+                android:textSize="22sp" />
 
-                <cn.ygyg.cloudpayment.widget.CircleImageView
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:src="@drawable/avatar1" />
-
-                <TextView
-                    android:id="@+id/tv_phone"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="20dp"
-                    android:textColor="@color/text_color"
-                    android:textSize="22sp" />
-
-            </LinearLayout>
-
-        </com.cn.lib.widget.card.CardView>
+        </com.cn.lib.widget.shadowlayout.ShadowLinearLayout>
 
     </RelativeLayout>
 
@@ -120,6 +113,7 @@
         android:text="@string/logout"
         android:textColor="@color/text_color"
         android:textSize="15sp" />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"

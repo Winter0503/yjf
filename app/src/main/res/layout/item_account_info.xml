@@ -47,7 +47,7 @@
         android:layout_gravity="center_vertical"
         android:background="@mipmap/btn_recharge"
         android:gravity="center"
-        android:text="充值"
+        android:text="@string/recharge"
         android:textColor="@color/white"
         android:textSize="14sp" />
 

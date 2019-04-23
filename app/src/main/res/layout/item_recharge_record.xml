@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.cn.lib.widget.card.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.cn.lib.widget.shadowlayout.ShadowLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:paddingBottom="20dp"
+    android:paddingTop="20dp"
+    app:l_radius="5dp"
+    app:l_shadowAlpha="0.2"
+    app:l_shadowElevation="5dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
     android:layout_marginLeft="20dp"
     android:layout_marginRight="20dp"
     android:layout_marginTop="10dp"
-    android:orientation="vertical"
-    app:cardBackgroundColor="@color/white"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="8dp"
-    app:contentPadding="16dp">
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -162,4 +164,4 @@
 
     </LinearLayout>
 
-</com.cn.lib.widget.card.CardView>
+</com.cn.lib.widget.shadowlayout.ShadowLinearLayout>

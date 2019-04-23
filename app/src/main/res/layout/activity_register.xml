@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="30dp"
-        android:text="注册"
+        android:text="@string/register"
         android:textColor="@color/text_color"
         android:textSize="28sp" />
 
@@ -144,7 +144,7 @@
         android:background="@mipmap/btn_full_normal"
         android:enabled="false"
         android:gravity="center"
-        android:text="注册"
+        android:text="@string/register"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold" />
@@ -159,7 +159,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="点击注册即表示接受云缴费的"
+            android:text="@string/agreement_prompt"
             android:textColor="#FF999999"
             android:textSize="13sp" />
 

@@ -18,7 +18,7 @@ class BindingPhoneActivity : BaseMvpActivity<BindingPhoneContract.Presenter, Bin
     }
 
     override fun changeCodeBtnState(state: Boolean) {
-        btn_binding_code.text = "获取验证码"
+        btn_binding_code.text = ResourceUtil.getString(getViewContext(), R.string.get_verification_code)
         btn_binding_code.isEnabled = state
         btn_binding_code.setTextColor(ResourceUtil.getColor(getViewContext(), if (state) R.color.text_green_color else R.color.text_gray_color))
     }

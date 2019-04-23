@@ -3,7 +3,7 @@
     <string name="verification_code">输入6位验证码</string>
     <string name="input_password">输入6~20位密码</string>
     <string name="get_verification_code">获取验证码</string>
-    <string name="pwd_prompt">密码长度6–20位必须包含字母和数字</string>
+    <string name="pwd_prompt">密码长度6~20位必须包含字母和数字</string>
     <string name="phone_prompt">输入手机号码</string>
     <string name="user_agreement">用户协议</string>
 
@@ -73,4 +73,13 @@
 
     <string name="no_company_in_city">该城市暂未开通燃气缴费服务\n请重新选择城市</string>
     <string name="i_know_it">我知道了</string>
+    <string name="binding_phone">绑定手机号</string>
+    <string name="retrieve_password">找回密码</string>
+    <string name="complete">完成</string>
+    <string name="agreement_prompt">点击注册即表示接受云缴费的</string>
+    <string name="register">注册</string>
+    <string name="reset_password">重置密码</string>
+    <string name="recharge">充值</string>
+    <string name="login_verification_code">验证码登录</string>
+    <string name="login_password">密码登录</string>
 </resources>

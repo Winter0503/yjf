@@ -184,7 +184,7 @@ class ResetPasswordPresenter(view: ResetPasswordContract.View) : BasePresenterIm
                         }
                     }
 
-                    override fun onSuccess(tag: Any?, t: String?) {
+                    override fun onSuccess(tag: Any?, result: String?) {
                         mvpView?.forgetPasswordSuccess()
                     }
 

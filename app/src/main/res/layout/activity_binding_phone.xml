@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
         android:layout_marginTop="30dp"
-        android:text="绑定手机号"
+        android:text="@string/binding_phone"
         android:textColor="@color/text_color"
         android:textSize="28sp" />
 
@@ -97,7 +97,7 @@
         android:background="@mipmap/btn_full_normal"
         android:enabled="false"
         android:gravity="center"
-        android:text="完成"
+        android:text="@string/complete"
         android:textColor="@color/white"
         android:textSize="16sp"
         android:textStyle="bold" />

@@ -30,7 +30,6 @@ import kotlinx.android.synthetic.main.include_activity_header.*
 class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.View>(), LoginContract.View {
 
     private var loginType: Int = 0
-    val REQUEST_CODE_REGISTER = 0x11
 
     override fun getContentViewResId(): Int = R.layout.activity_login
 
@@ -42,7 +41,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
         super.initViews()
         edit_login_code.addTextChangedListener(mPresenter?.getPasswordTextChangeListener())
         edit_login_phone.filters = arrayOf(mPresenter?.getPhoneInputFilter())
-        tv_right.text = "注册"
+        tv_right.text = ResourceUtil.getString(getViewContext(), R.string.register)
         tv_right.setTextColor(ResourceUtil.getColor(getViewContext(), R.color.text_green_color))
         tv_right.visibility = View.VISIBLE
         inputTypePassword()
@@ -84,7 +83,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
         }
 
         tv_right.setOnClickListener {
-            toActivityForResult(getViewContext(), RegisterActivity::class.java, REQUEST_CODE_REGISTER)
+            toActivityForResult(getViewContext(), RegisterActivity::class.java, Companion.REQUEST_CODE_REGISTER)
         }
         btn_login.setOnClickListener {
             mPresenter?.login(loginType, edit_login_phone.text.toString(), edit_login_code.text.toString())
@@ -116,7 +115,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == REQUEST_CODE_REGISTER && resultCode== Activity.RESULT_OK){
+        if (requestCode == Companion.REQUEST_CODE_REGISTER && resultCode== Activity.RESULT_OK){
             data?.let {
                 inputTypePassword()
                 val userName = it.getStringExtra("userName")
@@ -141,8 +140,8 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
         }
         btn_retrieve_password.visibility = View.VISIBLE
         btn_login_code.visibility = View.GONE
-        btn_login_type.text = "验证码登录"
-        tv_login_title.text = "密码登录"
+        btn_login_type.text = ResourceUtil.getString(getViewContext(), R.string.login_verification_code)
+        tv_login_title.text = ResourceUtil.getString(getViewContext(), R.string.login_password)
         btn_pwd.visibility = View.VISIBLE
     }
 
@@ -159,8 +158,8 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
         }
         btn_retrieve_password.visibility = View.INVISIBLE
         btn_login_code.visibility = View.VISIBLE
-        btn_login_type.text = "密码登录"
-        tv_login_title.text = "验证码登录"
+        btn_login_type.text = ResourceUtil.getString(getViewContext(), R.string.login_password)
+        tv_login_title.text = ResourceUtil.getString(getViewContext(), R.string.login_verification_code)
         btn_pwd.visibility = View.GONE
     }
 
@@ -170,7 +169,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
     }
 
     override fun changeCodeBtnState(state: Boolean) {
-        btn_login_code.text = "获取验证码"
+        btn_login_code.text = ResourceUtil.getString(getViewContext(), R.string.get_verification_code)
         btn_login_code.isEnabled = state
         btn_login_code.setTextColor(ResourceUtil.getColor(getViewContext(), if (state) R.color.text_green_color else R.color.text_gray_color))
     }
@@ -181,5 +180,9 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
 
     override fun loginSuccess() {
         toActivity(MainTabActivity::class.java)
+    }
+
+    companion object {
+        private val REQUEST_CODE_REGISTER = 0x11
     }
 }

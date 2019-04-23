@@ -75,7 +75,7 @@ class RegisterActivity : BaseMvpActivity<RegisterContract.Presenter, RegisterCon
     }
 
     override fun changeCodeBtnState(state: Boolean) {
-        if (state) btn_code.text = "获取验证码"
+        if (state) btn_code.text = ResourceUtil.getString(getViewContext(), R.string.get_verification_code)
         btn_code.isEnabled = state
         btn_code.setTextColor(ResourceUtil.getColor(getViewContext(), if (state) R.color.text_green_color else R.color.text_gray_color))
     }
