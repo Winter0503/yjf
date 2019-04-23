@@ -35,4 +35,8 @@ class PaymentsCompleteActivity : BaseActivity() {
         }
         amount_num.text = "500.00"
     }
+
+    override fun initListener() {
+        super.initListener()
+    }
 }

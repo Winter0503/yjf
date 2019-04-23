@@ -13,7 +13,10 @@ class NewAccountSuccessActivity : BaseActivity() {
     }
 
     override fun initViews() {
-        HeaderBuilder(this).setTitle(R.string.activity_title_new_account_success)
+        HeaderBuilder(this).apply {
+            setTitle(R.string.activity_title_new_account_success)
+            setLeftImageRes(R.mipmap.back)
+        }
     }
 
     override fun initListener() {

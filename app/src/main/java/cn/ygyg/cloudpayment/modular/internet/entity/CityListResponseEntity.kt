@@ -8,6 +8,18 @@ class CityListResponseEntity : Serializable {
     var list: ArrayList<CityEntity>? = null
 
     open class CityEntity : CityVM, Serializable {
+        var cityPinyin: String? = null
+
+        var id: Long? = null
+        var cityCode: String? = null
+        var cityName: String? = null
+        var remark: String? = null
+        var createUser: String? = null
+        var createDate: String? = null
+        var modifiedUser: String? = null
+        var modifiedDate: String? = null
+        var deleted: Boolean? = null
+
         override fun cityShowName(): String {
             return if (cityName.isNullOrEmpty()) "" else cityName!!
         }
@@ -24,16 +36,6 @@ class CityListResponseEntity : Serializable {
             return true
         }
 
-        var cityPinyin: String? = null
-
-        var id: Long? = null
-        var cityCode: String? = null
-        var cityName: String? = null
-        var remark: String? = null
-        var createUser: String? = null
-        var createDate: String? = null
-        var modifiedUser: String? = null
-        var modifiedDate: String? = null
-        var deleted: Boolean? = null
+        override fun getViewType(): CityVM.ViewType = CityVM.ViewType.CITY
     }
 }

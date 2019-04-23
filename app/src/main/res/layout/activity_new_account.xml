@@ -17,9 +17,8 @@
         android:paddingStart="20dp">
 
         <TextView
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="@string/pay_cost_company"
             android:textColor="@color/text_color"
@@ -27,11 +26,13 @@
 
         <TextView
             android:id="@+id/pay_cost_company"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
             android:drawableEnd="@mipmap/right_arrow"
             android:drawablePadding="10dp"
-            android:gravity="center"
+            android:gravity="center_vertical"
             android:text="北京燃气集团"
             android:textColor="@color/text_color"
             android:textSize="@dimen/ts_content" />
@@ -57,7 +58,7 @@
             android:textColor="@color/text_color"
             android:textSize="@dimen/ts_content" />
 
-        <EditText
+        <cn.ygyg.cloudpayment.widget.CleanUpEditText
             android:id="@+id/pay_account"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -92,7 +93,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
         android:gravity="center"
         android:paddingEnd="20dp"
         android:paddingStart="20dp"
@@ -104,6 +104,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
         android:layout_marginTop="30dp"
         android:orientation="horizontal"
         android:paddingEnd="20dp"
@@ -148,6 +149,8 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/btn_bg_full"
         android:gravity="center"
-        android:text="下一步"
-        android:textColor="@color/white" />
+        android:text="@string/commit"
+        android:textColor="@color/white"
+        android:textSize="@dimen/ts_btn"
+        android:textStyle="bold" />
 </LinearLayout>

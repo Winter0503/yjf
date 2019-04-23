@@ -50,8 +50,6 @@ dependencies {
     implementation 'com.ocnyang:contourview:1.0.1'
     // 高德定位
     implementation 'com.amap.api:location:4.5.1'
-    /*权限检测工具*/
-    implementation 'com.mylhyl:acp:1.1.7'
     //拼音 中国城市词库
     implementation 'com.github.promeg:tinypinyin:2.0.3'
     implementation 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.3'

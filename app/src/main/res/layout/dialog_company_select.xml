@@ -48,6 +48,8 @@
         android:background="@mipmap/btn_full_press"
         android:gravity="center"
         android:text="@string/confirm"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textSize="@dimen/ts_btn"
+        android:textStyle="bold" />
 
 </LinearLayout>

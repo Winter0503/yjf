@@ -11,10 +11,10 @@ import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.internet.adapter.AddressSelectorAdapter
 import cn.ygyg.cloudpayment.modular.internet.contract.AddressSelectorActivityContract
 import cn.ygyg.cloudpayment.modular.internet.entity.CityTitle
-import cn.ygyg.cloudpayment.modular.internet.vm.CityVM
 import cn.ygyg.cloudpayment.modular.internet.helper.CompanySelectDialog
 import cn.ygyg.cloudpayment.modular.internet.helper.SearchAddressDialog
 import cn.ygyg.cloudpayment.modular.internet.presenter.AddressSelectorActivityPresenter
+import cn.ygyg.cloudpayment.modular.internet.vm.CityVM
 import cn.ygyg.cloudpayment.modular.internet.vm.CompanyVM
 import cn.ygyg.cloudpayment.utils.BaseViewHolder
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
@@ -27,6 +27,8 @@ import com.cn.lib.basic.BaseMvpActivity
 import com.cn.lib.util.ToastUtil
 import com.github.promeg.pinyinhelper.Pinyin
 import com.github.promeg.tinypinyin.lexicons.android.cncity.CnCityDict
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import kotlinx.android.synthetic.main.activity_address_selector.*
 
 class AddressSelectorActivity :
@@ -93,6 +95,7 @@ class AddressSelectorActivity :
         recycler.layoutManager = LinearLayoutManager(this)
         adapter.addItem(CityTitle().apply {
             cityTitle = "定位中"
+            isLoactionCity = true
         })
         recycler.adapter = adapter
 
@@ -143,7 +146,11 @@ class AddressSelectorActivity :
             }
 
         }
-
+        refreshLayout.setOnRefreshListener(object : RefreshListenerAdapter() {
+            override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
+                mPresenter?.loadCityList()
+            }
+        })
     }
 
     override fun initData() {
@@ -159,20 +166,26 @@ class AddressSelectorActivity :
                 adapter.setItem(0, CityTitle().apply {
                     cityTitle = location.city
                     cityPinyin = pinyin
+                    isLoactionCity = true
                 })
             }
 
             override fun onFailed(errCode: Int) {
-                ToastUtil.showErrorToast(this@AddressSelectorActivity, "定位失败")
-                adapter.removeItem(0)
+                ToastUtil.showToast(this@AddressSelectorActivity, "定位失败")
+                val item = adapter.getItem(0)
+                if (item is CityTitle) {
+                    if (item.isLoactionCity) {
+                        adapter.removeItem(0)
+                    }
+                }
             }
         })
     }
 
-
     override fun onLoadCityListSuccess(response: ArrayList<out CityVM>) {
         this.dataSource = response
         mPresenter?.addTitleItem(response)
+        refreshLayout.finishRefreshing()
     }
 
     override fun addTitleSuccess(response: ArrayList<CityVM>, titlePositionMap: ArrayMap<String, Int>) {
