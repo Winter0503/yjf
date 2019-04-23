@@ -7,18 +7,17 @@
     android:orientation="vertical">
 
 
-
-        <com.cn.lib.weight.indicator.TabIndicatorView
-            android:id="@+id/layout_tab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:layout_alignParentBottom="true"
-            app:indicator_textColorNormal="@color/home_unselected_text"
-            app:indicator_textColorSelected="@color/home_selected_text"
-            app:indicator_textPaddingBottom="4dp"
-            app:indicator_textPaddingTop="4dp"
-            app:indicator_textSizeNormal="10sp" />
+    <com.cn.lib.weight.indicator.TabIndicatorView
+        android:id="@+id/layout_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        app:indicator_textColorNormal="@color/text_hint_color"
+        app:indicator_textColorSelected="@color/home_selected_text"
+        app:indicator_textPaddingBottom="4dp"
+        app:indicator_textPaddingTop="4dp"
+        app:indicator_textSizeNormal="10sp" />
 
 
     <com.cn.lib.widget.CustomViewPager
