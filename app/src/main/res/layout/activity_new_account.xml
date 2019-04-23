@@ -67,6 +67,7 @@
             android:background="@color/transparent"
             android:gravity="center_vertical"
             android:hint="@string/hint_input_pay_account"
+            android:includeFontPadding="false"
             android:inputType="text"
             android:lines="1"
             android:textColor="@color/text_color"
@@ -118,6 +119,7 @@
             android:button="@drawable/button_check_box_green"
             android:checked="true"
             android:gravity="center"
+            android:includeFontPadding="false"
             android:padding="4dp"
             android:textColor="@color/text_color"
             android:textSize="@dimen/ts_content" />
