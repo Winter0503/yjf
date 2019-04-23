@@ -24,7 +24,6 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
         mutableList?.let {
             //不为空时执行
             mAdapter.setNewList(mutableList)
-
         } ?: let {
             //为空时执行
             val firstView = layoutInflater.inflate(R.layout.layout_first_into, recycler_view, false)
@@ -36,6 +35,7 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
                 toActivity(AddressSelectorActivity::class.java)
             }
         }
+        setHasLoadedOnce(true)
     }
 
     override fun createPresenter(): HomeContract.Presenter = HomePresenter(this)
@@ -55,23 +55,23 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
         }
         mAdapter.addHeaderView(layoutInflater.inflate(R.layout.layout_banner, recycler_view, false))
         refreshLayout = findViewById(R.id.layout_refresh)
-        refreshLayout?.setHeaderView(ProgressHeaderView(getViewContext()).setTextVisibility(false))
-        refreshLayout?.setBottomView(LoadMoreView(getViewContext()))
     }
 
     override fun initListener(v: View) {
         refreshLayout?.setOnRefreshListener(object : RefreshListenerAdapter() {
             override fun onRefresh(refreshLayout: TwinklingRefreshLayout) {
                 Handler().postDelayed({
-
                     refreshLayout.finishRefreshing()
                 }, 2000)
             }
 
             override fun onLoadMore(refreshLayout: TwinklingRefreshLayout) {
                 Handler().postDelayed({
-
                     refreshLayout.finishLoadmore()
+                    //设置不可上拉加载更多
+                    refreshLayout.setEnableLoadmore(false)
+                    //取消上拉回弹效果
+                    refreshLayout.setEnableOverScroll(false)
                 }, 2000)
             }
         })

@@ -1,6 +1,8 @@
 package cn.ygyg.cloudpayment.modular.register.activity
 
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.text.InputType
 import android.view.inputmethod.EditorInfo
 import cn.ygyg.cloudpayment.R
@@ -80,6 +82,10 @@ class RegisterActivity : BaseMvpActivity<RegisterContract.Presenter, RegisterCon
 
     override fun registerSuccess() {
         ToastUtil.showSuccessToast(getViewContext(), "注册成功")
+        val intent = Intent()
+        intent.putExtra("userName", edit_phone.text.toString())
+        intent.putExtra("password", edit_pwd.text.toString())
+        setResult(Activity.RESULT_OK, intent)
         this.finish()
     }
 
