@@ -9,6 +9,7 @@ import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsActivityContract
 import cn.ygyg.cloudpayment.modular.payments.presenter.PaymentsActivityPresenter
 import cn.ygyg.cloudpayment.utils.DecimalDigitsInputFilter
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
+import cn.ygyg.cloudpayment.utils.ViewUtils
 import com.cn.lib.basic.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_payments.*
 
@@ -23,8 +24,7 @@ class PaymentsActivity :
             setTitle(R.string.activity_title_payments)
             setLeftImageRes(R.mipmap.back)
         }
-
-        input_amount.filters = arrayOf(DecimalDigitsInputFilter(2))
+        input_amount.clearFocus()
     }
 
     override fun initListener() {
@@ -33,7 +33,8 @@ class PaymentsActivity :
 
         val singleChose = View.OnClickListener { v ->
             if (v != null) {
-                input_amount.clearFocus()
+                input_amount.setText("")
+                ViewUtils.hideKeyboard(input_amount)
             }
             selector_rmb100.isChecked = selector_rmb100 == v
             selector_rmb300.isChecked = selector_rmb300 == v

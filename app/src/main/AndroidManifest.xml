@@ -57,7 +57,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".modular.internet.activity.NewAccountActivity" />
+        <activity
+            android:name=".modular.internet.activity.NewAccountActivity"
+            android:windowSoftInputMode="adjustPan|stateVisible" />
         <activity android:name=".modular.internet.activity.ListSelectActivity" />
         <activity
             android:name=".modular.internet.activity.NewAccountSuccessActivity"
@@ -65,7 +67,7 @@
         <activity android:name=".modular.internet.activity.AddressSelectorActivity" />
         <activity
             android:name=".modular.payments.activity.PaymentsActivity"
-            android:windowSoftInputMode="adjustPan|stateUnchanged" />
+            android:windowSoftInputMode="adjustResize|stateUnchanged" />
         <activity android:name=".modular.payments.activity.PaymentsHistoryActivity" />
         <activity android:name=".modular.payments.activity.PaymentsCompleteActivity" />
         <activity

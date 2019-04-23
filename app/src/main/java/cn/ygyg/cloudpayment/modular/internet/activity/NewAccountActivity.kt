@@ -45,6 +45,7 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
         }
         headerBuilder.setLeftImageRes(R.mipmap.back)
         headerBuilder.setTitle(R.string.activity_title_add_new_account)
+        pay_account.requestFocus()
     }
 
     override fun initListener() {

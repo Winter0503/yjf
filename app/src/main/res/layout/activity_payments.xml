@@ -22,6 +22,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:scrollbars="none">
 
         <LinearLayout
@@ -164,8 +166,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginStart="16dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginTop="16dp"
                 android:orientation="horizontal">
 
@@ -173,8 +175,6 @@
                     android:id="@+id/selector_rmb100"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:layout_marginEnd="3dp"
-                    android:layout_marginStart="3dp"
                     android:layout_weight="1"
                     android:background="@drawable/selector_stroke_gray_green"
                     android:button="@null"
@@ -188,8 +188,8 @@
                     android:id="@+id/selector_rmb300"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:layout_marginEnd="3dp"
-                    android:layout_marginStart="3dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_marginStart="6dp"
                     android:layout_weight="1"
                     android:background="@drawable/selector_stroke_gray_green"
                     android:button="@null"
@@ -203,8 +203,6 @@
                     android:id="@+id/selector_rmb800"
                     android:layout_width="0dp"
                     android:layout_height="40dp"
-                    android:layout_marginEnd="3dp"
-                    android:layout_marginStart="3dp"
                     android:layout_weight="1"
                     android:background="@drawable/selector_stroke_gray_green"
                     android:button="@null"
@@ -223,6 +221,8 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="8dp"
                 android:background="@drawable/shape_stroke_gray"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
                 android:orientation="horizontal">
 
                 <TextView
@@ -242,10 +242,11 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:background="@color/transparent"
-                    android:focusable="false"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:gravity="center_vertical|end"
                     android:hint="@string/input_amount_hint"
-                    android:inputType="numberDecimal"
+                    android:inputType="number"
                     android:lines="1"
                     android:textColor="@color/text_color"
                     android:textSize="@dimen/ts_content" />
@@ -350,7 +351,8 @@
                 android:gravity="center"
                 android:text="@string/immediately_payments"
                 android:textColor="@color/white"
-                android:textSize="@dimen/ts_btn" />
+                android:textSize="@dimen/ts_btn"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
