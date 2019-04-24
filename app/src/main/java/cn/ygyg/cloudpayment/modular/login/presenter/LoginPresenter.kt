@@ -5,19 +5,25 @@ import android.text.InputFilter
 import android.text.TextWatcher
 import cn.ygyg.cloudpayment.api.RequestManager
 import cn.ygyg.cloudpayment.api.UrlConstants
+import cn.ygyg.cloudpayment.api.UrlConstants.getMemberInfo
 import cn.ygyg.cloudpayment.app.Constants.IntentKey.USER_INFO
 import cn.ygyg.cloudpayment.modular.login.contract.LoginContract
 import cn.ygyg.cloudpayment.modular.login.entity.LoginEntity
+import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
 import cn.ygyg.cloudpayment.utils.ProgressUtil
 import cn.ygyg.cloudpayment.utils.SharePreUtil
 import cn.ygyg.cloudpayment.utils.StringUtil
 import com.cn.lib.basic.BasePresenterImpl
 import com.cn.lib.retrofit.network.callback.ResultCallback
+import com.cn.lib.retrofit.network.config.Optional
 import com.cn.lib.retrofit.network.exception.ApiThrowable
+import com.cn.lib.retrofit.network.subscriber.ResultCallbackSubscriber
 import io.reactivex.Observable
+import io.reactivex.ObservableSource
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 
@@ -170,7 +176,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
 
     override fun getVerificationCode(phone: String) {
         RequestManager.post(UrlConstants.captcha)
-                .param("phone",phone)
+                .param("phone", phone)
                 .execute("login", object : ResultCallback<String>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.getViewContext()?.let {
@@ -196,27 +202,32 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
     }
 
     override fun login(loginType: Int, username: String, password: String) {
-        if (loginType == 0) { //密码登录
+        val observable: Observable<Optional<LoginEntity>> = if (loginType == 0) { //密码登录
             val reg = "^(?![a-zA-Z]+\$)(?!\\d+\$)\\S{6,}\$"
             if (!StringUtil.match(reg, password)) {
                 mvpView?.showToast("密码必须包含数字和字母")
                 return
             }
             RequestManager.post(UrlConstants.login)
-                    .param("password",password)
-                    .param("username",username)
-                    .execute("passwordLogin", getLoginCallback())
+                    .param("password", password)
+                    .param("username", username)
+                    .execute(LoginEntity::class.java)
 
         } else { //验证码登录
             RequestManager.post(UrlConstants.captchalogin)
-                    .param("captcha",password)
-                    .param("username",username)
-                    .execute("captchaLogin", getLoginCallback())
+                    .param("captcha", password)
+                    .param("username", username)
+                    .execute(LoginEntity::class.java)
         }
+        observable.flatMap {
+            RequestManager.post(UrlConstants.getMemberInfo)
+                    .param("captcha", password)
+                    .execute(UserEntity::class.java)
+        }.subscribeWith(ResultCallbackSubscriber("register", getLoginCallback()))
     }
 
-    private fun getLoginCallback(): ResultCallback<LoginEntity> {
-        return object : ResultCallback<LoginEntity>() {
+    private fun getLoginCallback(): ResultCallback<UserEntity> {
+        return object : ResultCallback<UserEntity>() {
             override fun onStart(tag: Any?) {
                 mvpView?.getViewContext()?.let {
                     ProgressUtil.showProgressDialog(it, "登录中...")
@@ -233,7 +244,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
                 }
             }
 
-            override fun onSuccess(tag: Any?, result : LoginEntity?) {
+            override fun onSuccess(tag: Any?, result: UserEntity?) {
                 result?.let {
                     SharePreUtil.saveBeanByFastJson(USER_INFO, it)
                 }

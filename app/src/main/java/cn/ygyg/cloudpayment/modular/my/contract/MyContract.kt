@@ -1,6 +1,7 @@
 package cn.ygyg.cloudpayment.modular.my.contract
 
 import cn.ygyg.cloudpayment.modular.login.entity.LoginEntity
+import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
 import com.cn.lib.basic.IBasePresenter
 import com.cn.lib.basic.IBaseView
 
@@ -10,7 +11,7 @@ import com.cn.lib.basic.IBaseView
 class MyContract {
     interface View : IBaseView {
         fun logoutSuccess()
-        fun loaderPageDataSuccess(entity: LoginEntity?)
+        fun loaderPageDataSuccess(entity: UserEntity?)
 
     }
 
