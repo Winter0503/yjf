@@ -22,7 +22,7 @@ object SharePreUtil {
     private val longMap: MutableMap<String, Long>by lazy {
         mutableMapOf<String, Long>()
     }
-    private lateinit var sp: SharedPreferences
+    lateinit var sp: SharedPreferences
 
     /**
      * 初始化Sp文件
@@ -183,11 +183,11 @@ object SharePreUtil {
      * @param clazz 这里传入一个类就是我们所需要的实体类(obj)
      * @return 返回我们封装好的该实体类(obj)
      */
-    fun <T> getBeanByFastJson(key: String, clazz: Class<T>): T? {
+    inline fun <reified T> getBeanByFastJson(key: String): T? {
         val objString = sp.getString(key, "")
         return if (TextUtils.isEmpty(objString) || !objString.startsWith("{") || !objString.endsWith("}")) {
             null
-        } else JSON.parseObject(objString, clazz)
+        } else JSON.parseObject(objString, T::class.java)
     }
 
     /**
@@ -195,11 +195,11 @@ object SharePreUtil {
      * @param clazz 这里传入一个类就是我们所需要的实体类(obj)
      * @return 返回我们封装好的该实体类(obj)
      */
-    fun <T> getListByFastJson(key: String, clazz: Class<T>): List<T>? {
+    inline fun <reified T> getListByFastJson(key: String): List<T>? {
         val objString = sp.getString(key, "")
         return if (TextUtils.isEmpty(objString) || !objString.startsWith("[") || !objString.endsWith("]")) {
             null
-        } else JSON.parseArray(objString, clazz)
+        } else JSON.parseArray(objString, T::class.java)
     }
 
 

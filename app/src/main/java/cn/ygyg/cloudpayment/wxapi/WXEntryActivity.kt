@@ -74,7 +74,7 @@ class WXEntryActivity : BaseActivity(), IWXAPIEventHandler {
                     //用户换取access_token的code，仅在ErrCode为0时有效
                     val code = (baseResp as SendAuth.Resp).code
                     LogUtil.i(TAG, "code:------>" + code)
-
+                    ToastUtil.showToast(getViewContext(), "code:$code")
                 } else if (type == RETURN_MSG_TYPE_SHARE) {
                     ToastUtil.showToast(getViewContext(), "微信分享成功")
                 }

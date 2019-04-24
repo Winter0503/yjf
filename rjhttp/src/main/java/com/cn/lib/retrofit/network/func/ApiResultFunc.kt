@@ -14,9 +14,9 @@ class ApiResultFunc<T>(private val type: Type) : Function<ResponseBody, ApiResul
     @Throws(Exception::class)
     override fun apply(body: ResponseBody): ApiResultEntity<T> {
         var apiResult = ApiResultEntity<T>()
-        val jsonStr = body.string()
         apiResult.code = "-1"
-        try {
+        body.use {
+            val jsonStr = body.string()
             val subClazz = (type as ParameterizedType).rawType as Class<*>
             if (ApiResultEntity::class.java.isAssignableFrom(subClazz)) {
                 apiResult = JSON.parseObject(jsonStr, type, Feature.UseBigDecimal)
@@ -24,8 +24,6 @@ class ApiResultFunc<T>(private val type: Type) : Function<ResponseBody, ApiResul
                 apiResult.code = "-1"
                 apiResult.msg = "ApiResultEntity.class.isAssignableFrom(subClazz) err!!"
             }
-        } finally {
-            body.close()
         }
         return apiResult
     }
