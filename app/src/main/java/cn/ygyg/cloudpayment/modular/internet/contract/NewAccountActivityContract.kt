@@ -1,6 +1,6 @@
 package cn.ygyg.cloudpayment.modular.internet.contract
 
-import cn.ygyg.cloudpayment.modular.internet.entity.DeviceResponseEntity
+import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import com.cn.lib.basic.IBasePresenter
 import com.cn.lib.basic.IBaseView
 
@@ -9,7 +9,7 @@ class NewAccountActivityContract {
         /**
          * 查询 物联网表数据
          */
-        fun onLoadDeviceSuccess(result: DeviceResponseEntity)
+        fun onLoadDeviceSuccess(result: DeviceVM)
 
         /**
          * 绑定 物联网表

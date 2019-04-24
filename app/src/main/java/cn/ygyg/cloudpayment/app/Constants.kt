@@ -6,6 +6,7 @@ object Constants {
         const val IS_SUCCESS = "isSuccess"
         const val FOR_RESULT = "forResult"
         const val USER_INFO = "userInfo"
+        const val DEVICE_CODE="deviceCode"
     }
 
     object WX {

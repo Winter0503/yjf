@@ -32,7 +32,7 @@ class DeviceResponseEntity : Serializable, DeviceVM {
 
 
     override fun userName(): String {
-        return UserUtil.getUserName()
+        return if (customerName.isNullOrEmpty()) "" else customerName!!
     }
 
     override fun deviceCompany(): String {

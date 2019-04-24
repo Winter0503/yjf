@@ -1,15 +1,17 @@
 package cn.ygyg.cloudpayment.modular.internet.activity
 
 import android.content.Intent
+import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import cn.ygyg.cloudpayment.R
+import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.modular.internet.contract.NewAccountActivityContract
-import cn.ygyg.cloudpayment.modular.internet.entity.DeviceResponseEntity
 import cn.ygyg.cloudpayment.modular.internet.helper.ConfirmAccountDialog
 import cn.ygyg.cloudpayment.modular.internet.helper.InquireAccountDialog
 import cn.ygyg.cloudpayment.modular.internet.presenter.NewAccountActivityPresenter
+import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.register.activity.UserAgreementActivity
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
 import com.cn.lib.basic.BaseMvpActivity
@@ -78,13 +80,15 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
         }
     }
 
-    override fun onLoadDeviceSuccess(result: DeviceResponseEntity) {
+    override fun onLoadDeviceSuccess(result: DeviceVM) {
         accountDialog.setData(result)
         accountDialog.show()
     }
 
     override fun onBindDeviceSuccess() {
-        toActivity(NewAccountSuccessActivity::class.java)
+        toActivity(NewAccountSuccessActivity::class.java, Bundle().apply {
+            putString(Constants.IntentKey.DEVICE_CODE, deviceCode)
+        })
     }
 
     private fun canDoNext(canDo: Boolean) {

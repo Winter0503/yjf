@@ -1,11 +1,46 @@
 package cn.ygyg.cloudpayment.modular.payments.presenter
 
+import cn.ygyg.cloudpayment.api.RequestManager
+import cn.ygyg.cloudpayment.api.UrlConstants
+import cn.ygyg.cloudpayment.modular.internet.entity.DeviceResponseEntity
 import com.cn.lib.basic.BasePresenterImpl
 
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsActivityContract
+import cn.ygyg.cloudpayment.utils.ProgressUtil
+import cn.ygyg.cloudpayment.utils.UserUtil
+import com.cn.lib.retrofit.network.callback.ResultCallback
+import com.cn.lib.retrofit.network.exception.ApiThrowable
 
 class PaymentsActivityPresenter(view: PaymentsActivityContract.View) :
         BasePresenterImpl<PaymentsActivityContract.View>(view),
         PaymentsActivityContract.Presenter {
+    override fun getBindDevice(deviceCode: String) {
+        RequestManager.get(UrlConstants.getDevice)
+                .param("meterCode", deviceCode)
+                .param("username", UserUtil.getUserName())
+                .execute("", object : ResultCallback<DeviceResponseEntity>() {
+                    override fun onStart(tag: Any?) {
+                        mvpView?.getViewContext()?.let {
+                            ProgressUtil.showProgressDialog(it, "加载中...")
+                        }
+                    }
+
+                    override fun onCompleted(tag: Any?) {
+                        mvpView?.getViewContext()?.let {
+                            ProgressUtil.dismissProgressDialog()
+                        }
+                    }
+
+                    override fun onError(tag: Any?, e: ApiThrowable) {
+                        e.message?.let { mvpView?.showToast(it) }
+                    }
+
+                    override fun onSuccess(tag: Any?, result: DeviceResponseEntity?) {
+                        result?.let {
+                            mvpView?.onLoadDeviceSuccess(it)
+                        }
+                    }
+                })
+    }
 
 }
