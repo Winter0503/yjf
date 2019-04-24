@@ -220,12 +220,13 @@ object StringUtil {
     }
 
     fun blurPhone(phone: String): String {
+        var tempPhone = phone
         val phoneBlurReplaceRegex = "$1****$2"
         val phoneBlurRegex = "(\\d{3})\\d{4}(\\d{4})"
         if (checkCellPhone(phone)) {
-            phone.replace(phoneBlurRegex, phoneBlurReplaceRegex)
+            tempPhone =  phone.replace(phoneBlurRegex.toRegex(), phoneBlurReplaceRegex)
         }
-        return phone
+        return tempPhone
     }
 
 }

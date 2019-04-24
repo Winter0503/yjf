@@ -1,5 +1,6 @@
 package cn.ygyg.cloudpayment.modular.login.presenter
 
+import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
@@ -201,6 +202,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
                 })
     }
 
+    @SuppressLint("CheckResult")
     override fun login(loginType: Int, username: String, password: String) {
         val observable: Observable<Optional<LoginEntity>> = if (loginType == 0) { //密码登录
             val reg = "^(?![a-zA-Z]+\$)(?!\\d+\$)\\S{6,}\$"
@@ -221,9 +223,9 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
         }
         observable.flatMap {
             RequestManager.post(UrlConstants.getMemberInfo)
-                    .param("captcha", password)
+                    .param("username", username)
                     .execute(UserEntity::class.java)
-        }.subscribeWith(ResultCallbackSubscriber("register", getLoginCallback()))
+        }.subscribeWith(ResultCallbackSubscriber(tag = "register", callback = getLoginCallback()))
     }
 
     private fun getLoginCallback(): ResultCallback<UserEntity> {

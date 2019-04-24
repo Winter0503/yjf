@@ -1,5 +1,6 @@
 package cn.ygyg.cloudpayment.modular.my.fragment
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.net.Uri
 import android.view.View
@@ -74,9 +75,10 @@ class MyFragment : BaseMvpFragment<MyContract.Presenter, MyContract.View>(), MyC
         ActivityListUtil.INSTANCE.finishAllActivity(true)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun loaderPageDataSuccess(entity: UserEntity?) {
         entity?.let {
-            tv_phone.text = entity.cellPhone
+            tv_phone.text = "Hello${entity.cellPhone}"
         }
         setHasLoadedOnce(true)
     }

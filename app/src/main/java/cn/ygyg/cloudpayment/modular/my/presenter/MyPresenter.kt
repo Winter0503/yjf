@@ -6,6 +6,7 @@ import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
 import cn.ygyg.cloudpayment.modular.my.contract.MyContract
 import cn.ygyg.cloudpayment.utils.SharePreUtil
 import cn.ygyg.cloudpayment.utils.StringUtil
+import cn.ygyg.cloudpayment.utils.UserUtil
 import com.cn.lib.basic.BasePresenterImpl
 
 /**
@@ -13,7 +14,7 @@ import com.cn.lib.basic.BasePresenterImpl
  */
 class MyPresenter(view: MyContract.View) : BasePresenterImpl<MyContract.View>(view), MyContract.Presenter {
     override fun loaderPageData() {
-        val entity = SharePreUtil.getBeanByFastJson<UserEntity>(USER_INFO)
+        val entity = UserUtil.getUser()
         entity?.run {
             cellPhone = StringUtil.blurPhone(cellPhone)
             mvpView?.loaderPageDataSuccess(this)
