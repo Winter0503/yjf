@@ -24,6 +24,7 @@ import cn.ygyg.cloudpayment.widget.ProgressHeaderView
 import cn.ygyg.cloudpayment.widget.SideBarView
 import com.amap.api.location.AMapLocation
 import com.cn.lib.basic.BaseMvpActivity
+import com.cn.lib.retrofit.network.util.LogUtil
 import com.cn.lib.util.ToastUtil
 import com.github.promeg.pinyinhelper.Pinyin
 import com.github.promeg.tinypinyin.lexicons.android.cncity.CnCityDict
@@ -98,7 +99,7 @@ class AddressSelectorActivity :
         recycler.adapter = adapter
 
         refreshLayout.setHeaderView(ProgressHeaderView(getViewContext()).setTextVisibility(false))
-        refreshLayout.setBottomView(LoadMoreView(getViewContext()))
+//        refreshLayout.setBottomView(LoadMoreView(getViewContext()))
     }
 
     override fun initListener() {
@@ -113,7 +114,7 @@ class AddressSelectorActivity :
                     var locationCity: CityVM? = null
                     dataSource?.let {
                         for (c in it)
-                            if (c.cityShowName() == cityVM.cityShowName()) {
+                            if (cityVM.cityShowName().contains(c.cityShowName())) {
                                 locationCity = c
                                 break
                             }
@@ -133,6 +134,8 @@ class AddressSelectorActivity :
         }
         sideBar.onSideBarTouchListener = object : SideBarView.OnSideBarTouchListener {
             override fun onTouchChanged(char: String, position: Int) {
+                LogUtil.i("TAG", position.toString())
+
                 titlePositionMap?.let {
                     it[char]?.let {
                         recycler.smoothScrollToPosition(it.plus(1))

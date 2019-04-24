@@ -173,6 +173,15 @@ class SideBarView : View {
                     }
                 }
                 else -> {
+                    //如果是cancel也要调用onLetterUpListener 通知
+                    if (event.action == MotionEvent.ACTION_CANCEL) {
+                        isTouching = false
+                        onSideBarTouchListener?.onTouching(isTouching)
+                    } else if (event.action == MotionEvent.ACTION_DOWN) {//按下调用 onLetterDownListener
+                        touchDown = event.x > charRect.left && event.x < charRect.right
+                        isTouching = touchDown
+                        onSideBarTouchListener?.onTouching(isTouching)
+                    }
                     if (oldChoose != newChoose) {
                         if (newChoose >= 0 && newChoose < itemData!!.size) {
                             selectIndex = newChoose
@@ -181,22 +190,10 @@ class SideBarView : View {
                             }
                         }
                     }
-                    //如果是cancel也要调用onLetterUpListener 通知
-                    if (event.action == MotionEvent.ACTION_CANCEL) {
-                        isTouching = false
-                        onSideBarTouchListener?.onTouching(isTouching)
-                    } else if (event.action == MotionEvent.ACTION_DOWN) {//按下调用 onLetterDownListener
-                        touchDown = event.x > charRect.left && event.x < charRect.right
-                        isTouching = touchDown
-                        if (touchDown) {
-                            onSideBarTouchListener?.onTouching(isTouching)
-                        } else {
-                        }
-
-                    }
                 }
             }
         }
+
         invalidate()
         return isTouching && touchDown
     }

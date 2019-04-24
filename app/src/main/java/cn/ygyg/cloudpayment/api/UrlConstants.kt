@@ -32,7 +32,13 @@ object UrlConstants {
     /**
      * 城市列表
      */
-    const val cityList = "chaoscloud-customerapi/webApi/customerapi/city/list"
+    const val cityList = "chaoscloud-customerapi/customerapi/city/list"
+
+    /**
+     * 城市公司列表
+     */
+    const val companyList = "chaoscloud-customerapi/customerapi/company/list"
+
     /**
      * 获取用户信息
      */
@@ -40,9 +46,13 @@ object UrlConstants {
 
 
     /**
-     * 城市公司列表
+     * 获取物联网表 信息
      */
-    const val companyList = "chaoscloud-customerapi/webApi/customerapi/company/list"
+    const val getDevice = "chaoscloud-customerapi/customerApi/app/device/getDevice"
+    /**
+     * 绑定物联网表
+     */
+    const val bindDevice = "chaoscloud-customerapi/customerApi/app/device/bind"
 
 
 }

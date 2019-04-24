@@ -4,13 +4,11 @@ import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
 import android.view.Gravity
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import cn.ygyg.cloudpayment.R
-import com.cn.lib.util.DensityUtil
+import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 
 class ConfirmAccountDialog(context: Context) : Dialog(context) {
     private var userName: TextView
@@ -41,5 +39,13 @@ class ConfirmAccountDialog(context: Context) : Dialog(context) {
 
     fun setOnConformClick(l: View.OnClickListener) {
         confirm.setOnClickListener(l)
+    }
+
+    fun setData(data: DeviceVM) {
+        userName.text = data.userName()
+        payCostCompany.text = data.deviceCompany()
+        accountName.text = data.deviceCode()
+        address.text = data.deviceAddress()
+        balance.text = data.deviceBalance()
     }
 }

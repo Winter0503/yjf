@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.View
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.modular.internet.contract.NewAccountActivityContract
+import cn.ygyg.cloudpayment.modular.internet.entity.DeviceResponseEntity
 import cn.ygyg.cloudpayment.modular.internet.helper.ConfirmAccountDialog
 import cn.ygyg.cloudpayment.modular.internet.helper.InquireAccountDialog
 import cn.ygyg.cloudpayment.modular.internet.presenter.NewAccountActivityPresenter
@@ -16,17 +17,20 @@ import kotlinx.android.synthetic.main.activity_new_account.*
 
 class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter, NewAccountActivityContract.View>(),
         NewAccountActivityContract.View {
-    override fun createPresenter(): NewAccountActivityContract.Presenter {
-        return NewAccountActivityPresenter(this)
-    }
-
     private val headerBuilder: HeaderBuilder by lazy { HeaderBuilder(this) }
+    private var deviceCode = ""
     private val accountDialog: ConfirmAccountDialog by lazy {
         ConfirmAccountDialog(this).apply {
-            setOnConformClick(View.OnClickListener { toActivity(NewAccountSuccessActivity::class.java) })
+            setOnConformClick(View.OnClickListener {
+                mPresenter?.bindDevice(deviceCode)
+            })
         }
     }
     private val dialog: InquireAccountDialog by lazy { InquireAccountDialog(this) }
+
+    override fun createPresenter(): NewAccountActivityContract.Presenter {
+        return NewAccountActivityPresenter(this)
+    }
 
     override fun getContentViewResId(): Int {
         return R.layout.activity_new_account
@@ -53,7 +57,8 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
         agree_protocol.setOnCheckedChangeListener { _, isChecked -> canDoNext(isChecked) }
         next_step.setOnClickListener { v ->
             if (v.isSelected) {
-                accountDialog.show()
+                deviceCode = pay_account.text.toString()
+                mPresenter?.getDevice(deviceCode)
             }
         }
         input_account_help.setOnClickListener { dialog.show() }
@@ -71,6 +76,15 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
         pay_cost_company.setOnClickListener {
             toActivity(AddressSelectorActivity::class.java)
         }
+    }
+
+    override fun onLoadDeviceSuccess(result: DeviceResponseEntity) {
+        accountDialog.setData(result)
+        accountDialog.show()
+    }
+
+    override fun onBindDeviceSuccess() {
+        toActivity(NewAccountSuccessActivity::class.java)
     }
 
     private fun canDoNext(canDo: Boolean) {

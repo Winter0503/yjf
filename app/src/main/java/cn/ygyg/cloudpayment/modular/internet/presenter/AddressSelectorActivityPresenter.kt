@@ -84,8 +84,8 @@ class AddressSelectorActivityPresenter(view: AddressSelectorActivityContract.Vie
                     }
 
                     override fun onSuccess(tag: Any?, t: CompanyListResponseEntity?) {
-                        t?.let {
-                            mvpView?.onLoadCompanyListSuccess(it.list)
+                        t?.list?.let {
+                            mvpView?.onLoadCompanyListSuccess(it)
                         }
                     }
                 })
