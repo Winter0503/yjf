@@ -21,19 +21,15 @@ class AddressSelectorActivityPresenter(view: AddressSelectorActivityContract.Vie
         AddressSelectorActivityContract.Presenter {
     override fun loadCityList() {
         RequestManager.get(UrlConstants.cityList)
-                .param("pageNum", "1")
+                .param("pageIndex", "1")
                 .param("pageSize", "9999")
                 .execute("cityList", object : ResultCallback<CityListResponseEntity>() {
                     override fun onStart(tag: Any?) {
-                        mvpView?.let {
-                            ProgressUtil.showProgressDialog(it.getViewContext(), "加载中...")
-                        }
+
                     }
 
                     override fun onCompleted(tag: Any?) {
-                        mvpView?.let {
-                            ProgressUtil.dismissProgressDialog()
-                        }
+
                     }
 
                     override fun onError(tag: Any?, e: ApiThrowable) {
@@ -68,15 +64,19 @@ class AddressSelectorActivityPresenter(view: AddressSelectorActivityContract.Vie
     override fun getCompanyByCity(city: CityVM) {
         RequestManager.get(UrlConstants.companyList)
                 .param("cityId", city.getCityId())
-                .param("pageIndex", "1")
+                .param("pageNum", "1")
                 .param("pageSize", "9999")
                 .execute("companyList", object : ResultCallback<CompanyListResponseEntity>() {
                     override fun onStart(tag: Any?) {
-
+                        mvpView?.let {
+                            ProgressUtil.showProgressDialog(it.getViewContext(), "加载中...")
+                        }
                     }
 
                     override fun onCompleted(tag: Any?) {
-
+                        mvpView?.let {
+                            ProgressUtil.dismissProgressDialog()
+                        }
                     }
 
                     override fun onError(tag: Any?, e: ApiThrowable) {

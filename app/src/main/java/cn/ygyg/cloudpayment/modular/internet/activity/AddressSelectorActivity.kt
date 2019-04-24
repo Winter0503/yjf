@@ -93,7 +93,7 @@ class AddressSelectorActivity :
         recycler.layoutManager = LinearLayoutManager(this)
         adapter.addItem(CityTitle().apply {
             cityTitle = "定位中"
-            isLoactionCity = true
+            isLocationCity = true
         })
         recycler.adapter = adapter
 
@@ -164,7 +164,7 @@ class AddressSelectorActivity :
                 adapter.setItem(0, CityTitle().apply {
                     cityTitle = location.city
                     cityPinyin = pinyin
-                    isLoactionCity = true
+                    isLocationCity = true
                 })
             }
 
@@ -172,7 +172,7 @@ class AddressSelectorActivity :
                 ToastUtil.showToast(this@AddressSelectorActivity, "定位失败")
                 val item = adapter.getItem(0)
                 if (item is CityTitle) {
-                    if (item.isLoactionCity) {
+                    if (item.isLocationCity) {
                         adapter.removeItem(0)
                     }
                 }
