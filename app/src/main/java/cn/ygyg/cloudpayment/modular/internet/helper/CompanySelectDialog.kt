@@ -15,6 +15,11 @@ import cn.ygyg.cloudpayment.utils.BaseViewHolder
 import com.cn.lib.util.ToastUtil
 
 class CompanySelectDialog(context: Context) : Dialog(context) {
+
+    fun setData(response: ArrayList<out CompanyVM>) {
+        adapter.setData(response)
+    }
+
     private val adapter: CompanySelectorAdapter by lazy { CompanySelectorAdapter() }
     private val recycler: RecyclerView
 

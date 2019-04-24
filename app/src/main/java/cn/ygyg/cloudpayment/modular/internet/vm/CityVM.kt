@@ -17,4 +17,6 @@ interface CityVM {
     fun isRealCity(): Boolean
 
     fun getViewType(): ViewType
+
+    fun getCityId(): String
 }

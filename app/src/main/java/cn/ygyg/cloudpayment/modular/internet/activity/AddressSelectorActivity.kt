@@ -44,8 +44,6 @@ class AddressSelectorActivity :
                 override fun onAddressClicked(city: CityVM) {
                     this@AddressSelectorActivity.city = city
                     mPresenter?.getCompanyByCity(city)
-                    companySelectDialog.show()
-
                 }
             }
             getDataSource = object : SearchAddressDialog.DataSourceGetter {
@@ -107,7 +105,7 @@ class AddressSelectorActivity :
         search.setOnClickListener { searchAddressDialog.show() }
         adapter.onItemClickListener = object : AddressSelectorAdapter.OnItemClickListener {
             override fun onItemClicked(holder: BaseViewHolder, position: Int) {
-                companySelectDialog.show()
+                mPresenter?.getCompanyByCity(adapter.getItem(position))
             }
 
             override fun onLocationClicked(cityVM: CityVM) {
@@ -186,6 +184,11 @@ class AddressSelectorActivity :
         this.dataSource = response
         mPresenter?.addTitleItem(response)
         refreshLayout.finishRefreshing()
+    }
+
+    override fun onLoadCompanyListSuccess(response: ArrayList<out CompanyVM>) {
+        companySelectDialog.setData(response)
+        companySelectDialog.show()
     }
 
     override fun addTitleSuccess(response: ArrayList<CityVM>, titlePositionMap: ArrayMap<String, Int>) {

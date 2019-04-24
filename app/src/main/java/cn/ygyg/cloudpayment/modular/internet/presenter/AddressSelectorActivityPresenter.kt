@@ -6,6 +6,7 @@ import cn.ygyg.cloudpayment.api.UrlConstants
 import cn.ygyg.cloudpayment.modular.internet.contract.AddressSelectorActivityContract
 import cn.ygyg.cloudpayment.modular.internet.entity.CityListResponseEntity
 import cn.ygyg.cloudpayment.modular.internet.entity.CityTitle
+import cn.ygyg.cloudpayment.modular.internet.entity.CompanyListResponseEntity
 import cn.ygyg.cloudpayment.modular.internet.vm.CityVM
 import cn.ygyg.cloudpayment.utils.ProgressUtil
 import com.cn.lib.basic.BasePresenterImpl
@@ -20,15 +21,19 @@ class AddressSelectorActivityPresenter(view: AddressSelectorActivityContract.Vie
         AddressSelectorActivityContract.Presenter {
     override fun loadCityList() {
         RequestManager.get(UrlConstants.cityList)
-                .param("pageIndex", "1")
+                .param("pageNum", "1")
                 .param("pageSize", "9999")
                 .execute("cityList", object : ResultCallback<CityListResponseEntity>() {
                     override fun onStart(tag: Any?) {
-
+                        mvpView?.let {
+                            ProgressUtil.showProgressDialog(it.getViewContext(), "加载中...")
+                        }
                     }
 
                     override fun onCompleted(tag: Any?) {
-
+                        mvpView?.let {
+                            ProgressUtil.dismissProgressDialog()
+                        }
                     }
 
                     override fun onError(tag: Any?, e: ApiThrowable) {
@@ -61,7 +66,29 @@ class AddressSelectorActivityPresenter(view: AddressSelectorActivityContract.Vie
     }
 
     override fun getCompanyByCity(city: CityVM) {
+        RequestManager.get(UrlConstants.companyList)
+                .param("cityId", city.getCityId())
+                .param("pageIndex", "1")
+                .param("pageSize", "9999")
+                .execute("companyList", object : ResultCallback<CompanyListResponseEntity>() {
+                    override fun onStart(tag: Any?) {
 
+                    }
+
+                    override fun onCompleted(tag: Any?) {
+
+                    }
+
+                    override fun onError(tag: Any?, e: ApiThrowable) {
+                        e.message?.let { mvpView?.showToast(it) }
+                    }
+
+                    override fun onSuccess(tag: Any?, t: CompanyListResponseEntity?) {
+                        t?.let {
+                            mvpView?.onLoadCompanyListSuccess(it.list)
+                        }
+                    }
+                })
     }
 
     private fun getSortPinyinCityList(response: ArrayList<out CityVM>): ArrayList<CityVM> {

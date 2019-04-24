@@ -36,4 +36,10 @@ object UrlConstants {
     const val cityList = "chaoscloud-customerapi/webApi/customerapi/city/list"
 
 
+    /**
+     * 城市公司列表
+     */
+    const val companyList = "chaoscloud-customerapi/webApi/customerapi/company/list"
+
+
 }

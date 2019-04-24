@@ -37,5 +37,8 @@ class CityListResponseEntity : Serializable {
         }
 
         override fun getViewType(): CityVM.ViewType = CityVM.ViewType.CITY
+        override fun getCityId(): String {
+            return if (id == null) "" else id.toString()
+        }
     }
 }
