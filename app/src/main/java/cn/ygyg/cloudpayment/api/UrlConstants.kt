@@ -37,6 +37,14 @@ object UrlConstants {
      * 获取用户信息
      */
     const val getMemberInfo = "chaoscloud-customerapi/customerapi/user/getMemberInfo"
+    /**
+     * 微信登录获取openId
+     */
+    const val getToken = "chaoscloud-customerapi/api/weixinmp/weixin/getToken"
+    /**
+     * 微信登录后获取用户信息
+     */
+    const val getUserInfo = "chaoscloud-customerapi/api/weixinmp/weixin/getUserInfo"
 
 
     /**

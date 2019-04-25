@@ -1,10 +1,8 @@
 package cn.ygyg.cloudpayment.wxapi
 
-import android.app.Activity
-import android.content.Context
+import android.annotation.SuppressLint
 import android.os.Bundle
 
-import com.cn.lib.retrofit.network.util.LogUtil
 import com.tencent.mm.opensdk.modelbase.BaseReq
 import com.tencent.mm.opensdk.modelbase.BaseResp
 import com.tencent.mm.opensdk.modelmsg.SendAuth
@@ -13,6 +11,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
 import cn.ygyg.cloudpayment.app.MyApplication
 import com.cn.lib.basic.BaseActivity
 import com.cn.lib.util.ToastUtil
+import com.hwangjr.rxbus.RxBus
 
 /**
  * Created by Admin on 2019/4/19.
@@ -44,6 +43,7 @@ class WXEntryActivity : BaseActivity(), IWXAPIEventHandler {
 
     // 第三方应用发送到微信的请求处理后的响应结果，会回调到该方法
     //app发送消息给微信，处理返回消息的回调
+    @SuppressLint("CheckResult")
     override fun onResp(baseResp: BaseResp) {
         val type = baseResp.type //类型：分享还是登录
         when (baseResp.errCode) {
@@ -73,7 +73,8 @@ class WXEntryActivity : BaseActivity(), IWXAPIEventHandler {
                 if (type == RETURN_MSG_TYPE_LOGIN) {
                     //用户换取access_token的code，仅在ErrCode为0时有效
                     val code = (baseResp as SendAuth.Resp).code
-                    LogUtil.i(TAG, "code:------>" + code)
+                    RxBus.get().post(code)
+                    this.finish()
                     ToastUtil.showToast(getViewContext(), "code:$code")
                 } else if (type == RETURN_MSG_TYPE_SHARE) {
                     ToastUtil.showToast(getViewContext(), "微信分享成功")

@@ -76,12 +76,11 @@ class ActivityListUtil {
     fun finishAllActivity(isFinishMainActivity: Boolean = false) {
         activityStack.indices
                 .filter {
-                    null != activityStack[it] && !(mainActivity == activityStack[it].javaClass && !isFinishMainActivity)
+                    null != activityStack[it] && mainActivity == activityStack[it].javaClass && isFinishMainActivity
                 }
                 .forEach {
                     activityStack[it].finish()
                 }
-        activityStack.clear()
     }
 
     /**

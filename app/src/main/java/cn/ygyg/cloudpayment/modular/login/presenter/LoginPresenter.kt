@@ -3,13 +3,18 @@ package cn.ygyg.cloudpayment.modular.login.presenter
 import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.InputFilter
+import android.text.TextUtils
 import android.text.TextWatcher
 import cn.ygyg.cloudpayment.api.RequestManager
 import cn.ygyg.cloudpayment.api.UrlConstants
 import cn.ygyg.cloudpayment.api.UrlConstants.getMemberInfo
+import cn.ygyg.cloudpayment.app.Constants
+import cn.ygyg.cloudpayment.app.Constants.IntentKey.IS_LOGIN
 import cn.ygyg.cloudpayment.app.Constants.IntentKey.USER_INFO
+import cn.ygyg.cloudpayment.modular.home.activity.MainTabActivity
 import cn.ygyg.cloudpayment.modular.login.contract.LoginContract
 import cn.ygyg.cloudpayment.modular.login.entity.LoginEntity
+import cn.ygyg.cloudpayment.modular.login.entity.TokenEntity
 import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
 import cn.ygyg.cloudpayment.utils.ProgressUtil
 import cn.ygyg.cloudpayment.utils.SharePreUtil
@@ -19,6 +24,8 @@ import com.cn.lib.retrofit.network.callback.ResultCallback
 import com.cn.lib.retrofit.network.config.Optional
 import com.cn.lib.retrofit.network.exception.ApiThrowable
 import com.cn.lib.retrofit.network.subscriber.ResultCallbackSubscriber
+import com.cn.lib.util.ToastUtil.showToast
+import com.loc.t
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
 import io.reactivex.Observer
@@ -33,7 +40,6 @@ import java.util.concurrent.TimeUnit
  * Created by Admin on 2019/4/13.
  */
 class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract.View>(view), LoginContract.Presenter {
-
 
     private var isLegalPassword: Boolean = false
     private var isLegalPhone: Boolean = false
@@ -225,7 +231,25 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
             RequestManager.post(UrlConstants.getMemberInfo)
                     .param("username", username)
                     .execute(UserEntity::class.java)
-        }.subscribeWith(ResultCallbackSubscriber(tag = "register", callback = getLoginCallback()))
+        }.subscribeWith(ResultCallbackSubscriber(tag = "defaultLogin", callback = getLoginCallback()))
+    }
+
+    @SuppressLint("CheckResult")
+    override fun loginByCode(code: String) {
+        RequestManager.post(UrlConstants.getToken)
+                .param("code", code)
+                .param("companyCode", Constants.WX.COMPANY_CODE)
+                .execute(TokenEntity::class.java)
+                .flatMap(object : Function<Optional<TokenEntity>, ObservableSource<Optional<UserEntity>>> {
+                    override fun apply(optional: Optional<TokenEntity>): ObservableSource<Optional<UserEntity>> {
+                        val entity = optional.get()
+                        return RequestManager.post(UrlConstants.getUserInfo)
+                                .param("accessToken", entity.access_token)
+                                .param("openId", entity.openid)
+                                .execute(UserEntity::class.java)
+                    }
+                })
+                .subscribeWith(ResultCallbackSubscriber("wxUser", getLoginCallback()))
     }
 
     private fun getLoginCallback(): ResultCallback<UserEntity> {
@@ -248,9 +272,14 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
 
             override fun onSuccess(tag: Any?, result: UserEntity?) {
                 result?.let {
-                    SharePreUtil.saveBeanByFastJson(USER_INFO, it)
+//                    if (TextUtils.isEmpty(it.cellPhone)) { //当手机号码为空时，去绑定手机号
+//                        mvpView?.toBindingPhone(it)
+//                    }else{
+                        SharePreUtil.putBoolean(Constants.IntentKey.IS_LOGIN, true)
+                        SharePreUtil.saveBeanByFastJson(USER_INFO, it)
+                        mvpView?.loginSuccess()
+//                    }
                 }
-                mvpView?.loginSuccess()
             }
 
         }

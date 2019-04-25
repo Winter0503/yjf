@@ -1,5 +1,6 @@
 package com.cn.lib.retrofit.network.func
 
+import android.text.TextUtils
 import com.cn.lib.retrofit.network.config.Optional
 import com.cn.lib.retrofit.network.entity.ApiResultEntity
 import com.cn.lib.retrofit.network.exception.ServerException
@@ -14,6 +15,7 @@ class HandleResultFunc<T> : Function<ApiResultEntity<T>, Observable<Optional<T>>
         if (resultEntity.isOk) {
             return Observable.just(Optional(resultEntity.data))
         }
-        throw ServerException(resultEntity.code, resultEntity.msg ?: "请求失败")
+        val errorMsg = if (resultEntity.msg == null || TextUtils.isEmpty(resultEntity.msg)) "请求失败" else resultEntity.msg
+        throw ServerException(resultEntity.code, errorMsg)
     }
 }
