@@ -21,10 +21,11 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
         NewAccountActivityContract.View {
     private val headerBuilder: HeaderBuilder by lazy { HeaderBuilder(this) }
     private var deviceCode = ""
+    private var companyCode = ""
     private val accountDialog: ConfirmAccountDialog by lazy {
         ConfirmAccountDialog(this).apply {
             setOnConformClick(View.OnClickListener {
-                mPresenter?.bindDevice(deviceCode)
+                mPresenter?.bindDevice(deviceCode, companyCode)
             })
         }
     }
@@ -85,9 +86,10 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
         accountDialog.show()
     }
 
-    override fun onBindDeviceSuccess() {
+    override fun onBindDeviceSuccess(deviceCode: String, companyCode: String) {
         toActivity(NewAccountSuccessActivity::class.java, Bundle().apply {
             putString(Constants.IntentKey.DEVICE_CODE, deviceCode)
+            putString(Constants.IntentKey.COMPANY_CODE, companyCode)
         })
     }
 

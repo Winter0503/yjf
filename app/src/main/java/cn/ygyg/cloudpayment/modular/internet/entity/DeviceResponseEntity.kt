@@ -50,4 +50,8 @@ class DeviceResponseEntity : Serializable, DeviceVM {
     override fun deviceBalance(): String {
         return if (contractBalance.isNullOrEmpty()) "" else contractBalance!!
     }
+
+    override fun companyCode(): String {
+        return if (companyCode.isNullOrEmpty()) "" else companyCode!!
+    }
 }

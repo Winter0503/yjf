@@ -14,7 +14,7 @@ class NewAccountActivityContract {
         /**
          * 绑定 物联网表
          */
-        fun onBindDeviceSuccess()
+        fun onBindDeviceSuccess(deviceCode: String, companyCode: String)
     }
 
     interface Presenter : IBasePresenter<View> {
@@ -26,6 +26,6 @@ class NewAccountActivityContract {
         /**
          * 绑定物联网表
          */
-        fun bindDevice(deviceCode: String)
+        fun bindDevice(deviceCode: String,companyCode:String)
     }
 }

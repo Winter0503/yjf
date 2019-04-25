@@ -1,40 +1,47 @@
 package cn.ygyg.cloudpayment.modular.home.fragment
 
+import android.os.Bundle
 import android.os.Handler
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import cn.ygyg.cloudpayment.R
-import cn.ygyg.cloudpayment.R.id.recycler_view
+import cn.ygyg.cloudpayment.app.Constants
+import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.home.adapter.AccountInfoListAdapter
 import cn.ygyg.cloudpayment.modular.home.contract.HomeContract
 import cn.ygyg.cloudpayment.modular.home.presenter.HomePresenter
 import cn.ygyg.cloudpayment.modular.internet.activity.AddressSelectorActivity
-import cn.ygyg.cloudpayment.modular.internet.activity.NewAccountActivity
-import cn.ygyg.cloudpayment.widget.LoadMoreView
-import cn.ygyg.cloudpayment.widget.ProgressHeaderView
-import com.cn.lib.basic.BaseFragment
+import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
+import cn.ygyg.cloudpayment.modular.payments.activity.PaymentsActivity
 import com.cn.lib.basic.BaseMvpFragment
+import com.cn.lib.basic.BaseRecyclerAdapter
+import com.cn.lib.util.ToastUtil
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(), HomeContract.View {
-    override fun loaderSuccess(mutableList: MutableList<String>?) {
-        mutableList?.let {
+    override fun loaderSuccess(response: ArrayList<out DeviceVM>?) {
+        response?.let {
             //不为空时执行
-            mAdapter.setNewList(mutableList)
-        } ?: let {
-            //为空时执行
-            val firstView = layoutInflater.inflate(R.layout.layout_first_into, recycler_view, false)
-            mAdapter.addHeaderView(firstView)
-            firstView.findViewById<View>(R.id.btn_recharge).setOnClickListener {
-                toActivity(AddressSelectorActivity::class.java)
-            }
-            firstView.findViewById<View>(R.id.layout_add_account).setOnClickListener {
-                toActivity(AddressSelectorActivity::class.java)
-            }
+            mAdapter.setNewList(it.toMutableList())
         }
+        //为空时执行
+        val firstView = layoutInflater.inflate(R.layout.layout_first_into, recycler_view, false)
+        if (mAdapter.itemCount != 0) {
+            firstView.findViewById<View>(R.id.pay_item).visibility = View.GONE
+            firstView.findViewById<View>(R.id.developing).visibility = View.GONE
+        }
+        mAdapter.addFooterView(firstView)
+        firstView.findViewById<View>(R.id.btn_recharge).setOnClickListener {
+            toActivity(AddressSelectorActivity::class.java)
+        }
+        firstView.findViewById<View>(R.id.layout_add_account).setOnClickListener {
+            toActivity(AddressSelectorActivity::class.java)
+        }
+
+
         setHasLoadedOnce(true)
     }
 
@@ -75,11 +82,48 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
                 }, 2000)
             }
         })
+        mAdapter.onRechargeClickListener = object : AccountInfoListAdapter.OnRechargeClickListener {
+            override fun onRechargeClicked(position: Int, item: DeviceVM) {
+                toActivity(PaymentsActivity::class.java, Bundle().apply {
+                    putString(Constants.IntentKey.DEVICE_CODE, item.deviceCode())
+                    putString(Constants.IntentKey.COMPANY_CODE, item.companyCode())
+                })
+            }
+        }
+        mAdapter.setOnItemClickListener(object : BaseRecyclerAdapter.OnItemClickListener<DeviceVM> {
+            override fun onItemClick(position: Int, obj: DeviceVM) {
+                DefaultPromptDialog.builder()
+                        .setCancelText("取消")
+                        .setAffirmText("删除")
+                        .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_VERTICAL)
+                        .onPromptDialogButtonListener(object : DefaultPromptDialog.PromptDialogButtonListener {
+                            override fun clickContentButton(dialog: DefaultPromptDialog): Boolean {
+                                return false
+                            }
+
+                            override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
+                                dialog.dismiss()
+                                mPresenter?.unBindDevice(position, obj)
+                                return true
+                            }
+
+                            override fun clickNegativeButton(dialog: DefaultPromptDialog): Boolean {
+                                dialog.dismiss()
+                                return true
+                            }
+                        })
+                        .build()
+                        .show()
+            }
+        })
     }
 
     override fun loaderData() {
         mPresenter?.loaderData()
     }
 
-
+    override fun unbindSuccess(position: Int, device: DeviceVM) {
+        context?.let { ToastUtil.showToast(it, "成功") }
+        mAdapter.removeItem(position)
+    }
 }

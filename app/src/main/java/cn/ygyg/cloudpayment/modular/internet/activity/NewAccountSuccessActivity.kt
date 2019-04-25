@@ -12,6 +12,7 @@ import kotlinx.android.synthetic.main.activity_new_account_success.*
 class NewAccountSuccessActivity : BaseActivity() {
 
     private var deviceCode = ""
+    private var companyCode = ""
     override fun getContentViewResId(): Int {
         return R.layout.activity_new_account_success
     }
@@ -23,6 +24,7 @@ class NewAccountSuccessActivity : BaseActivity() {
         }
         bundle?.let {
             deviceCode = it.getString(Constants.IntentKey.DEVICE_CODE, "")
+            companyCode = it.getString(Constants.IntentKey.COMPANY_CODE, "")
         }
     }
 
@@ -30,6 +32,7 @@ class NewAccountSuccessActivity : BaseActivity() {
         to_payments.setOnClickListener {
             toActivity(PaymentsActivity::class.java, Bundle().apply {
                 putString(Constants.IntentKey.DEVICE_CODE, deviceCode)
+                putString(Constants.IntentKey.COMPANY_CODE, companyCode)
             })
         }
         back_to_main.setOnClickListener {

@@ -42,7 +42,7 @@ class NewAccountActivityPresenter(view: NewAccountActivityContract.View) :
                 })
     }
 
-    override fun bindDevice(deviceCode: String) {
+    override fun bindDevice(deviceCode: String, companyCode: String) {
         RequestManager.post(UrlConstants.bindDevice)
                 .param("meterCode", deviceCode)
                 .param("username", UserUtil.getUserName())
@@ -64,7 +64,7 @@ class NewAccountActivityPresenter(view: NewAccountActivityContract.View) :
                     }
 
                     override fun onSuccess(tag: Any?, result: String?) {
-                        mvpView?.onBindDeviceSuccess()
+                        mvpView?.onBindDeviceSuccess(deviceCode, companyCode)
                     }
                 })
     }

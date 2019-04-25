@@ -61,6 +61,15 @@ object UrlConstants {
      * 绑定物联网表
      */
     const val bindDevice = "chaoscloud-customerapi/customerApi/app/device/bind"
+    /**
+     * 绑定物联网表 列表
+     */
+    const val deviceList = "chaoscloud-customerapi/customerApi/app/device/list"
+
+    /**
+     * 解除绑定物联网表
+     */
+    const val unbind = "chaoscloud-customerapi/customerApi/app/device/unbind"
 
 
 }

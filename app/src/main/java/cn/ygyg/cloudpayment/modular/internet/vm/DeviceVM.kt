@@ -7,5 +7,6 @@ interface DeviceVM {
     fun deviceCode(): String
     fun deviceAddress(): String
     fun deviceBalance(): String
+    fun companyCode(): String
 
 }
