@@ -118,7 +118,7 @@ object ProgressUtil {
 
     fun dismissProgressDialog() {
         mProgressDialog?.let {
-            if (it.isShowing) {
+            if (it.isShowing ) {
                 it.cancel()
             }
             cancelTimer()

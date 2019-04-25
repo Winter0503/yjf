@@ -32,13 +32,14 @@ android {
     buildTypes {
         release {
             //混淆
-            minifyEnabled false
+            minifyEnabled true
             // 移除无用的resource文件
-            shrinkResources false
+            shrinkResources true
             //Zipalign优化
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+            buildConfigField("String", "companyCode", "10467")
         }
         debug {
             minifyEnabled false
@@ -48,6 +49,7 @@ android {
             zipAlignEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
+            buildConfigField("String", "COMPANY_CODE", "\"10467\"")
         }
     }
 
@@ -70,4 +72,5 @@ dependencies {
     //拼音 中国城市词库
     implementation 'com.github.promeg:tinypinyin:2.0.3'
     implementation 'com.github.promeg:tinypinyin-lexicons-android-cncity:2.0.3'
+    implementation 'com.hwangjr.rxbus:rxbus:1.0.6'
 }

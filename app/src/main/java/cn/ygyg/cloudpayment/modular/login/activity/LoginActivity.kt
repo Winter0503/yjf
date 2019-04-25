@@ -2,9 +2,11 @@ package cn.ygyg.cloudpayment.modular.login.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
 import android.text.InputType.*
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import cn.ygyg.cloudpayment.R
@@ -12,12 +14,16 @@ import cn.ygyg.cloudpayment.app.MyApplication
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.home.activity.MainTabActivity
 import cn.ygyg.cloudpayment.modular.login.contract.LoginContract
+import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
 import cn.ygyg.cloudpayment.modular.login.presenter.LoginPresenter
 import cn.ygyg.cloudpayment.modular.password.activity.ResetPasswordActivity
 import cn.ygyg.cloudpayment.modular.register.activity.RegisterActivity
 import cn.ygyg.cloudpayment.utils.WXUtil
 import com.cn.lib.basic.BaseMvpActivity
 import com.cn.lib.util.ResourceUtil
+import com.hwangjr.rxbus.RxBus
+import com.hwangjr.rxbus.annotation.Subscribe
+import com.hwangjr.rxbus.thread.EventThread
 import com.tencent.mm.opensdk.modelmsg.SendAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.include_activity_header.*
@@ -45,6 +51,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
         tv_right.setTextColor(ResourceUtil.getColor(getViewContext(), R.color.text_green_color))
         tv_right.visibility = View.VISIBLE
         inputTypePassword()
+        RxBus.get().register(this)
     }
 
     override fun initListener() {
@@ -115,7 +122,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == Companion.REQUEST_CODE_REGISTER && resultCode== Activity.RESULT_OK){
+        if (requestCode == REQUEST_CODE_REGISTER && resultCode == Activity.RESULT_OK) {
             data?.let {
                 inputTypePassword()
                 val userName = it.getStringExtra("userName")
@@ -180,9 +187,28 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
 
     override fun loginSuccess() {
         toActivity(MainTabActivity::class.java)
+        finish()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        RxBus.get().unregister(this)
+    }
+
+    @Subscribe( thread = EventThread.MAIN_THREAD)
+    fun loginByCode(code: String) {
+        mPresenter?.loginByCode(code)
+    }
+
+    override fun toBindingPhone(it: UserEntity) {
+        val bundle = Bundle()
+        bundle.putSerializable("user", it)
+        toActivity(BindingPhoneActivity::class.java, bundle)
+        finish()
+    }
+
+
     companion object {
-        private val REQUEST_CODE_REGISTER = 0x11
+        private const val REQUEST_CODE_REGISTER = 0x11
     }
 }

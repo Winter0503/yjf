@@ -5,13 +5,18 @@ import android.content.Intent
 import android.net.Uri
 import android.view.View
 import cn.ygyg.cloudpayment.R
+import cn.ygyg.cloudpayment.app.Constants.IntentKey.IS_LOGIN
+import cn.ygyg.cloudpayment.app.Constants.IntentKey.USER_INFO
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.login.activity.LoginActivity
 import cn.ygyg.cloudpayment.modular.login.entity.LoginEntity
 import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
+import cn.ygyg.cloudpayment.modular.my.activity.AboutActivity
 import cn.ygyg.cloudpayment.modular.my.contract.MyContract
 import cn.ygyg.cloudpayment.modular.my.presenter.MyPresenter
 import cn.ygyg.cloudpayment.modular.payments.activity.PaymentsHistoryActivity
+import cn.ygyg.cloudpayment.utils.SharePreUtil
+import cn.ygyg.cloudpayment.utils.UserUtil
 import com.cn.lib.basic.BaseMvpFragment
 import com.cn.lib.util.ActivityListUtil
 import kotlinx.android.synthetic.main.fragment_my.*
@@ -64,6 +69,9 @@ class MyFragment : BaseMvpFragment<MyContract.Presenter, MyContract.View>(), MyC
                     .build()
                     .show()
         }
+        btn_about.setOnClickListener {
+            toActivity(AboutActivity::class.java)
+        }
     }
 
     override fun loaderData() {
@@ -71,14 +79,17 @@ class MyFragment : BaseMvpFragment<MyContract.Presenter, MyContract.View>(), MyC
     }
 
     override fun logoutSuccess() {
-        toActivity(LoginActivity::class.java)
         ActivityListUtil.INSTANCE.finishAllActivity(true)
+        SharePreUtil.clear(IS_LOGIN)
+        SharePreUtil.clear(USER_INFO)
+        UserUtil.clear()
+        toActivity(LoginActivity::class.java)
     }
 
     @SuppressLint("SetTextI18n")
     override fun loaderPageDataSuccess(entity: UserEntity?) {
         entity?.let {
-            tv_phone.text = "Hello${entity.cellPhone}"
+            tv_phone.text = "Hello,${entity.cellPhone}"
         }
         setHasLoadedOnce(true)
     }

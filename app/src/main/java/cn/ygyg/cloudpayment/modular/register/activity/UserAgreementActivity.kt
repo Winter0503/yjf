@@ -5,6 +5,7 @@ import android.content.Context
 import android.view.View
 import android.webkit.WebSettings
 import cn.ygyg.cloudpayment.R
+import cn.ygyg.cloudpayment.utils.HeaderBuilder
 import com.cn.lib.util.ResourceUtil
 import com.cn.lib.basic.BaseActivity
 import kotlinx.android.synthetic.main.activity_user_agreement.*
@@ -26,11 +27,10 @@ class UserAgreementActivity : BaseActivity() {
     @SuppressLint("SetJavaScriptEnabled")
     override fun initViews() {
         super.initViews()
-        iv_left.visibility = View.VISIBLE
-        iv_left.setImageResource(R.mipmap.back)
-        tv_title.visibility = View.VISIBLE
+        val headerBuilder = HeaderBuilder(this)
+        headerBuilder.setTitle(ResourceUtil.getString(getViewContext(), R.string.user_agreement))
+        headerBuilder.setLeftImageRes(R.mipmap.back)
 
-        tv_title.text = ResourceUtil.getString(getViewContext(), R.string.user_agreement)
         val wSet:WebSettings = webView.settings
         wSet.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
         wSet.loadWithOverviewMode = true

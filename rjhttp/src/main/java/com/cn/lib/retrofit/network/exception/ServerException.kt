@@ -1,7 +1,7 @@
 package com.cn.lib.retrofit.network.exception
 
 class ServerException : RuntimeException {
-    var code: String = "-999"
+    var code: String = "-2"
     var msg: String? = null
 
     constructor() {}

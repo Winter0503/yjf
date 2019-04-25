@@ -2,6 +2,7 @@ package cn.ygyg.cloudpayment.modular.login.contract
 
 import android.text.InputFilter
 import android.text.TextWatcher
+import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
 import com.cn.lib.basic.IBasePresenter
 import com.cn.lib.basic.IBaseView
 
@@ -17,6 +18,11 @@ class LoginContract {
          * 登录成功
          */
         fun loginSuccess()
+
+        /**
+         * 跳转绑定手机号码页面
+         */
+        fun toBindingPhone(it: UserEntity)
 
     }
 
@@ -37,5 +43,7 @@ class LoginContract {
          * 登录
          */
         fun login(loginType: Int, username: String, password: String)
+
+         fun loginByCode(code: String)
     }
 }
