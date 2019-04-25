@@ -5,7 +5,6 @@ import cn.ygyg.cloudpayment.app.MyApplication
 import com.amap.api.location.AMapLocation
 import com.amap.api.location.AMapLocationClient
 import com.amap.api.location.AMapLocationClientOption
-import com.cn.lib.util.ToastUtil
 
 object LocationUtil {
     /**
@@ -16,7 +15,6 @@ object LocationUtil {
             isNeedAddress = true
             isOnceLocation = true
             isLocationCacheEnable = false
-            locationMode = AMapLocationClientOption.AMapLocationMode.Battery_Saving
         }
     }
     /**
