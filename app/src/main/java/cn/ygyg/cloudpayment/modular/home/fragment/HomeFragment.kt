@@ -9,12 +9,12 @@ import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.home.adapter.AccountInfoListAdapter
 import cn.ygyg.cloudpayment.modular.home.contract.HomeContract
+import cn.ygyg.cloudpayment.modular.home.helper.ActionListDialog
 import cn.ygyg.cloudpayment.modular.home.presenter.HomePresenter
 import cn.ygyg.cloudpayment.modular.internet.activity.AddressSelectorActivity
 import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.payments.activity.PaymentsActivity
 import com.cn.lib.basic.BaseMvpFragment
-import com.cn.lib.basic.BaseRecyclerAdapter
 import com.cn.lib.util.ToastUtil
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
@@ -22,6 +22,21 @@ import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(), HomeContract.View {
+    private var longClickItem: DeviceVM? = null
+    private var longClickItemPosition = -1
+
+    private val actionDialog: ActionListDialog by lazy {
+        ActionListDialog(getViewContext()).apply {
+            setData("删除")
+            setOnActionClickListener(object : ActionListDialog.OnActionClickListener {
+                override fun onActionClicked(position: Int, action: String) {
+                    longClickItem?.let { mPresenter?.unBindDevice(longClickItemPosition, it) }
+                }
+            })
+        }
+    }
+
+
     override fun loaderSuccess(response: ArrayList<out DeviceVM>?) {
         response?.let {
             //不为空时执行
@@ -54,6 +69,7 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
     }
 
     override val contentViewResId: Int = R.layout.fragment_home
+
 
     override fun initViews(v: View) {
         recycler_view.let {
@@ -92,31 +108,9 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
             }
 
             override fun onItemLongClicked(position: Int, item: DeviceVM) {
-                context?.let {
-                    DefaultPromptDialog.builder()
-                            .setContext(it)
-                            .setCancelText("取消")
-                            .setAffirmText("删除")
-                            .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_VERTICAL)
-                            .onPromptDialogButtonListener(object : DefaultPromptDialog.PromptDialogButtonListener {
-                                override fun clickContentButton(dialog: DefaultPromptDialog): Boolean {
-                                    return false
-                                }
-
-                                override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
-                                    dialog.dismiss()
-                                    mPresenter?.unBindDevice(position, item)
-                                    return true
-                                }
-
-                                override fun clickNegativeButton(dialog: DefaultPromptDialog): Boolean {
-                                    dialog.dismiss()
-                                    return true
-                                }
-                            })
-                            .build()
-                            .show()
-                }
+                longClickItem = item
+                longClickItemPosition = position
+                actionDialog.show()
             }
         }
     }
