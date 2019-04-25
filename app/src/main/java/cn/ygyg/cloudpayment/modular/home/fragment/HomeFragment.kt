@@ -82,40 +82,43 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
                 }, 2000)
             }
         })
-        mAdapter.onRechargeClickListener = object : AccountInfoListAdapter.OnRechargeClickListener {
+
+        mAdapter.onCustomClickListener = object : AccountInfoListAdapter.OnCustomClickListener {
             override fun onRechargeClicked(position: Int, item: DeviceVM) {
                 toActivity(PaymentsActivity::class.java, Bundle().apply {
                     putString(Constants.IntentKey.DEVICE_CODE, item.deviceCode())
                     putString(Constants.IntentKey.COMPANY_CODE, item.companyCode())
                 })
             }
-        }
-        mAdapter.setOnItemClickListener(object : BaseRecyclerAdapter.OnItemClickListener<DeviceVM> {
-            override fun onItemClick(position: Int, obj: DeviceVM) {
-                DefaultPromptDialog.builder()
-                        .setCancelText("取消")
-                        .setAffirmText("删除")
-                        .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_VERTICAL)
-                        .onPromptDialogButtonListener(object : DefaultPromptDialog.PromptDialogButtonListener {
-                            override fun clickContentButton(dialog: DefaultPromptDialog): Boolean {
-                                return false
-                            }
 
-                            override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
-                                dialog.dismiss()
-                                mPresenter?.unBindDevice(position, obj)
-                                return true
-                            }
+            override fun onItemLongClicked(position: Int, item: DeviceVM) {
+                context?.let {
+                    DefaultPromptDialog.builder()
+                            .setContext(it)
+                            .setCancelText("取消")
+                            .setAffirmText("删除")
+                            .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_VERTICAL)
+                            .onPromptDialogButtonListener(object : DefaultPromptDialog.PromptDialogButtonListener {
+                                override fun clickContentButton(dialog: DefaultPromptDialog): Boolean {
+                                    return false
+                                }
 
-                            override fun clickNegativeButton(dialog: DefaultPromptDialog): Boolean {
-                                dialog.dismiss()
-                                return true
-                            }
-                        })
-                        .build()
-                        .show()
+                                override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
+                                    dialog.dismiss()
+                                    mPresenter?.unBindDevice(position, item)
+                                    return true
+                                }
+
+                                override fun clickNegativeButton(dialog: DefaultPromptDialog): Boolean {
+                                    dialog.dismiss()
+                                    return true
+                                }
+                            })
+                            .build()
+                            .show()
+                }
             }
-        })
+        }
     }
 
     override fun loaderData() {
