@@ -16,6 +16,7 @@ object LocationUtil {
             isNeedAddress = true
             isOnceLocation = true
             isLocationCacheEnable = false
+            locationMode = AMapLocationClientOption.AMapLocationMode.Battery_Saving
         }
     }
     /**
