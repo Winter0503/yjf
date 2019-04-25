@@ -5,11 +5,11 @@ import android.content.Intent
 import android.net.Uri
 import android.view.View
 import cn.ygyg.cloudpayment.R
+import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.app.Constants.IntentKey.IS_LOGIN
 import cn.ygyg.cloudpayment.app.Constants.IntentKey.USER_INFO
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.login.activity.LoginActivity
-import cn.ygyg.cloudpayment.modular.login.entity.LoginEntity
 import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
 import cn.ygyg.cloudpayment.modular.my.activity.AboutActivity
 import cn.ygyg.cloudpayment.modular.my.contract.MyContract
@@ -81,6 +81,7 @@ class MyFragment : BaseMvpFragment<MyContract.Presenter, MyContract.View>(), MyC
     override fun logoutSuccess() {
         ActivityListUtil.INSTANCE.finishAllActivity(true)
         SharePreUtil.clear(IS_LOGIN)
+        SharePreUtil.clear(Constants.IntentKey.TOKEN)
         SharePreUtil.clear(USER_INFO)
         UserUtil.clear()
         toActivity(LoginActivity::class.java)

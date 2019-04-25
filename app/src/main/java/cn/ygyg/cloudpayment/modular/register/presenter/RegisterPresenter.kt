@@ -1,5 +1,6 @@
 package cn.ygyg.cloudpayment.modular.register.presenter
 
+import android.annotation.SuppressLint
 import android.os.AsyncTask.execute
 import android.text.Editable
 import android.text.InputFilter
@@ -146,6 +147,7 @@ class RegisterPresenter(view: RegisterContract.View) : RegisterContract.Presente
     }
 
 
+    @SuppressLint("CheckResult")
     override fun checkPhone(phone: String) {
         RequestManager.post(UrlConstants.valPhone)
                 .param("phone", phone)
@@ -158,7 +160,7 @@ class RegisterPresenter(view: RegisterContract.View) : RegisterContract.Presente
                 .subscribeWith(ResultCallbackSubscriber("register", object : ResultCallback<String>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.let {
-                            ProgressUtil.showProgressDialog(it.getViewContext(), "发送验证码中...")
+                            ProgressUtil.showProgressDialog(it.getViewContext(), "获取验证码中...")
                         }
                     }
 
@@ -173,6 +175,7 @@ class RegisterPresenter(view: RegisterContract.View) : RegisterContract.Presente
                     }
 
                     override fun onSuccess(tag: Any?, t: String?) {
+                        mvpView?.showToast("验证码发送成功")
                         mvpView?.checkPhoneSuccess()
                     }
                 }))

@@ -10,6 +10,7 @@ class BindingPhoneContract {
         fun changeCodeBtnState(state: Boolean)
         fun changeConfirmBtnState(state: Boolean)
         fun changeCodeBtnText(aLong: Long)
+        fun loginSuccess()
     }
 
     interface Presenter:IBasePresenter<View>{
@@ -19,6 +20,10 @@ class BindingPhoneContract {
          */
         fun getVerificationCode(phone: String)
         fun getCodeTextChangeListener(): TextWatcher
+        /**
+         * 绑定手机
+         */
+        fun confirm(phone: String, code: String, openId: String?)
     }
 
 

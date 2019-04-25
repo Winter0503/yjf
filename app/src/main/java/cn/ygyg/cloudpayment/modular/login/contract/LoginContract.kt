@@ -22,7 +22,7 @@ class LoginContract {
         /**
          * 跳转绑定手机号码页面
          */
-        fun toBindingPhone(it: UserEntity)
+        fun toBindingPhone(entity: UserEntity?)
 
     }
 

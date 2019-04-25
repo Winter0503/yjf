@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
 import android.text.InputType.*
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import cn.ygyg.cloudpayment.R
@@ -200,11 +199,13 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
         mPresenter?.loginByCode(code)
     }
 
-    override fun toBindingPhone(it: UserEntity) {
-        val bundle = Bundle()
-        bundle.putSerializable("user", it)
-        toActivity(BindingPhoneActivity::class.java, bundle)
-        finish()
+    override fun toBindingPhone(entity: UserEntity?) {
+        entity?.apply {
+            val bundle = Bundle()
+            bundle.putSerializable("user", this)
+            toActivity(BindingPhoneActivity::class.java, bundle)
+            finish()
+        }
     }
 
 

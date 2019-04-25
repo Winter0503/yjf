@@ -1,5 +1,6 @@
 package cn.ygyg.cloudpayment.modular.password.presenter
 
+import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
@@ -100,6 +101,7 @@ class ResetPasswordPresenter(view: ResetPasswordContract.View) : BasePresenterIm
         mvpView?.changeConfirmBtnState(isLegalPhone && isLegalCode && isLegalPassword)
     }
 
+    @SuppressLint("CheckResult")
     override fun getVerificationCode(phone: String) {
         RequestManager.post(UrlConstants.captcha)
                 .param("phone", phone)
@@ -123,7 +125,8 @@ class ResetPasswordPresenter(view: ResetPasswordContract.View) : BasePresenterIm
                         }
                     }
 
-                    override fun onSuccess(tag: Any?, t: String?) {
+                    override fun onSuccess(tag: Any?, result: String?) {
+                        mvpView?.showToast("验证码发送成功")
                         //获取验证码成功开始倒计时
                         startCountDown()
                     }

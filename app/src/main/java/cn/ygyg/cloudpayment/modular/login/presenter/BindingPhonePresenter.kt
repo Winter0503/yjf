@@ -1,26 +1,26 @@
 package cn.ygyg.cloudpayment.modular.login.presenter
 
+import android.annotation.SuppressLint
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import cn.ygyg.cloudpayment.api.RequestManager
 import cn.ygyg.cloudpayment.api.UrlConstants
+import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.modular.login.contract.BindingPhoneContract
+import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
 import cn.ygyg.cloudpayment.utils.ProgressUtil
+import cn.ygyg.cloudpayment.utils.SharePreUtil
 import cn.ygyg.cloudpayment.utils.StringUtil
 import com.cn.lib.basic.BasePresenterImpl
 import com.cn.lib.retrofit.network.callback.ResultCallback
 import com.cn.lib.retrofit.network.exception.ApiThrowable
 import com.cn.lib.retrofit.network.subscriber.ResultCallbackSubscriber
-import com.loc.m
 import io.reactivex.Observable
-import io.reactivex.ObservableSource
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl<BindingPhoneContract.View>(view), BindingPhoneContract.Presenter {
@@ -88,6 +88,7 @@ class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl
         mvpView?.changeConfirmBtnState(isLegalPhone && isLegalCode)
     }
 
+    @SuppressLint("CheckResult")
     override fun getVerificationCode(phone: String) {
         RequestManager.post(UrlConstants.valPhone)
                 .param("phone", phone)
@@ -116,7 +117,8 @@ class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl
                         }
                     }
 
-                    override fun onSuccess(tag: Any?, t: String?) {
+                    override fun onSuccess(tag: Any?, result: String?) {
+                        mvpView?.showToast("验证码发送成功")
                         //获取验证码成功开始倒计时
                         startCountDown()
                     }
@@ -151,6 +153,37 @@ class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl
                     }
 
                     override fun onError(e: Throwable) {
+                    }
+                })
+    }
+
+
+    override fun confirm(phone: String, code: String, openId: String?) {
+        RequestManager.post(UrlConstants.bindPhone)
+                .param("captcha", code)
+                .param("openId", openId ?: "")
+                .param("username", phone)
+                .execute("bindPhone",object: ResultCallback<UserEntity>(){
+                    override fun onStart(tag: Any?) {
+                        mvpView?.getViewContext()?.let {
+                            ProgressUtil.showProgressDialog(it, "提交中...")
+                        }
+                    }
+
+                    override fun onCompleted(tag: Any?) {
+                        ProgressUtil.dismissProgressDialog()
+                    }
+
+                    override fun onError(tag: Any?, e: ApiThrowable) {
+                        e.message?.let { mvpView?.showToast(it) }
+                    }
+
+                    override fun onSuccess(tag: Any?, result: UserEntity?) {
+                        if (result != null) {
+                            SharePreUtil.putBoolean(Constants.IntentKey.IS_LOGIN, true)
+                            SharePreUtil.saveBeanByFastJson(Constants.IntentKey.USER_INFO, result)
+                            mvpView?.loginSuccess()
+                        }
                     }
                 })
     }

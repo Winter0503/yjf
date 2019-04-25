@@ -36,16 +36,15 @@ object UrlConstants {
     /**
      * 获取用户信息
      */
-    const val getMemberInfo = "chaoscloud-customerapi/customerapi/user/getMemberInfo"
+    const val getMemberInfo = "chaoscloud-customerapi/customerapi/openid/queryMember"
     /**
      * 微信登录获取openId
      */
-    const val getToken = "chaoscloud-customerapi/api/weixinmp/weixin/getToken"
+    const val getToken = "chaoscloud-customerapi/customerapi/openid/getToken"
     /**
-     * 微信登录后获取用户信息
+     * 绑定手机号码
      */
-    const val getUserInfo = "chaoscloud-customerapi/api/weixinmp/weixin/getUserInfo"
-
+    const val bindPhone = "chaoscloud-customerapi/customerApi/weixin/device/bindPhone"
 
     /**
      * 城市公司列表

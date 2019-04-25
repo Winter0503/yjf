@@ -7,13 +7,12 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import cn.ygyg.cloudpayment.api.RequestManager
 import cn.ygyg.cloudpayment.api.UrlConstants
-import cn.ygyg.cloudpayment.api.UrlConstants.getMemberInfo
 import cn.ygyg.cloudpayment.app.Constants
-import cn.ygyg.cloudpayment.app.Constants.IntentKey.IS_LOGIN
+import cn.ygyg.cloudpayment.app.Constants.IntentKey.OPEN_ID
+import cn.ygyg.cloudpayment.app.Constants.IntentKey.TOKEN
 import cn.ygyg.cloudpayment.app.Constants.IntentKey.USER_INFO
-import cn.ygyg.cloudpayment.modular.home.activity.MainTabActivity
+import cn.ygyg.cloudpayment.app.Constants.WX.WEIXIN_APP_ID
 import cn.ygyg.cloudpayment.modular.login.contract.LoginContract
-import cn.ygyg.cloudpayment.modular.login.entity.LoginEntity
 import cn.ygyg.cloudpayment.modular.login.entity.TokenEntity
 import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
 import cn.ygyg.cloudpayment.utils.ProgressUtil
@@ -24,8 +23,6 @@ import com.cn.lib.retrofit.network.callback.ResultCallback
 import com.cn.lib.retrofit.network.config.Optional
 import com.cn.lib.retrofit.network.exception.ApiThrowable
 import com.cn.lib.retrofit.network.subscriber.ResultCallbackSubscriber
-import com.cn.lib.util.ToastUtil.showToast
-import com.loc.t
 import io.reactivex.Observable
 import io.reactivex.ObservableSource
 import io.reactivex.Observer
@@ -184,7 +181,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
     override fun getVerificationCode(phone: String) {
         RequestManager.post(UrlConstants.captcha)
                 .param("phone", phone)
-                .execute("login", object : ResultCallback<String>() {
+                .execute("getCode", object : ResultCallback<String>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.getViewContext()?.let {
                             ProgressUtil.showProgressDialog(it, "获取验证码中...")
@@ -201,7 +198,8 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
                         }
                     }
 
-                    override fun onSuccess(tag: Any?, t: String?) {
+                    override fun onSuccess(tag: Any?, result: String?) {
+                        mvpView?.showToast("验证码发送成功")
                         //获取验证码成功开始倒计时
                         startCountDown()
                     }
@@ -210,7 +208,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
 
     @SuppressLint("CheckResult")
     override fun login(loginType: Int, username: String, password: String) {
-        val observable: Observable<Optional<LoginEntity>> = if (loginType == 0) { //密码登录
+        if (loginType == 0) { //密码登录
             val reg = "^(?![a-zA-Z]+\$)(?!\\d+\$)\\S{6,}\$"
             if (!StringUtil.match(reg, password)) {
                 mvpView?.showToast("密码必须包含数字和字母")
@@ -219,19 +217,14 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
             RequestManager.post(UrlConstants.login)
                     .param("password", password)
                     .param("username", username)
-                    .execute(LoginEntity::class.java)
+                    .execute("login", getLoginCallback())
 
         } else { //验证码登录
             RequestManager.post(UrlConstants.captchalogin)
                     .param("captcha", password)
                     .param("username", username)
-                    .execute(LoginEntity::class.java)
+                    .execute("captchaLogin", getLoginCallback())
         }
-        observable.flatMap {
-            RequestManager.post(UrlConstants.getMemberInfo)
-                    .param("username", username)
-                    .execute(UserEntity::class.java)
-        }.subscribeWith(ResultCallbackSubscriber(tag = "defaultLogin", callback = getLoginCallback()))
     }
 
     @SuppressLint("CheckResult")
@@ -243,13 +236,40 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
                 .flatMap(object : Function<Optional<TokenEntity>, ObservableSource<Optional<UserEntity>>> {
                     override fun apply(optional: Optional<TokenEntity>): ObservableSource<Optional<UserEntity>> {
                         val entity = optional.get()
-                        return RequestManager.post(UrlConstants.getUserInfo)
-                                .param("accessToken", entity.access_token)
+                        SharePreUtil.putString(OPEN_ID, entity.openid)
+                        return RequestManager.post(UrlConstants.getMemberInfo)
+                                .param("appId", WEIXIN_APP_ID)
                                 .param("openId", entity.openid)
                                 .execute(UserEntity::class.java)
                     }
                 })
-                .subscribeWith(ResultCallbackSubscriber("wxUser", getLoginCallback()))
+                .subscribeWith(ResultCallbackSubscriber("wxUser", object : ResultCallback<UserEntity>() {
+                    override fun onStart(tag: Any?) {
+                        mvpView?.getViewContext()?.let {
+                            ProgressUtil.showProgressDialog(it, "登录中...")
+                        }
+                    }
+
+                    override fun onCompleted(tag: Any?) {
+                        ProgressUtil.dismissProgressDialog()
+                    }
+
+                    override fun onError(tag: Any?, e: ApiThrowable) {
+                        e.message?.let {
+                            mvpView?.showToast(it)
+                        }
+                    }
+
+                    override fun onSuccess(tag: Any?, result: UserEntity?) {
+                        if (result != null && !TextUtils.isEmpty(result.cellPhone)) { //微信第一次登录没有用户信息，需要去绑定手机号生成用户信息
+                            SharePreUtil.putBoolean(Constants.IntentKey.IS_LOGIN, true)
+                            SharePreUtil.saveBeanByFastJson(USER_INFO, result)
+                            mvpView?.loginSuccess()
+                        } else {
+                            mvpView?.toBindingPhone(result)
+                        }
+                    }
+                }))
     }
 
     private fun getLoginCallback(): ResultCallback<UserEntity> {
@@ -271,17 +291,15 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
             }
 
             override fun onSuccess(tag: Any?, result: UserEntity?) {
-                result?.let {
-//                    if (TextUtils.isEmpty(it.cellPhone)) { //当手机号码为空时，去绑定手机号
-//                        mvpView?.toBindingPhone(it)
-//                    }else{
-                        SharePreUtil.putBoolean(Constants.IntentKey.IS_LOGIN, true)
-                        SharePreUtil.saveBeanByFastJson(USER_INFO, it)
-                        mvpView?.loginSuccess()
-//                    }
+                if (result != null) { //微信第一次登录没有用户信息，需要去绑定手机号生成用户信息
+                    SharePreUtil.putBoolean(Constants.IntentKey.IS_LOGIN, true)
+                    SharePreUtil.saveBeanByFastJson(USER_INFO, result)
+                    SharePreUtil.putString(TOKEN, result.token)
+                    mvpView?.loginSuccess()
+                } else {
+                    mvpView?.showToast("登录失败")
                 }
             }
-
         }
     }
 }

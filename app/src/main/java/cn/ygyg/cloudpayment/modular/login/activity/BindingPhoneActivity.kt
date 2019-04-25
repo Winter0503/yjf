@@ -2,8 +2,12 @@ package cn.ygyg.cloudpayment.modular.login.activity
 
 import android.annotation.SuppressLint
 import cn.ygyg.cloudpayment.R
+import cn.ygyg.cloudpayment.app.Constants.IntentKey.OPEN_ID
+import cn.ygyg.cloudpayment.modular.home.activity.MainTabActivity
 import cn.ygyg.cloudpayment.modular.login.contract.BindingPhoneContract
+import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
 import cn.ygyg.cloudpayment.modular.login.presenter.BindingPhonePresenter
+import cn.ygyg.cloudpayment.utils.SharePreUtil
 import com.cn.lib.util.ResourceUtil
 import com.cn.lib.basic.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_binding_phone.*
@@ -11,17 +15,7 @@ import kotlinx.android.synthetic.main.activity_binding_phone.*
 
 class BindingPhoneActivity : BaseMvpActivity<BindingPhoneContract.Presenter, BindingPhoneContract.View>(), BindingPhoneContract.View {
 
-
-    override fun changeConfirmBtnState(state: Boolean) {
-        btn_binding_confirm.isEnabled = state
-        btn_binding_confirm.setBackgroundResource(if (state) R.mipmap.btn_full_press else R.mipmap.btn_full_normal)
-    }
-
-    override fun changeCodeBtnState(state: Boolean) {
-        btn_binding_code.text = ResourceUtil.getString(getViewContext(), R.string.get_verification_code)
-        btn_binding_code.isEnabled = state
-        btn_binding_code.setTextColor(ResourceUtil.getColor(getViewContext(), if (state) R.color.text_green_color else R.color.text_hint_color))
-    }
+    private lateinit var userEntity: UserEntity
 
     override fun createPresenter(): BindingPhoneContract.Presenter = BindingPhonePresenter(this)
 
@@ -29,6 +23,9 @@ class BindingPhoneActivity : BaseMvpActivity<BindingPhoneContract.Presenter, Bin
 
     override fun initViews() {
         super.initViews()
+        bundle?.apply {
+            userEntity = getSerializable("user") as UserEntity
+        }
         edit_binding_phone.filters = arrayOf(mPresenter?.getPhoneInputFilter()) //添加手机号文本框的输入过滤器
         edit_binding_code.addTextChangedListener(mPresenter?.getCodeTextChangeListener())
     }
@@ -43,14 +40,32 @@ class BindingPhoneActivity : BaseMvpActivity<BindingPhoneContract.Presenter, Bin
             mPresenter?.getVerificationCode(edit_binding_phone.text.toString())
         }
         btn_binding_confirm.setOnClickListener {
-            edit_binding_phone.text.toString()
-            edit_binding_code.text.toString()
+            val phone = edit_binding_phone.text.toString()
+            val code = edit_binding_code.text.toString()
+            val openId = SharePreUtil.getString(OPEN_ID)
+            mPresenter?.confirm(phone, code, openId)
         }
     }
 
     @SuppressLint("SetTextI18n")
     override fun changeCodeBtnText(aLong: Long) {
         btn_binding_code.text = "${aLong}秒后重发"
+    }
+
+    override fun changeConfirmBtnState(state: Boolean) {
+        btn_binding_confirm.isEnabled = state
+        btn_binding_confirm.setBackgroundResource(if (state) R.mipmap.btn_full_press else R.mipmap.btn_full_normal)
+    }
+
+    override fun changeCodeBtnState(state: Boolean) {
+        btn_binding_code.text = ResourceUtil.getString(getViewContext(), R.string.get_verification_code)
+        btn_binding_code.isEnabled = state
+        btn_binding_code.setTextColor(ResourceUtil.getColor(getViewContext(), if (state) R.color.text_green_color else R.color.text_hint_color))
+    }
+
+    override fun loginSuccess() {
+        toActivity(MainTabActivity::class.java)
+        finish()
     }
 
 
