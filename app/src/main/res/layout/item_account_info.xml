@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="20dp"
@@ -14,6 +15,7 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/account_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="*刚"
@@ -21,6 +23,7 @@
             android:textSize="18sp" />
 
         <TextView
+            android:id="@+id/device_code"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="18dp"
@@ -30,6 +33,7 @@
             android:textSize="13sp" />
 
         <TextView
+            android:id="@+id/device_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="9dp"
@@ -42,6 +46,7 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/recharge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"

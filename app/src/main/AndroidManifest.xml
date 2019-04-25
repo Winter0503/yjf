@@ -51,7 +51,9 @@
         <activity android:name=".modular.register.activity.RegisterActivity" />
         <activity android:name=".modular.password.activity.ResetPasswordActivity" />
         <activity android:name=".modular.login.activity.BindingPhoneActivity" />
-        <activity android:name=".modular.home.activity.MainTabActivity" />
+        <activity
+            android:name=".modular.home.activity.MainTabActivity"
+            android:launchMode="singleTask" />
         <activity android:name=".modular.home.activity.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -11,6 +11,8 @@ object Constants {
         const val IS_LOGIN = "isLogin"
         const val TOKEN = "token"
         const val OPEN_ID = "openId"
+        const val DEVICE_CODE="deviceCode"
+        const val COMPANY_CODE="companyCode"
     }
 
     object WX {

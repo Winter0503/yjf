@@ -5,7 +5,6 @@ import cn.ygyg.cloudpayment.app.MyApplication
 import com.amap.api.location.AMapLocation
 import com.amap.api.location.AMapLocationClient
 import com.amap.api.location.AMapLocationClientOption
-import com.cn.lib.util.ToastUtil
 
 object LocationUtil {
     /**

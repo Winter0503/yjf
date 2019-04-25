@@ -3,34 +3,33 @@ package cn.ygyg.cloudpayment.modular.internet.entity
 import cn.ygyg.cloudpayment.modular.internet.vm.CompanyVM
 import java.io.Serializable
 
-data class CompanyListResponseEntity(
-        val list: ArrayList<CompanyEntity>
-) : Serializable {
+class CompanyListResponseEntity : Serializable {
+    var list: ArrayList<CompanyEntity>? = null
 
-    data class CompanyEntity(
-            val cityCode: String,
-            val cityId: Int,
-            val cityName: String,
-            val companyCode: String,
-            val companyName: String,
-            val createDate: String,
-            val createUser: String,
-            val deleted: Boolean,
-            val enabled: Boolean,
-            val groupCode: String,
-            val groupId: Int,
-            val groupName: String,
-            val id: Long,
-            val modifiedDate: String,
-            val modifiedUser: String,
-            val remark: String
-    ) : CompanyVM, Serializable {
+    open class CompanyEntity : CompanyVM, Serializable {
+        var cityCode: String? = null
+        var cityId: Int? = null
+        var cityName: String? = null
+        var companyCode: String? = null
+        var companyName: String? = null
+        var createDate: String? = null
+        var createUser: String? = null
+        var deleted: Boolean? = null
+        var enabled: Boolean? = null
+        var groupCode: String? = null
+        var groupId: Int? = null
+        var groupName: String? = null
+        var id: Long? = null
+        var modifiedDate: String? = null
+        var modifiedUser: String? = null
+        var remark: String? = null
+
         override fun companyName(): String {
-            return if (companyName.isEmpty()) "" else companyName
+            return if (companyName.isNullOrEmpty()) "" else companyName!!
         }
 
         override fun companyId(): Long {
-            return id
+            return if (id == null) 0L else id!!
         }
     }
 }

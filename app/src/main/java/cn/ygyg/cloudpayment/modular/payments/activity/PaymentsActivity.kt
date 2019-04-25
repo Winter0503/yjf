@@ -4,7 +4,10 @@ import android.content.Intent
 import android.net.Uri
 import android.view.View
 import cn.ygyg.cloudpayment.R
+import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
+import cn.ygyg.cloudpayment.modular.internet.entity.DeviceResponseEntity
+import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsActivityContract
 import cn.ygyg.cloudpayment.modular.payments.presenter.PaymentsActivityPresenter
 import cn.ygyg.cloudpayment.utils.DecimalDigitsInputFilter
@@ -25,6 +28,10 @@ class PaymentsActivity :
             setLeftImageRes(R.mipmap.back)
         }
         input_amount.clearFocus()
+        bundle?.let {
+            val deviceCode = it.getString(Constants.IntentKey.DEVICE_CODE, "")
+            mPresenter?.getBindDevice(deviceCode)
+        }
     }
 
     override fun initListener() {
@@ -75,5 +82,12 @@ class PaymentsActivity :
             wx_pay_select.visibility = View.VISIBLE
 
         }
+    }
+
+    override fun onLoadDeviceSuccess(response: DeviceVM) {
+        user_name.text = response.userName()
+        user_account.text = response.deviceCode()
+        user_name.text = response.deviceAddress()
+        user_name.text = response.deviceBalance()
     }
 }
