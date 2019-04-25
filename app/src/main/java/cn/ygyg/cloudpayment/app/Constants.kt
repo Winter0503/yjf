@@ -9,10 +9,10 @@ object Constants {
         const val FOR_RESULT = "forResult"
         const val USER_INFO = "userInfo"
         const val IS_LOGIN = "isLogin"
-        const val TOKEN = "token"
-        const val OPEN_ID = "openId"
         const val DEVICE_CODE="deviceCode"
         const val COMPANY_CODE="companyCode"
+        const val TOKEN = "token"
+        const val OPEN_ID = "openId"
     }
 
     object WX {
