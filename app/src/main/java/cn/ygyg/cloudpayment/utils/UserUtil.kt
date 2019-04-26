@@ -14,7 +14,7 @@ object UserUtil {
     }
 
     fun getUserName(): String {
-        return userEntity?.userName ?: "17733696194"
+        return userEntity?.cellPhone ?: "17733696194"
     }
 
     fun getMemberId(): String {
