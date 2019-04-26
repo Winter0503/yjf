@@ -69,6 +69,10 @@ object UrlConstants {
      * 解除绑定物联网表
      */
     const val unbind = "chaoscloud-customerapi/customerApi/app/device/unbind"
+    /**
+     * 解除绑定物联网表
+     */
+    const val createOrder = "api/customer/payment/createOrder"
 
 
 }

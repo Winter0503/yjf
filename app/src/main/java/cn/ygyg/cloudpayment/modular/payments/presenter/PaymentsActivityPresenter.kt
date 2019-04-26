@@ -6,6 +6,7 @@ import cn.ygyg.cloudpayment.modular.internet.entity.DeviceResponseEntity
 import com.cn.lib.basic.BasePresenterImpl
 
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsActivityContract
+import cn.ygyg.cloudpayment.modular.payments.entity.CreateOrderResposneEntity
 import cn.ygyg.cloudpayment.utils.ProgressUtil
 import cn.ygyg.cloudpayment.utils.UserUtil
 import com.cn.lib.retrofit.network.callback.ResultCallback
@@ -38,6 +39,39 @@ class PaymentsActivityPresenter(view: PaymentsActivityContract.View) :
                     override fun onSuccess(tag: Any?, result: DeviceResponseEntity?) {
                         result?.let {
                             mvpView?.onLoadDeviceSuccess(it)
+                        }
+                    }
+                })
+    }
+
+    override fun createOrder(amount: String, deviceCode: String, ipAddress: String, phone: String, payMode: String, payType: String) {
+        RequestManager.post(UrlConstants.createOrder)
+                .param("amount", "0.01")
+                .param("contractCode ", deviceCode)
+                .param("ip", ipAddress)
+                .param("mobile", phone)
+                .param("paymentMethod", payMode)
+                .param("paymentType", payType)
+                .execute("", object : ResultCallback<CreateOrderResposneEntity>() {
+                    override fun onStart(tag: Any?) {
+                        mvpView?.getViewContext()?.let {
+                            ProgressUtil.showProgressDialog(it, "加载中...")
+                        }
+                    }
+
+                    override fun onCompleted(tag: Any?) {
+                        mvpView?.getViewContext()?.let {
+                            ProgressUtil.dismissProgressDialog()
+                        }
+                    }
+
+                    override fun onError(tag: Any?, e: ApiThrowable) {
+                        e.message?.let { mvpView?.showToast(it) }
+                    }
+
+                    override fun onSuccess(tag: Any?, result: CreateOrderResposneEntity?) {
+                        result?.let {
+                            mvpView?.onCreateOrderSuccess()
                         }
                     }
                 })
