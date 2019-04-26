@@ -40,7 +40,7 @@ class DeviceResponseEntity : Serializable, DeviceVM {
     }
 
     override fun deviceCode(): String {
-        return if (companyCode.isNullOrEmpty()) "" else companyCode!!
+        return if (meterNo.isNullOrEmpty()) "" else meterNo!!
     }
 
     override fun deviceAddress(): String {

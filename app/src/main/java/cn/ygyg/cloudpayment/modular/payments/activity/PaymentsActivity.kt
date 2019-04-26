@@ -2,16 +2,18 @@ package cn.ygyg.cloudpayment.modular.payments.activity
 
 import android.content.Intent
 import android.net.Uri
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
-import cn.ygyg.cloudpayment.modular.internet.entity.DeviceResponseEntity
 import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsActivityContract
 import cn.ygyg.cloudpayment.modular.payments.presenter.PaymentsActivityPresenter
-import cn.ygyg.cloudpayment.utils.DecimalDigitsInputFilter
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
+import cn.ygyg.cloudpayment.utils.IPUtils
+import cn.ygyg.cloudpayment.utils.UserUtil
 import cn.ygyg.cloudpayment.utils.ViewUtils
 import com.cn.lib.basic.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_payments.*
@@ -22,6 +24,11 @@ class PaymentsActivity :
     override fun createPresenter(): PaymentsActivityContract.Presenter = PaymentsActivityPresenter(this)
 
     override fun getContentViewResId(): Int = R.layout.activity_payments
+    private var deviceCode = ""
+    private var companyCode = ""
+    private var payMode = ""
+    private var amount = ""
+
     override fun initViews() {
         HeaderBuilder(this).apply {
             setTitle(R.string.activity_title_payments)
@@ -31,6 +38,11 @@ class PaymentsActivity :
         bundle?.let {
             val deviceCode = it.getString(Constants.IntentKey.DEVICE_CODE, "")
             mPresenter?.getBindDevice(deviceCode)
+        }
+
+        bundle?.let {
+            deviceCode = it.getString(Constants.IntentKey.DEVICE_CODE, "")
+            companyCode = it.getString(Constants.IntentKey.COMPANY_CODE, "")
         }
     }
 
@@ -42,20 +54,39 @@ class PaymentsActivity :
             if (v != null) {
                 input_amount.setText("")
                 ViewUtils.hideKeyboard(input_amount)
+                amount = v.tag as String
+
             }
             selector_rmb100.isChecked = selector_rmb100 == v
             selector_rmb300.isChecked = selector_rmb300 == v
             selector_rmb800.isChecked = selector_rmb800 == v
         }
+
         selector_rmb100.setOnClickListener(singleChose)
         selector_rmb300.setOnClickListener(singleChose)
         selector_rmb800.setOnClickListener(singleChose)
+
         input_amount.setOnFocusChangeListener { _, hasFocus ->
             input_layout.isSelected = hasFocus
             if (hasFocus) {
                 singleChose.onClick(null)
             }
         }
+        input_amount.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (!s.isNullOrEmpty()) {
+                    amount = s.toString()
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+
+
         contact_service.setOnClickListener {
             DefaultPromptDialog.builder()
                     .setContext(getViewContext())
@@ -76,12 +107,46 @@ class PaymentsActivity :
         ali_pay.setOnClickListener {
             wx_pay_select.visibility = View.GONE
             ali_pay_select.visibility = View.VISIBLE
+            payMode = "A"
         }
         wx_pay.setOnClickListener {
             ali_pay_select.visibility = View.GONE
             wx_pay_select.visibility = View.VISIBLE
+            payMode = "Q"
 
         }
+
+
+        payments.setOnClickListener {
+            if (checkPay()) {
+                mPresenter?.createOrder(
+                        amount,
+                        deviceCode,
+                        IPUtils.getIPAddress(this),
+                        UserUtil.getUserName(),
+                        payMode,
+                        "APP")
+            }
+        }
+    }
+
+    /**
+     * 检查支付参数
+     */
+    private fun checkPay(): Boolean {
+        if (amount.isEmpty()) {
+            showToast("充值金额不能为空")
+            return false
+        }
+        if (payMode.isEmpty()) {
+            showToast("支付方式不能为空")
+            return false
+        }
+        if (deviceCode.isEmpty()) {
+            showToast("支付账户不能为空")
+            return false
+        }
+        return true
     }
 
     override fun onLoadDeviceSuccess(response: DeviceVM) {
@@ -89,5 +154,9 @@ class PaymentsActivity :
         user_account.text = response.deviceCode()
         user_name.text = response.deviceAddress()
         user_name.text = response.deviceBalance()
+    }
+
+    override fun onCreateOrderSuccess() {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }

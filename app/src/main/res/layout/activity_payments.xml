@@ -185,6 +185,7 @@
                     android:button="@null"
                     android:checked="false"
                     android:gravity="center"
+                    android:tag="100"
                     android:text="@string/rmb_100"
                     android:textColor="@color/selector_black_green"
                     android:textSize="@dimen/ts_btn" />
@@ -200,6 +201,7 @@
                     android:button="@null"
                     android:checked="false"
                     android:gravity="center"
+                    android:tag="300"
                     android:text="@string/rmb_300"
                     android:textColor="@color/selector_black_green"
                     android:textSize="@dimen/ts_btn" />
@@ -213,6 +215,7 @@
                     android:button="@null"
                     android:checked="false"
                     android:gravity="center"
+                    android:tag="800"
                     android:text="@string/rmb_800"
                     android:textColor="@color/selector_black_green"
                     android:textSize="@dimen/ts_btn" />
