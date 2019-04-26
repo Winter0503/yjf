@@ -44,6 +44,8 @@ class PaymentsActivity :
             deviceCode = it.getString(Constants.IntentKey.DEVICE_CODE, "")
             companyCode = it.getString(Constants.IntentKey.COMPANY_CODE, "")
         }
+
+
     }
 
     override fun initListener() {
@@ -128,6 +130,11 @@ class PaymentsActivity :
                         "APP")
             }
         }
+    }
+
+    override fun initData() {
+        selector_rmb100.performClick()
+        wx_pay.performClick()
     }
 
     /**
