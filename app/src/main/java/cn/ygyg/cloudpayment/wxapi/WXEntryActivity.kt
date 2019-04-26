@@ -75,7 +75,6 @@ class WXEntryActivity : BaseActivity(), IWXAPIEventHandler {
                     val code = (baseResp as SendAuth.Resp).code
                     RxBus.get().post(code)
                     this.finish()
-                    ToastUtil.showToast(getViewContext(), "code:$code")
                 } else if (type == RETURN_MSG_TYPE_SHARE) {
                     ToastUtil.showToast(getViewContext(), "微信分享成功")
                 }

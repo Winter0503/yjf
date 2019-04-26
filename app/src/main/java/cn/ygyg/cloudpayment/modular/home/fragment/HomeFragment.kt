@@ -9,7 +9,6 @@ import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.home.adapter.AccountInfoListAdapter
 import cn.ygyg.cloudpayment.modular.home.contract.HomeContract
-import cn.ygyg.cloudpayment.modular.home.helper.ActionListDialog
 import cn.ygyg.cloudpayment.modular.home.presenter.HomePresenter
 import cn.ygyg.cloudpayment.modular.internet.activity.AddressSelectorActivity
 import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
@@ -22,19 +21,6 @@ import kotlinx.android.synthetic.main.fragment_home.*
 
 
 class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(), HomeContract.View {
-    private var longClickItem: DeviceVM? = null
-    private var longClickItemPosition = -1
-
-    private val actionDialog: ActionListDialog by lazy {
-        ActionListDialog(getViewContext()).apply {
-            setData("删除")
-            setOnActionClickListener(object : ActionListDialog.OnActionClickListener {
-                override fun onActionClicked(position: Int, action: String) {
-                    longClickItem?.let { mPresenter?.unBindDevice(longClickItemPosition, it) }
-                }
-            })
-        }
-    }
 
 
     override fun loaderSuccess(response: ArrayList<out DeviceVM>?) {
@@ -44,7 +30,7 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
         }
         //为空时执行
         val firstView = layoutInflater.inflate(R.layout.layout_first_into, recycler_view, false)
-        if (mAdapter.itemCount != 0) {
+        if (mAdapter.getRealItemCount() != 0) {
             firstView.findViewById<View>(R.id.pay_item).visibility = View.GONE
             firstView.findViewById<View>(R.id.developing).visibility = View.GONE
         }
@@ -55,7 +41,6 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
         firstView.findViewById<View>(R.id.layout_add_account).setOnClickListener {
             toActivity(AddressSelectorActivity::class.java)
         }
-
 
         setHasLoadedOnce(true)
     }
@@ -87,16 +72,15 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
                     refreshLayout.finishRefreshing()
                 }, 2000)
             }
-
-            override fun onLoadMore(refreshLayout: TwinklingRefreshLayout) {
-                Handler().postDelayed({
-                    refreshLayout.finishLoadmore()
-                    //设置不可上拉加载更多
-                    refreshLayout.setEnableLoadmore(false)
-                    //取消上拉回弹效果
-                    refreshLayout.setEnableOverScroll(false)
-                }, 2000)
-            }
+//            override fun onLoadMore(refreshLayout: TwinklingRefreshLayout) {
+//                Handler().postDelayed({
+//                    refreshLayout.finishLoadmore()
+//                    //设置不可上拉加载更多
+//                    refreshLayout.setEnableLoadmore(false)
+//                    //取消上拉回弹效果
+//                    refreshLayout.setEnableOverScroll(false)
+//                }, 2000)
+//            }
         })
 
         mAdapter.onCustomClickListener = object : AccountInfoListAdapter.OnCustomClickListener {
@@ -108,9 +92,20 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
             }
 
             override fun onItemLongClicked(position: Int, item: DeviceVM) {
-                longClickItem = item
-                longClickItemPosition = position
-                actionDialog.show()
+                DefaultPromptDialog.builder()
+                        .setContext(getViewContext())
+                        .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
+                        .setContentText("确定删除该账户信息吗？")
+                        .setAffirmText("确定")
+                        .setCancelText("取消")
+                        .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
+                            override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
+                                mPresenter?.unBindDevice(position, item)
+                                return super.clickPositiveButton(dialog)
+                            }
+                        })
+                        .build()
+                        .show()
             }
         }
     }
@@ -120,7 +115,7 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
     }
 
     override fun unbindSuccess(position: Int, device: DeviceVM) {
-        context?.let { ToastUtil.showToast(it, "成功") }
+        context?.let { ToastUtil.showToast(it, "删除成功") }
         mAdapter.removeItem(position)
     }
 }

@@ -15,7 +15,6 @@ import cn.ygyg.cloudpayment.utils.StringUtil
 import com.cn.lib.basic.BasePresenterImpl
 import com.cn.lib.retrofit.network.callback.ResultCallback
 import com.cn.lib.retrofit.network.exception.ApiThrowable
-import com.cn.lib.retrofit.network.subscriber.ResultCallbackSubscriber
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -90,15 +89,9 @@ class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl
 
     @SuppressLint("CheckResult")
     override fun getVerificationCode(phone: String) {
-        RequestManager.post(UrlConstants.valPhone)
+        RequestManager.post(UrlConstants.captcha)
                 .param("phone", phone)
-                .execute(String::class.java)
-                .flatMap {
-                    RequestManager.post(UrlConstants.captcha)
-                            .param("phone", phone)
-                            .execute(String::class.java)
-                }
-                .subscribeWith(ResultCallbackSubscriber("register", object : ResultCallback<String>() {
+                .execute("register", object : ResultCallback<String>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.let {
                             ProgressUtil.showProgressDialog(it.getViewContext(), "获取验证码中...")
@@ -122,7 +115,7 @@ class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl
                         //获取验证码成功开始倒计时
                         startCountDown()
                     }
-                }))
+                })
     }
 
     /**
@@ -163,7 +156,7 @@ class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl
                 .param("captcha", code)
                 .param("openId", openId ?: "")
                 .param("username", phone)
-                .execute("bindPhone",object: ResultCallback<UserEntity>(){
+                .execute("bindPhone", object : ResultCallback<UserEntity>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.getViewContext()?.let {
                             ProgressUtil.showProgressDialog(it, "提交中...")
@@ -180,7 +173,7 @@ class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl
 
                     override fun onSuccess(tag: Any?, result: UserEntity?) {
                         if (result != null) {
-                            SharePreUtil.putBoolean(Constants.IntentKey.IS_LOGIN, true)
+                            mvpView?.showToast("绑定手机号码成功")
                             SharePreUtil.saveBeanByFastJson(Constants.IntentKey.USER_INFO, result)
                             mvpView?.loginSuccess()
                         }

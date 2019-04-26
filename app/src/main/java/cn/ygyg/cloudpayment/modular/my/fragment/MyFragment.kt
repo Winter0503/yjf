@@ -16,6 +16,7 @@ import cn.ygyg.cloudpayment.modular.my.contract.MyContract
 import cn.ygyg.cloudpayment.modular.my.presenter.MyPresenter
 import cn.ygyg.cloudpayment.modular.payments.activity.PaymentsHistoryActivity
 import cn.ygyg.cloudpayment.utils.SharePreUtil
+import cn.ygyg.cloudpayment.utils.StringUtil
 import cn.ygyg.cloudpayment.utils.UserUtil
 import com.cn.lib.basic.BaseMvpFragment
 import com.cn.lib.util.ActivityListUtil
@@ -90,7 +91,8 @@ class MyFragment : BaseMvpFragment<MyContract.Presenter, MyContract.View>(), MyC
     @SuppressLint("SetTextI18n")
     override fun loaderPageDataSuccess(entity: UserEntity?) {
         entity?.let {
-            tv_phone.text = "Hello,${entity.cellPhone}"
+            val phone = StringUtil.blurPhone(entity.cellPhone)
+            tv_phone.text = "Hello,$phone"
         }
         setHasLoadedOnce(true)
     }

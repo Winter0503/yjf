@@ -237,6 +237,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
                     override fun apply(optional: Optional<TokenEntity>): ObservableSource<Optional<UserEntity>> {
                         val entity = optional.get()
                         SharePreUtil.putString(OPEN_ID, entity.openid)
+                        SharePreUtil.putString(TOKEN, entity.access_token)
                         return RequestManager.post(UrlConstants.getMemberInfo)
                                 .param("appId", WEIXIN_APP_ID)
                                 .param("openId", entity.openid)
@@ -262,7 +263,6 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
 
                     override fun onSuccess(tag: Any?, result: UserEntity?) {
                         if (result != null && !TextUtils.isEmpty(result.cellPhone)) { //微信第一次登录没有用户信息，需要去绑定手机号生成用户信息
-                            SharePreUtil.putBoolean(Constants.IntentKey.IS_LOGIN, true)
                             SharePreUtil.saveBeanByFastJson(USER_INFO, result)
                             mvpView?.loginSuccess()
                         } else {
@@ -294,7 +294,6 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
                 if (result != null) { //微信第一次登录没有用户信息，需要去绑定手机号生成用户信息
                     SharePreUtil.putBoolean(Constants.IntentKey.IS_LOGIN, true)
                     SharePreUtil.saveBeanByFastJson(USER_INFO, result)
-                    SharePreUtil.putString(TOKEN, result.token)
                     mvpView?.loginSuccess()
                 } else {
                     mvpView?.showToast("登录失败")

@@ -71,7 +71,6 @@ class HomePresenter(view: HomeContract.View) : BasePresenterImpl<HomeContract.Vi
                             mvpView?.unbindSuccess(position,device)
                         }
                     }
-
                 })
     }
 }

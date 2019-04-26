@@ -12,7 +12,6 @@ class MyPresenter(view: MyContract.View) : BasePresenterImpl<MyContract.View>(vi
     override fun loaderPageData() {
         val entity = UserUtil.getUser()
         entity?.run {
-            cellPhone = StringUtil.blurPhone(cellPhone)
             mvpView?.loaderPageDataSuccess(this)
         }
     }
