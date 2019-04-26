@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.ActivityManager
 import android.content.Context
 import java.util.*
+import java.util.Locale.filter
 
 
 /**
@@ -14,6 +15,9 @@ import java.util.*
 class ActivityListUtil {
 
     private var mainActivity: Class<*>? = null
+
+    // Activity栈
+    private var activityStack: Stack<Activity> = Stack()
 
     fun setMainActivity(mainActivity: Class<*>) {
         this.mainActivity = mainActivity
@@ -74,13 +78,12 @@ class ActivityListUtil {
      */
     @JvmOverloads
     fun finishAllActivity(isFinishMainActivity: Boolean = false) {
-        activityStack.indices
-                .filter {
-                    null != activityStack[it] && mainActivity == activityStack[it].javaClass && isFinishMainActivity
-                }
-                .forEach {
-                    activityStack[it].finish()
-                }
+        for (item in activityStack){
+            if (mainActivity == item && !isFinishMainActivity){
+                continue
+            }
+            item.finish()
+        }
     }
 
     /**
@@ -89,8 +92,7 @@ class ActivityListUtil {
     fun appExit(context: Context) {
         try {
             finishAllActivity()
-            val activityMgr = context
-                    .getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val activityMgr = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
             activityMgr.killBackgroundProcesses(context.packageName)
             System.exit(0)
         } catch (e: Exception) {
@@ -136,9 +138,6 @@ class ActivityListUtil {
     }
 
     companion object {
-
-        // Activity栈
-        private var activityStack: Stack<Activity> = Stack()
 
         val INSTANCE: ActivityListUtil by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) { ActivityListUtil() }
     }

@@ -79,12 +79,12 @@ class MyFragment : BaseMvpFragment<MyContract.Presenter, MyContract.View>(), MyC
     }
 
     override fun logoutSuccess() {
-        ActivityListUtil.INSTANCE.finishAllActivity(true)
         SharePreUtil.clear(IS_LOGIN)
         SharePreUtil.clear(Constants.IntentKey.TOKEN)
         SharePreUtil.clear(USER_INFO)
         UserUtil.clear()
         toActivity(LoginActivity::class.java)
+        ActivityListUtil.INSTANCE.finishAllActivity(true)
     }
 
     @SuppressLint("SetTextI18n")
