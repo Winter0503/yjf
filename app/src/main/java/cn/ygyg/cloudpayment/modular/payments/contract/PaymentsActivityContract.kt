@@ -15,13 +15,12 @@ class PaymentsActivityContract {
         /**
          * 创建支付订单
          * @param amount 支付金额
-         * @param companyCode 物联网表编号
-         * @param ipAddress IP地址
+         * @param deviceCode 物联网表编号
          * @param phone 手机号/账户名
          * @param payMode 支付方式
          * @param payType 泛起支付的平台类型 APP
          *
          */
-        fun createOrder(amount: String, deviceCode: String, ipAddress: String, phone: String, payMode: String, payType: String)
+        fun createOrder(amount: String, deviceCode: String, phone: String, payMode: String, payType: String)
     }
 }

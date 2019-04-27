@@ -124,7 +124,6 @@ class PaymentsActivity :
                 mPresenter?.createOrder(
                         amount,
                         deviceCode,
-                        IPUtils.getIPAddress(this),
                         UserUtil.getUserName(),
                         payMode,
                         "APP")
