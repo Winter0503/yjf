@@ -50,25 +50,25 @@ object UrlConstants {
     /**
      * 绑定手机号码
      */
-    const val bindPhone = "chaoscloud-customerapi/customerApi/weixin/device/bindPhone"
+    const val bindPhone = "chaoscloud-customerapi/customerApi/device/bindPhone"
 
     /**
      * 获取物联网表 信息
      */
-    const val getDevice = "chaoscloud-customerapi/customerApi/app/device/getDevice"
+    const val getDevice = "chaoscloud-customerapi/customerApi/device/getDevice"
     /**
      * 绑定物联网表
      */
-    const val bindDevice = "chaoscloud-customerapi/customerApi/app/device/bind"
+    const val bindDevice = "chaoscloud-customerapi/customerApi/device/bind"
     /**
      * 绑定物联网表 列表
      */
-    const val deviceList = "chaoscloud-customerapi/customerApi/app/device/list"
+    const val deviceList = "chaoscloud-customerapi/customerApi/device/list"
 
     /**
      * 解除绑定物联网表
      */
-    const val unbind = "chaoscloud-customerapi/customerApi/app/device/unbind"
+    const val unbind = "chaoscloud-customerapi/customerApi/device/unbind"
     /**
      * 解除绑定物联网表
      */
