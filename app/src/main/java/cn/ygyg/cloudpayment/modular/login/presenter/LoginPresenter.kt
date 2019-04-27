@@ -231,7 +231,8 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
     override fun loginByCode(code: String) {
         RequestManager.post(UrlConstants.getToken)
                 .param("code", code)
-                .param("companyCode", Constants.WX.COMPANY_CODE)
+                .param("appId", WEIXIN_APP_ID)
+                .param("companyCode", "10467")
                 .execute(TokenEntity::class.java)
                 .flatMap(object : Function<Optional<TokenEntity>, ObservableSource<Optional<UserEntity>>> {
                     override fun apply(optional: Optional<TokenEntity>): ObservableSource<Optional<UserEntity>> {

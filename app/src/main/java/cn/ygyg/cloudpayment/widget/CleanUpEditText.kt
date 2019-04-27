@@ -87,7 +87,9 @@ class CleanUpEditText @JvmOverloads constructor(context: Context, attrs: Attribu
      */
     override fun onFocusChange(v: View, hasFocus: Boolean) {
         if (hasFocus) {
-            setClearIconVisible(text.length > 0)
+            text?.let {
+                setClearIconVisible(it.isNotEmpty())
+            }
         } else {
             setClearIconVisible(false)
         }

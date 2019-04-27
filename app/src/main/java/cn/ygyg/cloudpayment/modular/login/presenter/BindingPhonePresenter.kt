@@ -153,6 +153,7 @@ class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl
 
     override fun confirm(phone: String, code: String, openId: String?) {
         RequestManager.post(UrlConstants.bindPhone)
+                .baseUrl("http://10.2.152.153:8130")
                 .param("captcha", code)
                 .param("openId", openId ?: "")
                 .param("username", phone)

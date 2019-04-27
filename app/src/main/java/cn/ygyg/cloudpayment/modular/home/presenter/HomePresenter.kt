@@ -17,7 +17,7 @@ import com.cn.lib.retrofit.network.exception.ApiThrowable
 class HomePresenter(view: HomeContract.View) : BasePresenterImpl<HomeContract.View>(view), HomeContract.Presenter {
 
     override fun loaderData() {
-        RequestManager.get(UrlConstants.deviceList)
+        RequestManager.post(UrlConstants.deviceList)
                 .param("username", UserUtil.getUserName())
                 .execute("", object : ResultCallback<DeviceListResponseEntity>() {
                     override fun onStart(tag: Any?) {
@@ -46,9 +46,10 @@ class HomePresenter(view: HomeContract.View) : BasePresenterImpl<HomeContract.Vi
     }
 
     override fun unBindDevice(position: Int, device: DeviceVM) {
-        RequestManager.get(UrlConstants.unbind)
-                .param("username", UserUtil.getUserName())
-                .param("meterCode ", device.deviceCode())
+        RequestManager.post(UrlConstants.unbind)
+                .param("userName", UserUtil.getUserName())
+                .param("companyCode", "10467")
+                .param("meterCode", device.deviceCode())
                 .execute("", object : ResultCallback<String>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.let {

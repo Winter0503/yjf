@@ -202,7 +202,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
     override fun toBindingPhone(entity: UserEntity?) {
         entity?.apply {
             val bundle = Bundle()
-            bundle.putSerializable("user", this)
+            bundle.putInt("sourceType", 1)
             toActivity(BindingPhoneActivity::class.java, bundle)
             finish()
         }

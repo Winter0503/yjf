@@ -46,7 +46,7 @@ class DividerDecoration private constructor() : RecyclerView.ItemDecoration() {
     }
 
     //获取分割线尺寸
-    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State?) {
+    override fun getItemOffsets(outRect: Rect, view: View, parent: RecyclerView, state: RecyclerView.State) {
         super.getItemOffsets(outRect, view, parent, state)
         val adapterPosition = parent.getChildAdapterPosition(view)
         if (continueIntercepts == null) {
@@ -74,7 +74,7 @@ class DividerDecoration private constructor() : RecyclerView.ItemDecoration() {
     }
 
     //绘制分割线
-    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State?) {
+    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
         super.onDraw(c, parent, state)
         paint!!.color = dividerColor
         if (orientation == LinearLayoutManager.VERTICAL) {

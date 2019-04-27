@@ -22,7 +22,7 @@ import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
 /**
  * Created by Admin on 2019/4/13.
  */
-class MyApplication : Application() {
+open class MyApplication : Application() {
     open lateinit var mWxApi: IWXAPI
 
     companion object {
@@ -56,6 +56,7 @@ class MyApplication : Application() {
         RxHttp.INSTANCE
                 .init(context = baseContext)
                 .baseUrl("http://10.38.64.79:8088")
+//                .baseUrl("http://10.2.152.153:8130")
                 .isLog(true)
                 .readTimeout(60 * 1000)
                 .writeTimeout(60 * 1000)

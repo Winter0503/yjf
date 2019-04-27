@@ -1,6 +1,7 @@
 package cn.ygyg.cloudpayment.modular.login.activity
 
 import android.annotation.SuppressLint
+import android.view.View
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.app.Constants.IntentKey.OPEN_ID
 import cn.ygyg.cloudpayment.modular.home.activity.MainTabActivity
@@ -14,12 +15,22 @@ import kotlinx.android.synthetic.main.activity_binding_phone.*
 
 class BindingPhoneActivity : BaseMvpActivity<BindingPhoneContract.Presenter, BindingPhoneContract.View>(), BindingPhoneContract.View {
 
+    private var sourceType = 0
+
     override fun createPresenter(): BindingPhoneContract.Presenter = BindingPhonePresenter(this)
 
     override fun getContentViewResId(): Int = R.layout.activity_binding_phone
 
     override fun initViews() {
         super.initViews()
+        bundle?.apply {
+            sourceType = getInt("sourceType", 0)
+        }
+        if (sourceType == 1) {
+            btn_back.visibility = View.VISIBLE
+        } else {
+            btn_back.visibility = View.INVISIBLE
+        }
         edit_binding_phone.filters = arrayOf(mPresenter?.getPhoneInputFilter()) //添加手机号文本框的输入过滤器
         edit_binding_code.addTextChangedListener(mPresenter?.getCodeTextChangeListener())
     }

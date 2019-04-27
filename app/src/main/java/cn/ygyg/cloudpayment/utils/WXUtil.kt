@@ -15,11 +15,11 @@ object WXUtil {
         } else {
             val packageManager = context.packageManager
             val pInfo: List<PackageInfo>? = packageManager.getInstalledPackages(0)
-            pInfo?.forEach({
+            pInfo?.forEach {
                 if ("com.tencent.mm" == it.packageName) {
                     return true
                 }
-            })
+            }
             return false
         }
     }
