@@ -174,30 +174,51 @@ abstract class BaseRecyclerAdapter<T> @JvmOverloads constructor(protected var co
 
     private fun addHeaderView(header: View, index: Int, orientation: Int = LinearLayout.VERTICAL): Int {
         var addIndex = index
+        val width: Int
+        val height: Int
         if (orientation == LinearLayout.VERTICAL) {
             mHeaderLayout.orientation = LinearLayout.VERTICAL
-            mHeaderLayout.layoutParams = RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+            width = MATCH_PARENT
+            height = WRAP_CONTENT
         } else {
             mHeaderLayout.orientation = LinearLayout.HORIZONTAL
-            mHeaderLayout.layoutParams = RecyclerView.LayoutParams(WRAP_CONTENT, MATCH_PARENT)
+            width = WRAP_CONTENT
+            height = MATCH_PARENT
+        }
+        if (mHeaderLayout.layoutParams == null) {
+            mHeaderLayout.layoutParams = RecyclerView.LayoutParams(width, height)
         }
         val childCount = mHeaderLayout.childCount
         if (addIndex < 0 || addIndex > childCount) {
             addIndex = childCount
         }
         mHeaderLayout.addView(header, addIndex)
+        if (mHeaderLayout.childCount == 1) {
+            val position = getFooterViewPosition()
+            if (position != -1) {
+                notifyItemInserted(position)
+            }
+        }
         return addIndex
     }
 
     @JvmOverloads
     fun addFooterView(footer: View, index: Int = -1, orientation: Int = LinearLayout.VERTICAL): Int {
         var addIndex = index
+
+        val width: Int
+        val height: Int
         if (orientation == LinearLayout.VERTICAL) {
             mFooterLayout.orientation = LinearLayout.VERTICAL
-            mFooterLayout.layoutParams = RecyclerView.LayoutParams(MATCH_PARENT, WRAP_CONTENT)
+            width = MATCH_PARENT
+            height = WRAP_CONTENT
         } else {
             mFooterLayout.orientation = LinearLayout.HORIZONTAL
-            mFooterLayout.layoutParams = RecyclerView.LayoutParams(WRAP_CONTENT, MATCH_PARENT)
+            width = WRAP_CONTENT
+            height = MATCH_PARENT
+        }
+        if (mFooterLayout.layoutParams == null) {
+            mFooterLayout.layoutParams = RecyclerView.LayoutParams(width, height)
         }
         val childCount = mFooterLayout.childCount
         if (addIndex < 0 || addIndex > childCount) {

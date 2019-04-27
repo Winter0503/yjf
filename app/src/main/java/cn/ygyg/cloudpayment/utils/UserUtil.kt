@@ -26,7 +26,7 @@ object UserUtil {
     fun getUserName(): String {
         checkUserEmpty()
 //        return userEntity?.cellPhone ?: "17733696194"
-        return "17733696194"
+        return "15001030281"
     }
 
     fun getMemberId(): String {
