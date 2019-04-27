@@ -19,7 +19,6 @@ import cn.ygyg.cloudpayment.modular.internet.vm.CompanyVM
 import cn.ygyg.cloudpayment.utils.BaseViewHolder
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
 import cn.ygyg.cloudpayment.utils.LocationUtil
-import cn.ygyg.cloudpayment.widget.LoadMoreView
 import cn.ygyg.cloudpayment.widget.ProgressHeaderView
 import cn.ygyg.cloudpayment.widget.SideBarView
 import com.amap.api.location.AMapLocation

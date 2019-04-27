@@ -12,7 +12,6 @@ import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsActivityContract
 import cn.ygyg.cloudpayment.modular.payments.presenter.PaymentsActivityPresenter
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
-import cn.ygyg.cloudpayment.utils.IPUtils
 import cn.ygyg.cloudpayment.utils.UserUtil
 import cn.ygyg.cloudpayment.utils.ViewUtils
 import com.cn.lib.basic.BaseMvpActivity
@@ -124,7 +123,6 @@ class PaymentsActivity :
                 mPresenter?.createOrder(
                         amount,
                         deviceCode,
-                        IPUtils.getIPAddress(this),
                         UserUtil.getUserName(),
                         payMode,
                         "APP")
