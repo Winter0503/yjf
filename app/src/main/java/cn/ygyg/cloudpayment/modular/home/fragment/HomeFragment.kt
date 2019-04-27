@@ -39,7 +39,6 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
             it.adapter = mAdapter
             it.layoutManager = LinearLayoutManager(getViewContext())
         }
-        mAdapter.addHeaderView(layoutInflater.inflate(cn.ygyg.cloudpayment.R.layout.layout_banner, recycler_view, false))
         refreshLayout = findViewById(cn.ygyg.cloudpayment.R.id.layout_refresh)
     }
 
@@ -96,24 +95,29 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
 
     override fun loaderSuccess(response: ArrayList<out DeviceVM>?) {
         refreshLayout?.finishRefreshing()
+        if (mAdapter.getFooterLayoutCount() == 0) {
+            //为空时执行
+            val firstView = layoutInflater.inflate(cn.ygyg.cloudpayment.R.layout.layout_first_into, recycler_view, false)
+            if (response != null && response.size != 0) {
+                firstView.findViewById<View>(cn.ygyg.cloudpayment.R.id.pay_item).visibility = View.GONE
+                firstView.findViewById<View>(cn.ygyg.cloudpayment.R.id.developing).visibility = View.GONE
+            }else{
+                firstView.findViewById<View>(cn.ygyg.cloudpayment.R.id.btn_recharge).setOnClickListener {
+                    toActivity(AddressSelectorActivity::class.java)
+                }
+                firstView.findViewById<View>(cn.ygyg.cloudpayment.R.id.layout_add_account).setOnClickListener {
+                    toActivity(AddressSelectorActivity::class.java)
+                }
+            }
+            mAdapter.addFooterView(firstView)
+        }
         response?.let {
             //不为空时执行
             mAdapter.setNewList(it.toMutableList())
         }
-        //为空时执行
-        val firstView = layoutInflater.inflate(cn.ygyg.cloudpayment.R.layout.layout_first_into, recycler_view, false)
-        if (mAdapter.getRealItemCount() != 0) {
-            firstView.findViewById<View>(cn.ygyg.cloudpayment.R.id.pay_item).visibility = View.GONE
-            firstView.findViewById<View>(cn.ygyg.cloudpayment.R.id.developing).visibility = View.GONE
+        if (mAdapter.getHeaderLayoutCount() == 0) {
+            mAdapter.addHeaderView(layoutInflater.inflate(cn.ygyg.cloudpayment.R.layout.layout_banner, recycler_view, false))
         }
-        mAdapter.addFooterView(firstView)
-        firstView.findViewById<View>(cn.ygyg.cloudpayment.R.id.btn_recharge).setOnClickListener {
-            toActivity(AddressSelectorActivity::class.java)
-        }
-        firstView.findViewById<View>(cn.ygyg.cloudpayment.R.id.layout_add_account).setOnClickListener {
-            toActivity(AddressSelectorActivity::class.java)
-        }
-
         setHasLoadedOnce(true)
     }
 

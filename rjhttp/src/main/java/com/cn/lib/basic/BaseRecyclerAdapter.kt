@@ -33,6 +33,10 @@ abstract class BaseRecyclerAdapter<T> @JvmOverloads constructor(protected var co
         return data.size
     }
 
+    fun getHeaderViewPosition(): Int {
+        return 0
+    }
+
     fun getHeaderLayoutCount(): Int {
         return if (mHeaderLayout.childCount == 0) 0 else 1
     }
@@ -186,6 +190,12 @@ abstract class BaseRecyclerAdapter<T> @JvmOverloads constructor(protected var co
             addIndex = childCount
         }
         mHeaderLayout.addView(header, addIndex)
+        if (getHeaderLayoutCount() == 1) {
+            val position = getHeaderViewPosition()
+            if (position != -1) {
+                notifyItemInserted(position)
+            }
+        }
         return addIndex
     }
 
@@ -204,7 +214,7 @@ abstract class BaseRecyclerAdapter<T> @JvmOverloads constructor(protected var co
             addIndex = childCount
         }
         mFooterLayout.addView(footer, addIndex)
-        if (mFooterLayout.childCount == 1) {
+        if (getFooterLayoutCount() == 1) {
             val position = getFooterViewPosition()
             if (position != -1) {
                 notifyItemInserted(position)
