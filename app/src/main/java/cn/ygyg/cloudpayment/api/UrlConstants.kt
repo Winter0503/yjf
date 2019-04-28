@@ -7,68 +7,68 @@ object UrlConstants {
     /**
      * 验证手机
      */
-    const val valPhone = "chaoscloud-customerapi/customerapi/user/valPhone"
+    const val valPhone = "customerapi/user/valPhone"
     /**
      * 获取验证码
      */
-    const val captcha = "chaoscloud-customerapi/customerapi/user/captcha"
+    const val captcha = "customerapi/user/captcha"
     /**
      * 注册
      */
-    const val register = "chaoscloud-customerapi/customerapi/user/register"
+    const val register = "customerapi/user/register"
     /**
      * 账号密码登录
      */
-    const val login = "chaoscloud-customerapi/customerapi/user/login"
+    const val login = "customerapi/user/login"
     /**
      * 验证码登录
      */
-    const val captchalogin = "chaoscloud-customerapi/customerapi/user/captchaLogin"
+    const val captchalogin = "customerapi/user/captchaLogin"
     /**
      * 忘记密码修改密码
      */
-    const val forgetPwd = "chaoscloud-customerapi/customerapi/user/forgetPwd"
+    const val forgetPwd = "customerapi/user/forgetPwd"
 
     /**
      * 城市列表
      */
-    const val cityList = "chaoscloud-customerapi/customerapi/city/list"
+    const val cityList = "customerapi/city/list"
 
     /**
      * 城市公司列表
      */
-    const val companyList = "chaoscloud-customerapi/customerapi/company/list"
+    const val companyList = "customerapi/company/list"
 
     /**
      * 获取用户信息
      */
-    const val getMemberInfo = "chaoscloud-customerapi/customerapi/openid/queryMember"
+    const val getMemberInfo = "customerapi/openid/queryMember"
     /**
      * 微信登录获取openId
      */
-    const val getToken = "chaoscloud-customerapi/customerapi/openid/getToken"
+    const val getToken = "customerapi/openid/getToken"
     /**
      * 绑定手机号码
      */
-    const val bindPhone = "chaoscloud-customerapi/customerApi/weixin/device/bindPhone"
+    const val bindPhone = "customerApi/weixin/device/bindPhone"
 
     /**
      * 获取物联网表 信息
      */
-    const val getDevice = "chaoscloud-customerapi/customerApi/device/getDevice"
+    const val getDevice = "customerApi/device/getDevice"
     /**
      * 绑定物联网表
      */
-    const val bindDevice = "chaoscloud-customerapi/customerApi/device/bindMeter"
+    const val bindDevice = "customerApi/device/bindMeter"
     /**
      * 绑定物联网表 列表
      */
-    const val deviceList = "chaoscloud-customerapi/customerApi/device/list"
+    const val deviceList = "customerApi/device/list"
 
     /**
      * 解除绑定物联网表
      */
-    const val unbind = "chaoscloud-customerapi/customerApi/device/unbind"
+    const val unbind = "customerApi/device/unbind"
     /**
      * 解除绑定物联网表
      */

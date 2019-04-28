@@ -6,6 +6,7 @@ import com.cn.lib.retrofit.network.RxHttp
 import com.cn.lib.retrofit.network.entity.HttpParamEntity
 import com.cn.lib.retrofit.network.interceptor.BaseDynamicInterceptor
 import com.cn.lib.retrofit.network.interceptor.HeaderInterceptor
+import com.cn.lib.retrofit.network.interceptor.RequestParamInterceptor
 import com.cn.lib.retrofit.network.util.SSLUtil
 import com.cn.lib.retrofit.network.util.Util
 import io.reactivex.Observable
@@ -15,6 +16,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import java.io.File
 import java.io.InputStream
+import java.lang.NullPointerException
 import java.net.Proxy
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -39,8 +41,8 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
     private val mHeaders = HashMap<String, String>()                              //公共请求头
     //    Map<String, String> mParameters = new HashMap<>();                      //请求参数
     //    Map<String, String> mFileMap = new HashMap<>();                         //上传文件
-    internal var mHttpParams = HttpParamEntity()      //请求参数集合
-    protected var mHttpClient: OkHttpClient? = null                                //自定义OkHttpClient
+    internal var mHttpParams = HttpParamEntity()                                    //请求参数集合
+    private var mHttpClient: OkHttpClient? = null                                //自定义OkHttpClient
     private var mReadTimeout: Int = 0                                             //读超时
     private var mWriteTimeout: Int = 0                                            //写超时
     private var mConnectTimeout: Int = 0                                          //链接超时
@@ -51,13 +53,13 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
     private val mNetworkInterceptorList = ArrayList<Interceptor>()
     internal var mContext: Context
     private var mBaseUrl: String? = null
-    private var isSign = false                                   //是否需要签名
-    private var accessToken = false                              //是否需要添加token
+    private var isSign = false                                                     //是否需要签名
+    private var accessToken = false                                                //是否需要添加token
     internal var isSyncRequest = true
-    private var mRetrofit: Retrofit? = null
-    private var mOkHttpClient: OkHttpClient? = null
     internal lateinit var mApiManager: ApiManager
     private var mHeaderInterceptor: HeaderInterceptor? = null
+    private var mRequestParamInterceptor: RequestParamInterceptor? = null          //参数拦截器
+    private var mCancelEncryption = false
 
 
     init {
@@ -74,7 +76,7 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
             if (httpUrl != null)
                 mBaseUrl = httpUrl.url().protocol + "://" + httpUrl.url().host + "/"
         }
-
+        this.mRequestParamInterceptor = rxHttp.requestParamInterceptor
     }
 
     fun baseUrl(baseUrl: String): R {
@@ -89,6 +91,11 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
 
     fun isSyncRequest(isSyncRequest: Boolean): R {
         this.isSyncRequest = isSyncRequest
+        return this as R
+    }
+
+    fun cancelEncryption(flag: Boolean): R {
+        this.mCancelEncryption = flag
         return this as R
     }
 
@@ -163,6 +170,11 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
         mHeaderInterceptor?.run {
             clearAll()
         }
+        return this as R
+    }
+
+    fun addInterceptor(requestParamInterceptor: RequestParamInterceptor): R {
+        mRequestParamInterceptor = requestParamInterceptor
         return this as R
     }
 
@@ -272,7 +284,7 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
             val builder = RxHttp.INSTANCE.getOkHttpClientBuilder()
             for (interceptor in builder.interceptors()) {
                 if (interceptor is BaseDynamicInterceptor<*>) {
-                    (interceptor as BaseDynamicInterceptor<*>).sign(isSign).accessToken(accessToken)
+                    interceptor.sign(isSign).accessToken(accessToken)
                 }
             }
             return builder
@@ -361,7 +373,7 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
         }
     }
 
-    protected fun generateRetrofitBuilder(): Retrofit.Builder {
+    private fun generateRetrofitBuilder(): Retrofit.Builder {
         val rxHttp = RxHttp.INSTANCE
         if (mBaseUrl == null || (mBaseUrl == rxHttp.baseUrl && mConverterFactory == null
                         && mCallAdapterFactory == null && mHttpClient == null && rxHttp.httpClient == null)) {
@@ -385,16 +397,24 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
     protected fun build(): R {
         val okHttpClientBuilder = generateOkHttpClientBuilder()
         val retrofitBuilder = generateRetrofitBuilder()
-        if (mHttpClient != null) {
-            mOkHttpClient = mHttpClient
-        } else if (RxHttp.INSTANCE.httpClient != null) {
-            mOkHttpClient = RxHttp.INSTANCE.httpClient
-        } else {
-            mOkHttpClient = okHttpClientBuilder.build()
+        var mOkHttpClient = okHttpClientBuilder.build()
+        RxHttp.INSTANCE.httpClient?.let {
+            mOkHttpClient = it
         }
-        retrofitBuilder.client(mOkHttpClient!!)
-        mRetrofit = retrofitBuilder.build()
-        mApiManager = mRetrofit!!.create(ApiManager::class.java)
+        mHttpClient?.let {
+            mOkHttpClient = it
+        }
+        if (mOkHttpClient == null) {
+            throw NullPointerException("OKHttpClient is null")
+        }
+        retrofitBuilder.client(mOkHttpClient)
+        val mRetrofit = retrofitBuilder.build()
+        mApiManager = mRetrofit.create(ApiManager::class.java)
+        if (!mCancelEncryption) {
+            mRequestParamInterceptor?.let {
+                mHttpParams = it.intercept(mHttpParams)
+            }
+        }
         return this as R
     }
 

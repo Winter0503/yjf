@@ -2,6 +2,7 @@ package cn.ygyg.cloudpayment.modular.internet.presenter
 
 import cn.ygyg.cloudpayment.api.RequestManager
 import cn.ygyg.cloudpayment.api.UrlConstants
+import cn.ygyg.cloudpayment.app.Constants.WX.COMPANY_CODE
 import cn.ygyg.cloudpayment.modular.internet.contract.NewAccountActivityContract
 import cn.ygyg.cloudpayment.modular.internet.entity.DeviceResponseEntity
 import cn.ygyg.cloudpayment.utils.ProgressUtil
@@ -9,13 +10,15 @@ import cn.ygyg.cloudpayment.utils.UserUtil
 import com.cn.lib.basic.BasePresenterImpl
 import com.cn.lib.retrofit.network.callback.ResultCallback
 import com.cn.lib.retrofit.network.exception.ApiThrowable
+import com.hwangjr.rxbus.RxBus
 
 class NewAccountActivityPresenter(view: NewAccountActivityContract.View) :
         BasePresenterImpl<NewAccountActivityContract.View>(view),
         NewAccountActivityContract.Presenter {
     override fun getDevice(deviceCode: String) {
-        RequestManager.get(UrlConstants.getDevice)
+        RequestManager.post(UrlConstants.bindDevice)
                 .param("meterCode", deviceCode)
+                .param("companyCode", COMPANY_CODE)
                 .param("username", UserUtil.getUserName())
                 .execute("", object : ResultCallback<DeviceResponseEntity>() {
                     override fun onStart(tag: Any?) {
@@ -37,6 +40,7 @@ class NewAccountActivityPresenter(view: NewAccountActivityContract.View) :
                     override fun onSuccess(tag: Any?, result: DeviceResponseEntity?) {
                         result?.let {
                             mvpView?.onLoadDeviceSuccess(it)
+                            RxBus.get().post("refreshDevice", "")
                         }
                     }
                 })

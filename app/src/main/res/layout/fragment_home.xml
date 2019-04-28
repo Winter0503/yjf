@@ -8,7 +8,7 @@
 
 
     <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
-        android:id="@+id/layout_refresh"
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         app:tr_enable_loadmore="false"
         app:tr_enable_overscroll="false"

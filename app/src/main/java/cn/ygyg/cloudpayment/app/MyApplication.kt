@@ -3,6 +3,7 @@ package cn.ygyg.cloudpayment.app
 import android.annotation.SuppressLint
 import android.app.Application
 import cn.ygyg.cloudpayment.R
+import cn.ygyg.cloudpayment.api.ParamInterceptor
 import cn.ygyg.cloudpayment.utils.SharePreUtil
 import cn.ygyg.cloudpayment.widget.LoadMoreView
 import cn.ygyg.cloudpayment.widget.ProgressHeaderView
@@ -15,8 +16,6 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import com.lcodecore.tkrefreshlayout.footer.BallPulseView
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
-
-
 
 
 /**
@@ -55,8 +54,8 @@ open class MyApplication : Application() {
     private fun initRequestBase() {
         RxHttp.INSTANCE
                 .init(context = baseContext)
-                .baseUrl("http://10.38.64.79:8088")
-//                .baseUrl("http://10.2.152.153:8130")
+                .baseUrl("http://10.38.64.79:8088/chaoscloud-customerapi/")
+//                .baseUrl("http://10.2.152.100:8130")
                 .isLog(true)
                 .readTimeout(60 * 1000)
                 .writeTimeout(60 * 1000)
@@ -64,6 +63,8 @@ open class MyApplication : Application() {
                 .retryCount(3)
                 .retryDelay(500)
                 .retryIncreaseDelay(500)
+                .cancelEncryption(true)
+                .addInterceptor(ParamInterceptor())
                 .callAdapterFactory(RxJava2CallAdapterFactory.create())
                 .converterFactory(Retrofit2ConverterFactory())
     }

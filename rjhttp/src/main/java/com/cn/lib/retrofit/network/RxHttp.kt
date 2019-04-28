@@ -3,6 +3,7 @@ package com.cn.lib.retrofit.network
 
 import android.content.Context
 import com.cn.lib.retrofit.network.interceptor.HeaderInterceptor
+import com.cn.lib.retrofit.network.interceptor.RequestParamInterceptor
 import com.cn.lib.retrofit.network.request.*
 import com.cn.lib.retrofit.network.util.LogUtil
 import com.cn.lib.retrofit.network.util.SSLUtil
@@ -50,12 +51,15 @@ open class RxHttp private constructor() {
     var baseHeaderInterceptor: HeaderInterceptor? = null
         private set
 
+    var requestParamInterceptor: RequestParamInterceptor? = null
 
     val okHttpClient: OkHttpClient
         get() = getOkHttpClientBuilder().build()
 
     val retrofit: Retrofit
         get() = retrofitBuilder.build()
+
+    var mCancelEncryption: Boolean = false
 
     fun init(context: Context): RxHttp {
         this.context = context
@@ -76,7 +80,7 @@ open class RxHttp private constructor() {
      */
     fun baseUrl(baseUrl: String): RxHttp {
         this.baseUrl = baseUrl
-        retrofitBuilder.baseUrl(Util.checkNotNull(baseUrl, "OkHttpClient is null"))
+        retrofitBuilder.baseUrl(Util.checkNotNull(baseUrl, "base url is null"))
         return this
     }
 
@@ -123,6 +127,14 @@ open class RxHttp private constructor() {
                     interceptorList.add(this)
             }
         }
+        return this
+    }
+
+    /**
+     * 添加参数拦截器
+     */
+    fun addInterceptor(paramInterceptor: RequestParamInterceptor): RxHttp {
+        requestParamInterceptor = paramInterceptor
         return this
     }
 
@@ -350,6 +362,14 @@ open class RxHttp private constructor() {
         return this
     }
 
+    /**
+     * 是否取消参数加密
+     */
+    fun cancelEncryption(cancelEncryption: Boolean): RxHttp {
+        this.mCancelEncryption = cancelEncryption
+        return this
+    }
+
     fun accessToken(accessToken: Boolean) {
         this.isAccessToken = accessToken
     }
@@ -412,16 +432,17 @@ open class RxHttp private constructor() {
         }
     }
 
+
     companion object {
         private val TAG = RxHttp::class.java.simpleName
-        val DEFAULT_MILLISECONDS = 30             //默认的超时时间
-        private val DEFAULT_RETRY_COUNT = 3                 //默认重试次数
-        private val DEFAULT_RETRY_INCREASEDELAY = 0         //默认重试叠加时间
-        private val DEFAULT_RETRY_DELAY = 500               //默认重试延时
-        private val CACHE_MAX_SIZE = (10 * 1024 * 1024).toLong()      //默认缓存大小
+        const val DEFAULT_MILLISECONDS = 30             //默认的超时时间
+        private const val DEFAULT_RETRY_COUNT = 3                 //默认重试次数
+        private const val DEFAULT_RETRY_INCREASEDELAY = 0         //默认重试叠加时间
+        private const val DEFAULT_RETRY_DELAY = 500               //默认重试延时
 
         val INSTANCE: RxHttp by lazy(mode = LazyThreadSafetyMode.SYNCHRONIZED) {
-            RxHttp() }
+            RxHttp()
+        }
 
         fun templatePost(url: String): TemplatePostRequest {
             return TemplatePostRequest(url)
@@ -430,9 +451,11 @@ open class RxHttp private constructor() {
         fun templateDelete(url: String): TemplateDeleteRequest {
             return TemplateDeleteRequest(url)
         }
+
         fun templateGet(url: String): TemplateGetRequest {
             return TemplateGetRequest(url)
         }
+
         fun templatePut(url: String): TemplatePutRequest {
             return TemplatePutRequest(url)
         }
@@ -441,13 +464,15 @@ open class RxHttp private constructor() {
             return ApiResultPostRequest(url)
         }
 
-        fun resultGet(url:String):ApiResultGetRequest{
+        fun resultGet(url: String): ApiResultGetRequest {
             return ApiResultGetRequest(url)
         }
-        fun resultDelete(url:String):ApiResultDeleteRequest{
+
+        fun resultDelete(url: String): ApiResultDeleteRequest {
             return ApiResultDeleteRequest(url)
         }
-        fun resultPut(url:String):ApiResultPutRequest{
+
+        fun resultPut(url: String): ApiResultPutRequest {
             return ApiResultPutRequest(url)
         }
 

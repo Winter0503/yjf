@@ -21,15 +21,11 @@ class HomePresenter(view: HomeContract.View) : BasePresenterImpl<HomeContract.Vi
                 .param("username", UserUtil.getUserName())
                 .execute("", object : ResultCallback<DeviceListResponseEntity>() {
                     override fun onStart(tag: Any?) {
-                        mvpView?.let {
-                            ProgressUtil.showProgressDialog(it.getViewContext(), "加载中...")
-                        }
+
                     }
 
                     override fun onCompleted(tag: Any?) {
-                        mvpView?.let {
-                            ProgressUtil.dismissProgressDialog()
-                        }
+
                     }
 
                     override fun onError(tag: Any?, e: ApiThrowable) {
@@ -68,9 +64,7 @@ class HomePresenter(view: HomeContract.View) : BasePresenterImpl<HomeContract.Vi
                     }
 
                     override fun onSuccess(tag: Any?, result: String?) {
-                        result?.let {
-                            mvpView?.unbindSuccess(position,device)
-                        }
+                        mvpView?.unbindSuccess(position, device)
                     }
                 })
     }

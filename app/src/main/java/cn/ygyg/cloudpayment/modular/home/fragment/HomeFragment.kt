@@ -3,7 +3,9 @@ package cn.ygyg.cloudpayment.modular.home.fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SimpleItemAnimator
+import android.util.Log
 import android.view.View
+import cn.ygyg.cloudpayment.R.layout
 import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.home.adapter.AccountInfoListAdapter
@@ -14,6 +16,10 @@ import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.payments.activity.PaymentsActivity
 import com.cn.lib.basic.BaseMvpFragment
 import com.cn.lib.util.ToastUtil
+import com.hwangjr.rxbus.RxBus
+import com.hwangjr.rxbus.annotation.Subscribe
+import com.hwangjr.rxbus.annotation.Tag
+import com.hwangjr.rxbus.thread.EventThread
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -23,13 +29,22 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
 
     override fun createPresenter(): HomeContract.Presenter = HomePresenter(this)
 
-    private var refreshLayout: TwinklingRefreshLayout? = null
-
     private val mAdapter: AccountInfoListAdapter by lazy {
         AccountInfoListAdapter(getViewContext())
     }
 
-    override val contentViewResId: Int = cn.ygyg.cloudpayment.R.layout.fragment_home
+    private val firstView: View by lazy {
+        val view = layoutInflater.inflate(layout.layout_first_into, recycler_view, false)
+        view.findViewById<View>(cn.ygyg.cloudpayment.R.id.btn_recharge).setOnClickListener {
+            toActivity(AddressSelectorActivity::class.java)
+        }
+        view.findViewById<View>(cn.ygyg.cloudpayment.R.id.layout_add_account).setOnClickListener {
+            toActivity(AddressSelectorActivity::class.java)
+        }
+        view
+    }
+
+    override val contentViewResId: Int = layout.fragment_home
 
 
     override fun initViews(v: View) {
@@ -39,11 +54,11 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
             it.adapter = mAdapter
             it.layoutManager = LinearLayoutManager(getViewContext())
         }
-        refreshLayout = findViewById(cn.ygyg.cloudpayment.R.id.layout_refresh)
+        mAdapter.addHeaderView(layoutInflater.inflate(layout.layout_banner, recycler_view, false))
     }
 
     override fun initListener(v: View) {
-        refreshLayout?.setOnRefreshListener(object : RefreshListenerAdapter() {
+        refreshLayout.setOnRefreshListener(object : RefreshListenerAdapter() {
             override fun onRefresh(refreshLayout: TwinklingRefreshLayout) {
 //                Handler().postDelayed({
 //                    refreshLayout.finishRefreshing()
@@ -89,41 +104,50 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
     }
 
     override fun loaderData() {
-        mPresenter?.loaderData()
+        refreshLayout.startRefresh()
     }
 
 
     override fun loaderSuccess(response: ArrayList<out DeviceVM>?) {
-        refreshLayout?.finishRefreshing()
+        refreshLayout.finishRefreshing()
         if (mAdapter.getFooterLayoutCount() == 0) {
             //为空时执行
-            val firstView = layoutInflater.inflate(cn.ygyg.cloudpayment.R.layout.layout_first_into, recycler_view, false)
-            if (response != null && response.size != 0) {
-                firstView.findViewById<View>(cn.ygyg.cloudpayment.R.id.pay_item).visibility = View.GONE
-                firstView.findViewById<View>(cn.ygyg.cloudpayment.R.id.developing).visibility = View.GONE
-            }else{
-                firstView.findViewById<View>(cn.ygyg.cloudpayment.R.id.btn_recharge).setOnClickListener {
-                    toActivity(AddressSelectorActivity::class.java)
-                }
-                firstView.findViewById<View>(cn.ygyg.cloudpayment.R.id.layout_add_account).setOnClickListener {
-                    toActivity(AddressSelectorActivity::class.java)
-                }
-            }
             mAdapter.addFooterView(firstView)
+        }
+        //当列表为空时显示提示布局，否则隐藏提示布局
+        if (response != null && response.size != 0) {
+            firstView.findViewById<View>(cn.ygyg.cloudpayment.R.id.pay_item).visibility = View.GONE
+            firstView.findViewById<View>(cn.ygyg.cloudpayment.R.id.developing).visibility = View.GONE
+        } else {
+            firstView.findViewById<View>(cn.ygyg.cloudpayment.R.id.pay_item).visibility = View.VISIBLE
+            firstView.findViewById<View>(cn.ygyg.cloudpayment.R.id.developing).visibility = View.VISIBLE
         }
         response?.let {
             //不为空时执行
             mAdapter.setNewList(it.toMutableList())
         }
-        if (mAdapter.getHeaderLayoutCount() == 0) {
-            mAdapter.addHeaderView(layoutInflater.inflate(cn.ygyg.cloudpayment.R.layout.layout_banner, recycler_view, false))
-        }
         setHasLoadedOnce(true)
     }
-
 
     override fun unbindSuccess(position: Int, device: DeviceVM) {
         context?.let { ToastUtil.showToast(it, "删除成功") }
         mAdapter.removeItem(position)
     }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        RxBus.get().register(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        RxBus.get().unregister(this)
+    }
+
+    @Subscribe(thread = EventThread.MAIN_THREAD, tags = [Tag("refreshDevice")])
+    fun refreshList(isRefresh: String) {
+        Log.e("TAG","=======>>>>>isRefresh : $isRefresh")
+        refreshLayout.startRefresh()
+    }
+
 }

@@ -12,11 +12,11 @@ class HttpParamEntity {
     val paramMap = HashMap<String, String>()
     val fileMap = HashMap<String, MutableList<FileEntity<*>>>()
 
-    fun isParamsEmpty(): Boolean{
+    fun isParamsEmpty(): Boolean {
         return paramMap.isEmpty()
     }
 
-    fun isFilesEmpty(): Boolean{
+    fun isFilesEmpty(): Boolean {
         return fileMap.isEmpty()
     }
 
@@ -85,8 +85,8 @@ class HttpParamEntity {
         fileMap[key]?.addAll(fileWrappers)
     }
 
-    private fun getMediaTypeByName(fileName: String): MediaType? {
-        var fileName = fileName
+    private fun getMediaTypeByName(name: String): MediaType? {
+        var fileName = name
         val fileNameMap = URLConnection.getFileNameMap()
         fileName = fileName.replace("#", "")   //解决文件名中含有#号异常的问题
         var contentType: String? = fileNameMap.getContentTypeFor(fileName)
