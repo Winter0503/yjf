@@ -11,10 +11,9 @@ object Constants {
         const val USER_INFO = "userInfo"
         const val IS_LOGIN = "isLogin"
         const val DEVICE_CODE = "deviceCode"
-        const val COMPANY_CODE = "companyCode"
-        const val TOKEN = "token"
-        const val OPEN_ID = "openId"
+        const val COMPANY_KEY = "companyCode"
         const val TOKEN_KEY = "Authorization"
+        const val OPEN_ID = "openId"
 
     }
 

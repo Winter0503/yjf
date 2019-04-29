@@ -17,7 +17,9 @@ open class BasePresenterImpl<V : IBaseView>(view: V) : IBasePresenter<V> {
     protected var mvpView: V? = null
 
     // 事件管理类
-    private var mCompositeDisposable: CompositeDisposable? = null
+    private val mCompositeDisposable: CompositeDisposable by lazy {
+        CompositeDisposable()
+    }
 
     private val disposableMap = SparseArray<DisposableObserver<*>>()
 
@@ -38,9 +40,6 @@ open class BasePresenterImpl<V : IBaseView>(view: V) : IBasePresenter<V> {
         if (view != this.mvpView) {
             this.mvpView = view
         }
-        if (this.mCompositeDisposable == null) {
-            this.mCompositeDisposable = CompositeDisposable()
-        }
     }
 
     override fun detachView() {
@@ -50,13 +49,11 @@ open class BasePresenterImpl<V : IBaseView>(view: V) : IBasePresenter<V> {
 
     //RXjava取消注册，以避免内存泄露
     private fun unSubscribe() {
-        if (mCompositeDisposable != null && mCompositeDisposable!!.size() > 0) {
-            mCompositeDisposable!!.clear()
-        }
+        mCompositeDisposable.clear()
     }
 
     protected fun addSubscribe(disposable: Disposable) {
-        mCompositeDisposable!!.add(disposable)
+        mCompositeDisposable.add(disposable)
     }
 
 

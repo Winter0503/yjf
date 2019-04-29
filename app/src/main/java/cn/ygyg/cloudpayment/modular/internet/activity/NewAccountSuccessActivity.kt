@@ -24,7 +24,7 @@ class NewAccountSuccessActivity : BaseActivity() {
         }
         bundle?.let {
             deviceCode = it.getString(Constants.IntentKey.DEVICE_CODE, "")
-            companyCode = it.getString(Constants.IntentKey.COMPANY_CODE, "")
+            companyCode = it.getString(Constants.IntentKey.COMPANY_KEY, "")
         }
     }
 
@@ -32,7 +32,7 @@ class NewAccountSuccessActivity : BaseActivity() {
         to_payments.setOnClickListener {
             toActivity(PaymentsActivity::class.java, Bundle().apply {
                 putString(Constants.IntentKey.DEVICE_CODE, deviceCode)
-                putString(Constants.IntentKey.COMPANY_CODE, companyCode)
+                putString(Constants.IntentKey.COMPANY_KEY, companyCode)
             })
         }
         back_to_main.setOnClickListener {

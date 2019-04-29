@@ -46,8 +46,8 @@ object ToastUtil {
      *
      * @param isBoolean
      */
-    fun setShowToast(isBoolean: Boolean?) {
-        isShow = isBoolean!!
+    fun setShowToast(isBoolean: Boolean) {
+        isShow = isBoolean
     }
 
     /**
@@ -231,9 +231,7 @@ object ToastUtil {
     }
 
     fun cancelToast() {
-        if (toast != null) {
-            toast!!.cancel()
-        }
+        toast?.cancel()
     }
 
 }

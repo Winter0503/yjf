@@ -1,6 +1,7 @@
 package cn.ygyg.cloudpayment.api
 
 import android.content.Intent
+import android.util.Log
 import cn.ygyg.cloudpayment.app.Constants.IntentKey.TOKEN_KEY
 import cn.ygyg.cloudpayment.modular.login.activity.LoginActivity
 import cn.ygyg.cloudpayment.utils.UserUtil
@@ -15,6 +16,9 @@ import okhttp3.Response
  * token刷新
  */
 class TokenInterceptor : BaseExpiredInterceptor() {
+    init {
+        Log.e("TAG","===============TokenInterceptor======>>>>>>>>>>")
+    }
 
     /**
      * 判定token过期

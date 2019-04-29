@@ -33,7 +33,9 @@ class CleanUpEditText @JvmOverloads constructor(context: Context, attrs: Attribu
         if (clearWordsImage == null) {
             clearWordsImage = resources.getDrawable(R.mipmap.edittext_clear_bar)
         }
-        clearWordsImage!!.setBounds(0, 0, clearWordsImage!!.intrinsicWidth, clearWordsImage!!.intrinsicHeight)
+        clearWordsImage?.run {
+            setBounds(0, 0, intrinsicWidth, intrinsicHeight)
+        }
         setClearIconVisible(false)
         onFocusChangeListener = this
         addTextChangedListener(this)
@@ -50,7 +52,7 @@ class CleanUpEditText @JvmOverloads constructor(context: Context, attrs: Attribu
             if (clearWordsImage == null) {
                 clearWordsImage = resources.getDrawable(R.mipmap.edittext_clear_bar)
             }
-            clearWordsImage!!.setBounds(0, 0, clearWordsImage!!.intrinsicWidth, clearWordsImage!!.intrinsicHeight)
+            clearWordsImage?.run { setBounds(0, 0, intrinsicWidth, intrinsicHeight) }
         } else {
             clearWordsImage = null
         }
@@ -70,12 +72,10 @@ class CleanUpEditText @JvmOverloads constructor(context: Context, attrs: Attribu
         this.isFocusableInTouchMode = true
         if (compoundDrawables[2] != null) {
             if (event.action == MotionEvent.ACTION_UP) {
-                val touchable = event.x > width - paddingRight - clearWordsImage!!.intrinsicWidth && event.x < width - paddingRight
+                val touchable = event.x > width - paddingRight - (clearWordsImage?.intrinsicWidth ?: 0) && event.x < width - paddingRight
                 if (touchable) {
                     this.setText("")
-                    if (listener != null) {
-                        listener!!.afterClearing()
-                    }
+                    listener?.afterClearing()
                 }
             }
         }

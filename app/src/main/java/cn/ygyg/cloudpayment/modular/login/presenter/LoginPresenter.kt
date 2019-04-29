@@ -9,7 +9,7 @@ import cn.ygyg.cloudpayment.api.RequestManager
 import cn.ygyg.cloudpayment.api.UrlConstants
 import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.app.Constants.IntentKey.OPEN_ID
-import cn.ygyg.cloudpayment.app.Constants.IntentKey.TOKEN
+import cn.ygyg.cloudpayment.app.Constants.IntentKey.TOKEN_KEY
 import cn.ygyg.cloudpayment.app.Constants.IntentKey.USER_INFO
 import cn.ygyg.cloudpayment.app.Constants.WX.WEIXIN_APP_ID
 import cn.ygyg.cloudpayment.modular.login.contract.LoginContract
@@ -239,7 +239,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
                     override fun apply(optional: Optional<TokenEntity>): ObservableSource<Optional<UserEntity>> {
                         val entity = optional.get()
                         SharePreUtil.putString(OPEN_ID, entity.openid)
-                        SharePreUtil.putString(TOKEN, entity.access_token)
+                        SharePreUtil.putString(TOKEN_KEY, entity.access_token)
                         return RequestManager.post(UrlConstants.getMemberInfo)
                                 .param("appId", WEIXIN_APP_ID)
                                 .param("openId", entity.openid)

@@ -7,46 +7,46 @@ object UrlConstants {
     /**
      * 验证手机
      */
-    const val valPhone = "customerapi/user/valPhone"
+    const val valPhone = "customerApi/user/valPhone"
     /**
      * 获取验证码
      */
-    const val captcha = "customerapi/user/captcha"
+    const val captcha = "customerApi/user/captcha"
     /**
      * 注册
      */
-    const val register = "customerapi/user/register"
+    const val register = "customerApi/user/register"
     /**
      * 账号密码登录
      */
-    const val login = "customerapi/user/login"
+    const val login = "customerApi/user/login"
     /**
      * 验证码登录
      */
-    const val captchalogin = "customerapi/user/captchaLogin"
+    const val captchalogin = "customerApi/user/captchaLogin"
     /**
      * 忘记密码修改密码
      */
-    const val forgetPwd = "customerapi/user/forgetPwd"
+    const val forgetPwd = "customerApi/user/forgetPwd"
 
     /**
      * 城市列表
      */
-    const val cityList = "customerapi/city/list"
+    const val cityList = "customerApi/city/list"
 
     /**
      * 城市公司列表
      */
-    const val companyList = "customerapi/company/list"
+    const val companyList = "customerApi/company/list"
 
     /**
      * 获取用户信息
      */
-    const val getMemberInfo = "customerapi/openid/queryMember"
+    const val getMemberInfo = "customerApi/openid/queryMember"
     /**
      * 微信登录获取openId
      */
-    const val getToken = "customerapi/openid/getToken"
+    const val getToken = "customerApi/openid/getToken"
     /**
      * 绑定手机号码
      */

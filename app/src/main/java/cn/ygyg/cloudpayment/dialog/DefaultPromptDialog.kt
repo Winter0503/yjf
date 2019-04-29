@@ -15,14 +15,15 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
     private var tagMap: HashMap<Int, Any> = hashMapOf()
 
 
-    private val dialog: Dialog?
+    private val dialog: Dialog by lazy {
+        Dialog(context, R.style.prompt_dialog_style)
+    }
 
     enum class TypeEnum {
         BUTTON_VERTICAL, BUTTON_HORIZONTAL
     }
 
     init {
-        dialog = Dialog(context, R.style.prompt_dialog_style)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
         // 加载自定义Dialog布局
@@ -58,7 +59,7 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
 
 
     private fun initViews() {
-        val title = dialog!!.findViewById<TextView>(R.id.dialog_hint_title)
+        val title = dialog.findViewById<TextView>(R.id.dialog_hint_title)
         val content = dialog.findViewById<TextView>(R.id.dialog_hint_content)
         val affirm = dialog.findViewById<TextView>(R.id.dialog_hint_affirm)
         val cancel = dialog.findViewById<TextView>(R.id.dialog_hint_cancel)
@@ -115,13 +116,13 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
     }
 
     fun show() {
-        if (dialog != null && !dialog.isShowing) {
+        if (!dialog.isShowing) {
             dialog.show()
         }
     }
 
     fun dismiss() {
-        if (dialog != null && dialog.isShowing) {
+        if (dialog.isShowing) {
             dialog.dismiss()
         }
     }

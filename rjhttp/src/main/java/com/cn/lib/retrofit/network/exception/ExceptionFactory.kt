@@ -83,11 +83,9 @@ class ExceptionFactory {
         private const val HANDEL_ERRROR = "417"
 
         fun handleException(e: Throwable): ApiThrowable {
-            var detail = ""
-            if (e.cause != null) {
-                detail = e.cause!!.message!!
+            e.cause?.let {
+                LogUtil.e("ExceptionFactory", it.message)
             }
-            LogUtil.e("ExceptionFactory", detail)
             val ex: ApiThrowable
             if (e is ApiThrowable) {
                 ex = e

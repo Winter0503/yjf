@@ -23,8 +23,8 @@ import javax.net.ssl.X509TrustManager
 object SSLUtil {
 
     class SSLParams {
-        var sSLSocketFactory: SSLSocketFactory? = null
-        var trustManager: X509TrustManager? = null
+        lateinit var sSLSocketFactory: SSLSocketFactory
+        lateinit var trustManager: X509TrustManager
     }
 
     fun getSslSocketFactory(bksFile: InputStream?, password: String?, vararg certificates: InputStream): SSLParams {
@@ -153,7 +153,7 @@ object SSLUtil {
         @Throws(CertificateException::class)
         override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {
             try {
-                defaultTrustManager!!.checkServerTrusted(chain, authType)
+                defaultTrustManager?.checkServerTrusted(chain, authType)
             } catch (ce: CertificateException) {
                 localTrustManager?.checkServerTrusted(chain, authType)
             }

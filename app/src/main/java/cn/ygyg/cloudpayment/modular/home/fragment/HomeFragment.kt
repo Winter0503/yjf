@@ -3,7 +3,6 @@ package cn.ygyg.cloudpayment.modular.home.fragment
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SimpleItemAnimator
-import android.util.Log
 import android.view.View
 import cn.ygyg.cloudpayment.R.layout
 import cn.ygyg.cloudpayment.app.Constants
@@ -11,7 +10,6 @@ import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.home.adapter.AccountInfoListAdapter
 import cn.ygyg.cloudpayment.modular.home.contract.HomeContract
 import cn.ygyg.cloudpayment.modular.home.presenter.HomePresenter
-import cn.ygyg.cloudpayment.modular.internet.activity.AddressSelectorActivity
 import cn.ygyg.cloudpayment.modular.internet.activity.NewAccountActivity
 import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.payments.activity.PaymentsActivity
@@ -81,7 +79,7 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
             override fun onRechargeClicked(position: Int, item: DeviceVM) {
                 toActivity(PaymentsActivity::class.java, Bundle().apply {
                     putString(Constants.IntentKey.DEVICE_CODE, item.deviceCode())
-                    putString(Constants.IntentKey.COMPANY_CODE, item.companyCode())
+                    putString(Constants.IntentKey.COMPANY_KEY, item.companyCode())
                 })
             }
 
@@ -126,8 +124,11 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
             //不为空时执行
             mAdapter.setNewList(it.toMutableList())
         }
-        refreshLayout.finishRefreshing()
+    }
+
+    override fun loaderCompleted() {
         setHasLoadedOnce(true)
+        refreshLayout.finishRefreshing()
     }
 
     override fun unbindSuccess(position: Int, device: DeviceVM) {
@@ -147,7 +148,6 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
 
     @Subscribe(thread = EventThread.MAIN_THREAD, tags = [Tag("refreshDevice")])
     fun refreshList(isRefresh: String) {
-        Log.e("TAG", "=======>>>>>isRefresh : $isRefresh")
         refreshLayout.startRefresh()
     }
 

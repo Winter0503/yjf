@@ -1,4 +1,4 @@
-package com.cn.lib.weight.indicator
+package com.cn.lib.widget.indicator
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -20,6 +20,7 @@ import android.widget.TextView
 
 import com.cn.lib.R
 import com.cn.lib.util.DensityUtil
+import com.cn.lib.weight.indicator.TabInfo
 
 
 /**
@@ -125,9 +126,7 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
      */
     private var mSelectedTab = 0
 
-    private var mContext: Context? = null
-
-    private val BASE_ID = 0xffff00
+    private lateinit var mContext: Context
 
     private var mCurrID = 0
 
@@ -146,7 +145,7 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
 
     var onTabChangeListener: OnTabChangeListener? = null
 
-    val tabCount: Int
+    private val tabCount: Int
         get() = childCount
 
     /**
@@ -216,9 +215,9 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
     private fun initDraw(footerLineHeight: Float, footerColor: Int) {
         // 标题下面的指示线
         mPaintFooterLine = Paint()
-        // mPaintFooterLine.setStyle(Paint.Style.FILL_AND_STROKE);
-        // mPaintFooterLine.setStrokeWidth(footerLineHeight);
-        // mPaintFooterLine.setColor(footerColor);
+        mPaintFooterLine.style = Paint.Style.FILL_AND_STROKE
+        mPaintFooterLine.strokeWidth = footerLineHeight
+        mPaintFooterLine.color = footerColor
         // 设置抗锯齿
         mPaintFooterLine.isAntiAlias = true
         mPaintFooterLine.style = Style.FILL
@@ -229,7 +228,7 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
         mPaintTabtip.strokeWidth = mVerticalLineWidth
         mPaintTabtip.color = mVerticalLineColor
 
-        mInflater = mContext!!.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        mInflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
     }
 
     /**
@@ -244,19 +243,19 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
         // 单个选项卡的宽度
         val mPerItemWidth: Float
         val tabID: Int
-        val scroll_x: Float
+        val scrollX: Float
 
         if (mViewPager != null) {
             mPerItemWidth = (width + mViewPager!!.pageMargin) * 1f / mTotal
             tabID = mSelectedTab
             // 下面是计算本次滑动的距离
-            scroll_x = ((mCurrentScroll - tabID * (width + mViewPager!!
+            scrollX = ((mCurrentScroll - tabID * (width + mViewPager!!
                     .pageMargin)) / mTotal).toFloat()
         } else {
             mPerItemWidth = width * 1f / mTotal
             tabID = mSelectedTab
             // 下面是计算本次滑动的距离
-            scroll_x = ((mCurrentScroll - tabID * width) / mTotal).toFloat()
+            scrollX = ((mCurrentScroll - tabID * width) / mTotal).toFloat()
         }
 
         if (mIsShowUnderline) {
@@ -277,37 +276,37 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
                 mPerItemWidth
             // 计算滑动条离左右的间距
             val offset = (mPerItemWidth - footerLineWidth) / 2
-            var left_x = 0f
-            var right_x = 0f
+            val leftX: Float
+            val rightX: Float
             // 根据选中的Tab的位置计算下划线绘制时的开始与结束位置
             if (mSelectedTab != 0 && mSelectedTab < mTabs.size - 1) {
                 // 当选中的Tab在中间时
-                left_x = (mSelectedTab * mPerItemWidth + scroll_x
+                leftX = (mSelectedTab * mPerItemWidth + scrollX
                         + mVerticalLineWidth / 2 + offset)
-                right_x = ((mSelectedTab + 1) * mPerItemWidth + scroll_x
+                rightX = ((mSelectedTab + 1) * mPerItemWidth + scrollX
                         - mVerticalLineWidth / 2 - offset)
             } else if (mSelectedTab == mTabs.size - 1) {
                 // 当选中的Tag在最后一个时
-                left_x = (mSelectedTab * mPerItemWidth + scroll_x
+                leftX = (mSelectedTab * mPerItemWidth + scrollX
                         + mVerticalLineWidth + offset)
-                right_x = (mSelectedTab + 1) * mPerItemWidth + scroll_x - offset
+                rightX = (mSelectedTab + 1) * mPerItemWidth + scrollX - offset
             } else {
                 // 当选中的Tab是第一个时，X轴绘制的终点是一个tab的长度
-                left_x = mSelectedTab * mPerItemWidth + scroll_x + offset
-                right_x = ((mSelectedTab + 1) * mPerItemWidth + scroll_x
+                leftX = mSelectedTab * mPerItemWidth + scrollX + offset
+                rightX = ((mSelectedTab + 1) * mPerItemWidth + scrollX
                         - mVerticalLineWidth / 2 - offset)
             }
 
             // 计算下滑线在顶部坐标
-            val top_y = height - mFooterLineHeight
+            val topY = height - mFooterLineHeight
             // 计算下滑线的底部坐标
-            val bottom_y = height.toFloat()
+            val bottomY = height.toFloat()
             // 因为绘制的下滑线可以设置高度所以这边绘制一个实心矩形
 
             mPaintFooterLine.strokeWidth = mFooterLineHeight
             mPaintFooterLine.color = footerColor
 
-            canvas.drawRect(left_x, top_y, right_x, bottom_y, mPaintFooterLine)
+            canvas.drawRect(leftX, topY, rightX, bottomY, mPaintFooterLine)
         }
 
         // 判断是否显示Tab中间的竖线
@@ -335,10 +334,10 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
      */
     private fun getTab(pos: Int): String {
         // Set the default Tab
-        var tab: String = "Tab " + pos
+        var tab = "Tab $pos"
         // If the TabProvider exist
         mTabs.let {
-            tab = it[pos].name!!
+            tab = it[pos].name ?: "tab"
         }
         return tab
     }
@@ -348,7 +347,7 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
      */
     private fun getSelectedIcon(pos: Int): Int {
         var ret = 0
-        if ( mTabs.size > pos) {
+        if (mTabs.size > pos) {
             ret = mTabs[pos].selectedIcon
         }
         return ret
@@ -367,10 +366,10 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
 
     // 当页面滚动的时候，重新绘制滚动条
     fun onScrolled(h: Int) {
-        if (mViewPager != null) {
-            mCurrentScroll = h * width / DensityUtil.getWidthInPx(context)
+        mCurrentScroll = if (mViewPager != null) {
+            h * width / DensityUtil.getWidthInPx(context)
         } else {
-            mCurrentScroll = h
+            h
         }
         invalidate()
     }
@@ -403,7 +402,7 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
     }
 
     // 添加选项卡
-    protected fun add(label: String, icon: Int) {
+    fun add(label: String, icon: Int) {
         /* 加载Tab布局 */
         val tabIndicator = mInflater!!.inflate(R.layout.tab_indicator_item,
                 this, false)
@@ -573,14 +572,12 @@ class TabIndicatorView @JvmOverloads constructor(context: Context, attrs: Attrib
 
     companion object {
 
-        private val FOOTER_LINE_HEIGHT = 4.0f
-
-        private val FOOTER_COLOR = -0x3bbb
-
-        private val UNDERLINE_COLOR = 0x1A000000
-
+        private const val FOOTER_LINE_HEIGHT = 4.0f
+        private const val FOOTER_COLOR = -0x3bbb
+        private const val UNDERLINE_COLOR = 0x1A000000
         private val TRANSPARENT_COLOR = Color.parseColor("#00000000")
 
         private val BLACK_COLOR = Color.parseColor("#000000")
+        private const val BASE_ID = 0xffff00
     }
 }

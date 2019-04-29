@@ -39,7 +39,7 @@ android {
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            buildConfigField("String", "COMPANY_CODE", '"0011"')
+            buildConfigField("String", "COMPANY_KEY", '"0011"')
             buildConfigField("String", "COMPANY_NAME", '"廊坊燃气公司"')
             buildConfigField("String", "PUBLIC_KEY", '"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp72DvNhc6p5daTujEtvsh2w0++P8XJNgc/4yeL4JXjLy4Y1bXmGdn97ykQy0LbRoiKXqziNTS9nuCvj/Hs5sdxr03DZOpI/eHSty6/4HzS7PXZg8/9pQTSf081oJIAuE8zI5tMeMTTi1LLLR16APJB+5ckWCgUlGEenPrT83zbS+SMGa4tmV/3RUTHMNJsPr06BPJTWN3PAS2qy0QUwCV0BjaIWT2bmL2aYRd0OqnnSvS99Is+HZUjB98ik6m0m7YnFPWFwAUR2c7koc/wOrUfKvZE7P375/q7EQTLNnalkPvLM4ZpOthkMf8oxFgOLWycEtCNbmovW0eIuNmA+UcwIDAQAB"')
         }
@@ -51,7 +51,7 @@ android {
             zipAlignEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
-            buildConfigField("String", "COMPANY_CODE", '"0011"')
+            buildConfigField("String", "COMPANY_KEY", '"0011"')
             buildConfigField("String", "COMPANY_NAME", '"廊坊燃气公司"')
             buildConfigField("String", "PUBLIC_KEY", '"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp72DvNhc6p5daTujEtvsh2w0++P8XJNgc/4yeL4JXjLy4Y1bXmGdn97ykQy0LbRoiKXqziNTS9nuCvj/Hs5sdxr03DZOpI/eHSty6/4HzS7PXZg8/9pQTSf081oJIAuE8zI5tMeMTTi1LLLR16APJB+5ckWCgUlGEenPrT83zbS+SMGa4tmV/3RUTHMNJsPr06BPJTWN3PAS2qy0QUwCV0BjaIWT2bmL2aYRd0OqnnSvS99Is+HZUjB98ik6m0m7YnFPWFwAUR2c7koc/wOrUfKvZE7P375/q7EQTLNnalkPvLM4ZpOthkMf8oxFgOLWycEtCNbmovW0eIuNmA+UcwIDAQAB"')
         }

@@ -14,6 +14,8 @@ class HomeContract {
          * 解除绑定成功
          */
         fun unbindSuccess(position: Int, device: DeviceVM)
+
+        fun loaderCompleted()
     }
 
     interface Presenter : IBasePresenter<View> {

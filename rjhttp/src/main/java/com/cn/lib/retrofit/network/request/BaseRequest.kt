@@ -276,7 +276,7 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
         return this as R
     }
 
-    protected fun generateOkHttpClientBuilder(): OkHttpClient.Builder {
+    private fun generateOkHttpClientBuilder(): OkHttpClient.Builder {
         if (mReadTimeout <= 0 && mWriteTimeout <= 0 && mConnectTimeout <= 0 && mSslParams == null
                 && mCookieJar == null && mCache == null && mCacheFile == null && mCacheMaxSize <= 0
                 && mInterceptorList.size == 0 && mNetworkInterceptorList.size == 0 && mProxy == null
@@ -300,36 +300,37 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
             if (mConnectTimeout > 0) {
                 newBuilder.connectTimeout(mConnectTimeout.toLong(), TimeUnit.SECONDS)
             }
+            mSslSocketFactory?.let { factory ->
+                mTrustManager?.apply {
+                    newBuilder.sslSocketFactory(factory, this)
+                } ?: newBuilder.sslSocketFactory(factory)
+            }
+            mSslParams?.apply {
+                newBuilder.sslSocketFactory(sSLSocketFactory, trustManager)
+            }
+            mHostnameVerifier?.let {
+                newBuilder.hostnameVerifier(it)
+            }
 
-            if (mSslSocketFactory != null) {
-                if (mTrustManager == null) {
-                    newBuilder.sslSocketFactory(mSslSocketFactory!!)
-                } else {
-                    newBuilder.sslSocketFactory(mSslSocketFactory!!, mTrustManager!!)
-                }
-            } else if (mSslParams != null) {
-                newBuilder.sslSocketFactory(mSslParams!!.sSLSocketFactory!!, mSslParams!!.trustManager!!)
-            }
-            if (mHostnameVerifier != null) {
-                newBuilder.hostnameVerifier(mHostnameVerifier!!)
-            }
             if (mCacheFile == null) {
-                mCacheFile = File(mContext!!.cacheDir, "retrofit_http_cache")
+                mCacheFile = File(mContext.cacheDir, "retrofit_http_cache")
             }
-            if (mCache == null && mCacheFile != null) {
-                mCache = Cache(mCacheFile!!, Math.max((5 * 1024 * 1024).toLong(), mCacheMaxSize))
+            if (mCache == null) {
+                mCacheFile?.let {
+                    mCache = Cache(it, Math.max((5 * 1024 * 1024).toLong(), mCacheMaxSize))
+                }
             }
-            if (mCache != null) {
-                newBuilder.cache(mCache)
+            mCache?.apply {
+                newBuilder.cache(this)
             }
-            if (mConnectionPool != null) {
-                newBuilder.connectionPool(mConnectionPool!!)
+            mConnectionPool?.let {
+                newBuilder.connectionPool(it)
             }
-            if (mProxy != null) {
-                newBuilder.proxy(mProxy)
+            mProxy?.let {
+                newBuilder.proxy(it)
             }
-            if (mCookieJar != null) {
-                newBuilder.cookieJar(mCookieJar!!)
+            mCookieJar?.let {
+                newBuilder.cookieJar(it)
             }
             if (mHeaders.isNotEmpty()) {
                 addHeaderInterceptor(newBuilder)
@@ -344,7 +345,7 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
                     interceptor.sign(isSign).accessToken(accessToken)
                 }
             }
-            if (mNetworkInterceptorList.size > 0) {
+            if (mNetworkInterceptorList.isNotEmpty()) {
                 for (interceptor in mNetworkInterceptorList) {
                     newBuilder.addNetworkInterceptor(interceptor)
                 }
@@ -381,16 +382,15 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
             return rxHttp.retrofitBuilder
         } else {
             val builder = rxHttp.retrofit.newBuilder()
-            if (mBaseUrl != null) {
-                builder.baseUrl(mBaseUrl!!)
+            mBaseUrl?.run {
+                builder.baseUrl(this)
             }
-            if (mCallAdapterFactory != null) {
-                builder.addCallAdapterFactory(mCallAdapterFactory!!)
+            mCallAdapterFactory?.run {
+                builder.addCallAdapterFactory(this)
             }
-            if (mConverterFactory != null) {
-                builder.addConverterFactory(mConverterFactory!!)
+            mConverterFactory?.run {
+                builder.addConverterFactory(this)
             }
-
             return builder
         }
     }

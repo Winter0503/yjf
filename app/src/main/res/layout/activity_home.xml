@@ -15,7 +15,7 @@
         app:l_shadowAlpha="0.2"
         app:l_shadowElevation="5dp">
 
-        <com.cn.lib.weight.indicator.TabIndicatorView
+        <com.cn.lib.widget.indicator.TabIndicatorView
             android:id="@+id/layout_tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

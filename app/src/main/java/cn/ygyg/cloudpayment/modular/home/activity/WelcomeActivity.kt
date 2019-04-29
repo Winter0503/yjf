@@ -2,17 +2,12 @@ package cn.ygyg.cloudpayment.modular.home.activity
 
 import android.annotation.SuppressLint
 import android.text.TextUtils
-import android.util.Log
 import cn.ygyg.cloudpayment.R
-import cn.ygyg.cloudpayment.app.Constants.IntentKey.IS_LOGIN
-import cn.ygyg.cloudpayment.app.Constants.IntentKey.TOKEN
 import cn.ygyg.cloudpayment.modular.login.activity.BindingPhoneActivity
 import cn.ygyg.cloudpayment.modular.login.activity.LoginActivity
-import cn.ygyg.cloudpayment.utils.SharePreUtil
 import cn.ygyg.cloudpayment.utils.UserUtil
 import com.cn.lib.basic.BaseActivity
 import io.reactivex.Observable
-import io.reactivex.functions.Consumer
 import java.util.concurrent.TimeUnit
 
 class WelcomeActivity : BaseActivity() {

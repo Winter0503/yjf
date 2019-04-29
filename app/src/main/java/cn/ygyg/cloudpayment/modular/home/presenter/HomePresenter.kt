@@ -27,7 +27,7 @@ class HomePresenter(view: HomeContract.View) : BasePresenterImpl<HomeContract.Vi
                     }
 
                     override fun onCompleted(tag: Any?) {
-
+                        mvpView?.loaderCompleted()
                     }
 
                     override fun onError(tag: Any?, e: ApiThrowable) {

@@ -75,14 +75,17 @@ class SerializableCookie : Serializable {
 
     @Throws(IOException::class)
     private fun writeObject(out: ObjectOutputStream) {
-        out.writeObject(cookie!!.name())
-        out.writeObject(cookie!!.value())
-        out.writeLong(if (cookie!!.persistent()) cookie!!.expiresAt() else NON_VALID_EXPIRES_AT)
-        out.writeObject(cookie!!.domain())
-        out.writeObject(cookie!!.path())
-        out.writeBoolean(cookie!!.secure())
-        out.writeBoolean(cookie!!.httpOnly())
-        out.writeBoolean(cookie!!.hostOnly())
+        cookie?.run {
+            out.writeObject(this.name())
+            out.writeObject(this.value())
+            out.writeLong(if (this.persistent()) this.expiresAt() else NON_VALID_EXPIRES_AT)
+            out.writeObject(this.domain())
+            out.writeObject(this.path())
+            out.writeBoolean(this.secure())
+            out.writeBoolean(this.httpOnly())
+            out.writeBoolean(this.hostOnly())
+        }
+
     }
 
     @Throws(IOException::class, ClassNotFoundException::class)
@@ -158,7 +161,7 @@ class SerializableCookie : Serializable {
             return data
         }
 
-        private val NON_VALID_EXPIRES_AT = -1L
+        private const val NON_VALID_EXPIRES_AT = -1L
     }
 
 }

@@ -7,8 +7,8 @@ import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager.OnPageChangeListener
 import com.cn.lib.widget.CustomViewPager
 import com.cn.lib.weight.indicator.IndicatorTabPageAdapter
-import com.cn.lib.weight.indicator.TabIndicatorView
 import com.cn.lib.weight.indicator.TabInfo
+import com.cn.lib.widget.indicator.TabIndicatorView
 import java.util.*
 
 
@@ -61,7 +61,7 @@ abstract class BaseIndicatorActivity : BaseActivity(), OnPageChangeListener, Tab
             val bundle = getIntent().getBundleExtra(BaseActivity.ACTIVITY_BUNDLE)
             if (bundle != null) {
                 val tabIndex = bundle.getInt(EXTRA_TAB, mCurrentTab)
-                if (tabIndex >= 0 && tabIndex < mTabs!!.size) {
+                if (tabIndex >= 0 && tabIndex < mTabs.size) {
                     mCurrentTab = tabIndex
                 }
             }
@@ -92,7 +92,9 @@ abstract class BaseIndicatorActivity : BaseActivity(), OnPageChangeListener, Tab
 
     override fun onPageScrolled(position: Int, positionOffset: Float,
                                 positionOffsetPixels: Int) {
-        mIndicator?.onScrolled((mPager!!.width + mPager!!.pageMargin) * position + positionOffsetPixels)
+        mPager?.run {
+            mIndicator?.onScrolled((width + pageMargin) * position + positionOffsetPixels)
+        }
     }
 
     override fun onPageSelected(position: Int) {

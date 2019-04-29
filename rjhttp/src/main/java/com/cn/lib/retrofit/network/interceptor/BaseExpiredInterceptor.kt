@@ -16,6 +16,7 @@
 
 package com.cn.lib.retrofit.network.interceptor
 
+import android.util.Log
 import com.cn.lib.retrofit.network.util.LogUtil
 
 
@@ -41,6 +42,7 @@ import com.alibaba.fastjson.util.IOUtils.UTF8
 abstract class BaseExpiredInterceptor : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
+        Log.e("TAG","================intercept=================")
         val request = chain.request()
         val response = chain.proceed(request)
         val responseBody = response.body()

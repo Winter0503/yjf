@@ -59,7 +59,7 @@ class ProgressInputStream internal constructor(private val stream: InputStream?,
 
     @Throws(IOException::class)
     override fun read(): Int {
-        val read = this.stream!!.read()
+        val read = this.stream?.read() ?: 0
         if (this.total < 0) {
             onProgressChanged(-1, -1, -1f)
             return read
@@ -73,7 +73,7 @@ class ProgressInputStream internal constructor(private val stream: InputStream?,
 
     @Throws(IOException::class)
     override fun read(b: ByteArray, off: Int, len: Int): Int {
-        val read = this.stream!!.read(b, off, len)
+        val read = this.stream?.read(b, off, len) ?: 0
         if (this.total < 0) {
             onProgressChanged(-1, -1, -1f)
             return read
@@ -87,9 +87,7 @@ class ProgressInputStream internal constructor(private val stream: InputStream?,
 
     @Throws(IOException::class)
     override fun close() {
-        if (this.stream != null) {
-            this.stream.close()
-        }
+        this.stream?.close()
     }
 
     /**
@@ -139,15 +137,18 @@ class ProgressInputStream internal constructor(private val stream: InputStream?,
             return
         }
         ensureHandler()
-        val message = mHandler!!.obtainMessage()
-        message.what = WHAT_UPDATE
-        val data = Bundle()
-        data.putLong(CURRENT_BYTES, numBytes)
-        data.putLong(TOTAL_BYTES, totalBytes)
-        data.putFloat(PERCENT, percent)
-        data.putFloat(SPEED, speed)
-        message.data = data
-        mHandler!!.sendMessage(message)
+        mHandler?.run {
+            val message = obtainMessage()
+            message.what = WHAT_UPDATE
+            val data = Bundle()
+            data.putLong(CURRENT_BYTES, numBytes)
+            data.putLong(TOTAL_BYTES, totalBytes)
+            data.putFloat(PERCENT, percent)
+            data.putFloat(SPEED, speed)
+            message.data = data
+           sendMessage(message)
+        }
+
     }
 
     /**
@@ -161,12 +162,14 @@ class ProgressInputStream internal constructor(private val stream: InputStream?,
             return
         }
         ensureHandler()
-        val message = mHandler!!.obtainMessage()
-        message.what = WHAT_START
-        val data = Bundle()
-        data.putLong(TOTAL_BYTES, totalBytes)
-        message.data = data
-        mHandler!!.sendMessage(message)
+        mHandler?.run {
+            val message = obtainMessage()
+            message.what = WHAT_START
+            val data = Bundle()
+            data.putLong(TOTAL_BYTES, totalBytes)
+            message.data = data
+            sendMessage(message)
+        }
     }
 
     /**
@@ -178,19 +181,21 @@ class ProgressInputStream internal constructor(private val stream: InputStream?,
             return
         }
         ensureHandler()
-        val message = mHandler!!.obtainMessage()
-        message.what = WHAT_FINISH
-        mHandler!!.sendMessage(message)
+        mHandler?.run {
+            val message = obtainMessage()
+            message.what = WHAT_FINISH
+            sendMessage(message)
+        }
     }
 
     companion object {
-        private val WHAT_START = 0x01
-        private val WHAT_UPDATE = 0x02
-        private val WHAT_FINISH = 0x03
-        private val CURRENT_BYTES = "numBytes"
-        private val TOTAL_BYTES = "totalBytes"
-        private val PERCENT = "percent"
-        private val SPEED = "speed"
+        private const val WHAT_START = 0x01
+        private const val WHAT_UPDATE = 0x02
+        private const val WHAT_FINISH = 0x03
+        private const val CURRENT_BYTES = "numBytes"
+        private const val TOTAL_BYTES = "totalBytes"
+        private const val PERCENT = "percent"
+        private const val SPEED = "speed"
     }
 
 }

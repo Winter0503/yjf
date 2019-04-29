@@ -207,7 +207,7 @@ open class RxHttp private constructor() {
      */
     fun certificates(vararg certificates: InputStream): RxHttp {
         val sslParams = SSLUtil.getSslSocketFactory(null, null, *certificates)
-        okHttpClientBuilder.sslSocketFactory(sslParams.sSLSocketFactory!!, sslParams.trustManager!!)
+        okHttpClientBuilder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
         return this
     }
 
@@ -216,7 +216,7 @@ open class RxHttp private constructor() {
      */
     fun certificates(bksFile: InputStream, password: String, vararg certificates: InputStream): RxHttp {
         val sslParams = SSLUtil.getSslSocketFactory(bksFile, password, *certificates)
-        okHttpClientBuilder.sslSocketFactory(sslParams.sSLSocketFactory!!, sslParams.trustManager!!)
+        okHttpClientBuilder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
         return this
     }
 
@@ -412,7 +412,7 @@ open class RxHttp private constructor() {
         }
         if (networkInterceptorList.size > 0) {
             for (interceptor in networkInterceptorList) {
-                if (!okHttpClientBuilder.interceptors().contains(interceptor))
+                if (!okHttpClientBuilder.networkInterceptors().contains(interceptor))
                     okHttpClientBuilder.addNetworkInterceptor(interceptor)
             }
         }

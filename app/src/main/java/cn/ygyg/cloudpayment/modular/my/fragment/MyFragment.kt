@@ -81,7 +81,7 @@ class MyFragment : BaseMvpFragment<MyContract.Presenter, MyContract.View>(), MyC
 
     override fun logoutSuccess() {
         SharePreUtil.clear(IS_LOGIN)
-        SharePreUtil.clear(Constants.IntentKey.TOKEN)
+        SharePreUtil.clear(Constants.IntentKey.TOKEN_KEY)
         SharePreUtil.clear(USER_INFO)
         UserUtil.clear()
         toActivity(LoginActivity::class.java)

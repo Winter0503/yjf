@@ -54,14 +54,12 @@ class ProgressResponseBody(private val responseBody: ResponseBody, private val p
     }
 
     override fun close() {
-        if (progressSource != null) {
-            try {
-                progressSource!!.close()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
+        try {
+            progressSource?.close()
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
+
     }
 
 }

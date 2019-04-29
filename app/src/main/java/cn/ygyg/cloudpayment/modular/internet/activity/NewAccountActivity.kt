@@ -82,7 +82,7 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
     override fun onBindDeviceSuccess(deviceCode: String, companyCode: String) {
         toActivity(NewAccountSuccessActivity::class.java, Bundle().apply {
             putString(Constants.IntentKey.DEVICE_CODE, deviceCode)
-            putString(Constants.IntentKey.COMPANY_CODE, companyCode)
+            putString(Constants.IntentKey.COMPANY_KEY, companyCode)
         })
     }
 
