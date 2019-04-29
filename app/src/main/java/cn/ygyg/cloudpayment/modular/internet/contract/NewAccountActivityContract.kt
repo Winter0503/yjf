@@ -9,7 +9,7 @@ class NewAccountActivityContract {
         /**
          * 查询 物联网表数据
          */
-        fun onLoadDeviceSuccess(result: DeviceVM)
+        fun onLoadDeviceSuccess(result: DeviceVM, deviceCode: String)
 
         /**
          * 绑定 物联网表
@@ -21,7 +21,7 @@ class NewAccountActivityContract {
         /**
          * 获取物联网表 信息
          */
-        fun getDevice(deviceCode: String)
+        fun getDevice(deviceCode: String,companyCode:String)
 
         /**
          * 绑定物联网表

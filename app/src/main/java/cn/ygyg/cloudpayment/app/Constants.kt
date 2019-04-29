@@ -20,5 +20,6 @@ object Constants {
     object WX {
         const val WEIXIN_APP_ID: String = "wx14581fdc873a1818"
         const val COMPANY_CODE: String = BuildConfig.COMPANY_CODE
+        const val COMPANY_NAME: String = BuildConfig.COMPANY_NAME
     }
 }

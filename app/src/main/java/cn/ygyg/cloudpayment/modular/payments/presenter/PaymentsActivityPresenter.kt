@@ -15,10 +15,10 @@ import com.cn.lib.retrofit.network.exception.ApiThrowable
 class PaymentsActivityPresenter(view: PaymentsActivityContract.View) :
         BasePresenterImpl<PaymentsActivityContract.View>(view),
         PaymentsActivityContract.Presenter {
-    override fun getBindDevice(deviceCode: String) {
-        RequestManager.get(UrlConstants.getDevice)
+    override fun getBindDevice(deviceCode: String, companyCode: String) {
+        RequestManager.post(UrlConstants.getDevice)
                 .param("meterCode", deviceCode)
-                .param("username", UserUtil.getUserName())
+                .param("companyCode", companyCode)
                 .execute("", object : ResultCallback<DeviceResponseEntity>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.getViewContext()?.let {
@@ -46,7 +46,7 @@ class PaymentsActivityPresenter(view: PaymentsActivityContract.View) :
 
     override fun createOrder(amount: String, deviceCode: String, phone: String, payMode: String, payType: String) {
         RequestManager.post(UrlConstants.createOrder)
-                .param("amount", "0.01")
+                .param("amount", amount)
                 .param("contractCode", deviceCode)
                 .param("mobile", phone)
                 .param("paymentMethod", payMode)

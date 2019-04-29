@@ -12,6 +12,7 @@ import cn.ygyg.cloudpayment.modular.home.adapter.AccountInfoListAdapter
 import cn.ygyg.cloudpayment.modular.home.contract.HomeContract
 import cn.ygyg.cloudpayment.modular.home.presenter.HomePresenter
 import cn.ygyg.cloudpayment.modular.internet.activity.AddressSelectorActivity
+import cn.ygyg.cloudpayment.modular.internet.activity.NewAccountActivity
 import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.payments.activity.PaymentsActivity
 import com.cn.lib.basic.BaseMvpFragment
@@ -36,10 +37,10 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
     private val firstView: View by lazy {
         val view = layoutInflater.inflate(layout.layout_first_into, recycler_view, false)
         view.findViewById<View>(cn.ygyg.cloudpayment.R.id.btn_recharge).setOnClickListener {
-            toActivity(AddressSelectorActivity::class.java)
+            toActivity(NewAccountActivity::class.java)
         }
         view.findViewById<View>(cn.ygyg.cloudpayment.R.id.layout_add_account).setOnClickListener {
-            toActivity(AddressSelectorActivity::class.java)
+            toActivity(NewAccountActivity::class.java)
         }
         view
     }
@@ -146,7 +147,7 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
 
     @Subscribe(thread = EventThread.MAIN_THREAD, tags = [Tag("refreshDevice")])
     fun refreshList(isRefresh: String) {
-        Log.e("TAG","=======>>>>>isRefresh : $isRefresh")
+        Log.e("TAG", "=======>>>>>isRefresh : $isRefresh")
         refreshLayout.startRefresh()
     }
 

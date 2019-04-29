@@ -1,6 +1,5 @@
 package cn.ygyg.cloudpayment.modular.internet.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -21,7 +20,7 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
         NewAccountActivityContract.View {
     private val headerBuilder: HeaderBuilder by lazy { HeaderBuilder(this) }
     private var deviceCode = ""
-    private var companyCode = ""
+    private val companyCode = Constants.WX.COMPANY_CODE
     private val accountDialog: ConfirmAccountDialog by lazy {
         ConfirmAccountDialog(this).apply {
             setOnConformClick(View.OnClickListener {
@@ -39,17 +38,7 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
         return R.layout.activity_new_account
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        data?.let {
-            //TODO AddressSelectorActivity.companySelectDialog 城市 缴费单位获取
-        }
-    }
-
     override fun initViews() {
-        bundle?.let {
-            //TODO AddressSelectorActivity.companySelectDialog 城市 缴费单位获取
-        }
         headerBuilder.setLeftImageRes(R.mipmap.back)
         headerBuilder.setTitle(R.string.activity_title_add_new_account)
         pay_account.requestFocus()
@@ -61,7 +50,7 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
         next_step.setOnClickListener { v ->
             if (v.isSelected) {
                 deviceCode = pay_account.text.toString()
-                mPresenter?.getDevice(deviceCode)
+                mPresenter?.getDevice(deviceCode,companyCode)
             }
         }
         input_account_help.setOnClickListener { dialog.show() }
@@ -77,12 +66,16 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
             }
         })
         pay_cost_company.setOnClickListener {
-            toActivity(AddressSelectorActivity::class.java)
+            //            toActivity(AddressSelectorActivity::class.java)
         }
     }
 
-    override fun onLoadDeviceSuccess(result: DeviceVM) {
-        accountDialog.setData(result)
+    override fun initData() {
+        pay_cost_company.text = Constants.WX.COMPANY_NAME
+    }
+
+    override fun onLoadDeviceSuccess(result: DeviceVM, deviceCode: String) {
+        accountDialog.setData(result,deviceCode)
         accountDialog.show()
     }
 

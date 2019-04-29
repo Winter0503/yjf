@@ -11,7 +11,7 @@ class PaymentsActivityContract {
     }
 
     interface Presenter : IBasePresenter<View> {
-        fun getBindDevice(deviceCode: String)
+        fun getBindDevice(deviceCode: String, companyCode: String)
         /**
          * 创建支付订单
          * @param amount 支付金额

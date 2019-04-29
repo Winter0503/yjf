@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import cn.ygyg.cloudpayment.R
+import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 
 class ConfirmAccountDialog(context: Context) : Dialog(context) {
@@ -41,10 +42,10 @@ class ConfirmAccountDialog(context: Context) : Dialog(context) {
         confirm.setOnClickListener(l)
     }
 
-    fun setData(data: DeviceVM) {
+    fun setData(data: DeviceVM, deviceCode: String) {
         userName.text = data.userName()
-        payCostCompany.text = data.deviceCompany()
-        accountName.text = data.deviceCode()
+        payCostCompany.text = Constants.WX.COMPANY_NAME
+        accountName.text = deviceCode
         address.text = data.deviceAddress()
         balance.text = data.deviceBalance()
     }

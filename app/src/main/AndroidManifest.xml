@@ -42,10 +42,10 @@
         <activity
             android:name=".modular.login.activity.LoginActivity"
             android:launchMode="singleTask">
-            <!--<intent-filter>-->
-            <!--<action android:name="android.intent.action.MAIN" />-->
-            <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+            <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".modular.register.activity.UserAgreementActivity" />
         <activity android:name=".modular.register.activity.RegisterActivity" />
@@ -54,11 +54,11 @@
         <activity
             android:name=".modular.home.activity.MainTabActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".modular.home.activity.WelcomeActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+        <activity android:name=".TestActivity">
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
         <activity
             android:name=".modular.internet.activity.NewAccountActivity"

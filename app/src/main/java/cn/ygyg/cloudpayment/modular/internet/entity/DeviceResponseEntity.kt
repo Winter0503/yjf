@@ -44,7 +44,7 @@ class DeviceResponseEntity : Serializable, DeviceVM {
     }
 
     override fun deviceAddress(): String {
-        return if (postDate.isNullOrEmpty()) "" else postDate!!
+        return if (housePropertyName.isNullOrEmpty()) "" else housePropertyName!!
     }
 
     override fun deviceBalance(): String {

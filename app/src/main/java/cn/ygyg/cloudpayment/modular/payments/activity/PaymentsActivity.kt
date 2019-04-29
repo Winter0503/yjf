@@ -24,7 +24,7 @@ class PaymentsActivity :
 
     override fun getContentViewResId(): Int = R.layout.activity_payments
     private var deviceCode = ""
-    private var companyCode = ""
+    private val companyCode = Constants.WX.COMPANY_CODE
     private var payMode = ""
     private var amount = ""
 
@@ -35,16 +35,9 @@ class PaymentsActivity :
         }
         input_amount.clearFocus()
         bundle?.let {
-            val deviceCode = it.getString(Constants.IntentKey.DEVICE_CODE, "")
-            mPresenter?.getBindDevice(deviceCode)
-        }
-
-        bundle?.let {
             deviceCode = it.getString(Constants.IntentKey.DEVICE_CODE, "")
-            companyCode = it.getString(Constants.IntentKey.COMPANY_CODE, "")
-        }
-
-
+            mPresenter?.getBindDevice(deviceCode, companyCode)
+        } ?: finish()
     }
 
     override fun initListener() {
@@ -156,7 +149,7 @@ class PaymentsActivity :
 
     override fun onLoadDeviceSuccess(response: DeviceVM) {
         user_name.text = response.userName()
-        user_account.text = response.deviceCode()
+        user_account.text = deviceCode
         user_name.text = response.deviceAddress()
         user_name.text = response.deviceBalance()
     }
