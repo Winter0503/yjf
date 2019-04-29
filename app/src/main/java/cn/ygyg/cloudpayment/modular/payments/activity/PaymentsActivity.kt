@@ -155,6 +155,5 @@ class PaymentsActivity :
     }
 
     override fun onCreateOrderSuccess() {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 }
