@@ -35,6 +35,7 @@ import kotlinx.android.synthetic.main.include_activity_header.*
 class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.View>(), LoginContract.View {
 
     private var loginType: Int = 0
+    private var hashToMainActivity: Int = 0
 
     override fun getContentViewResId(): Int = R.layout.activity_login
 
@@ -44,6 +45,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
 
     override fun initViews() {
         super.initViews()
+        hashToMainActivity = intent.getIntExtra("isToMainActivity", 0)
         edit_login_code.addTextChangedListener(mPresenter?.getPasswordTextChangeListener())
         edit_login_phone.filters = arrayOf(mPresenter?.getPhoneInputFilter())
         tv_right.text = ResourceUtil.getString(getViewContext(), R.string.register)
@@ -185,7 +187,9 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
     }
 
     override fun loginSuccess() {
-        toActivity(MainTabActivity::class.java)
+        if (hashToMainActivity == 0) {
+            toActivity(MainTabActivity::class.java)
+        }
         finish()
     }
 
@@ -194,7 +198,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
         RxBus.get().unregister(this)
     }
 
-    @Subscribe( thread = EventThread.MAIN_THREAD)
+    @Subscribe(thread = EventThread.MAIN_THREAD)
     fun loginByCode(code: String) {
         mPresenter?.loginByCode(code)
     }

@@ -78,5 +78,10 @@ object UrlConstants {
      */
     const val rechargeQuery = "api/customer/payment/rechargeQuery"
 
+    /**
+     * 刷新Token
+     */
+    const val refreshToken = ""
+
 
 }

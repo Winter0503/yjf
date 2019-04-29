@@ -13,8 +13,8 @@ class TestActivity: BaseActivity() {
     override fun initListener() {
         super.initListener()
         btn.setOnClickListener {
-            RequestManager.post("api/customer/payment/decrypt")
-                    .param("encryptedString","测试加密")
+            RequestManager.get("test")
+                    .baseUrl("http://10.2.155.79:7001")
                     .cancelEncryption(false)
                     .execute("encryption",object : ResultCallback<String>(){
                         override fun onStart(tag: Any?) {

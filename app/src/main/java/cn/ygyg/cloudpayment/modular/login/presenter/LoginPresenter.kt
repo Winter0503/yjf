@@ -18,6 +18,7 @@ import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
 import cn.ygyg.cloudpayment.utils.ProgressUtil
 import cn.ygyg.cloudpayment.utils.SharePreUtil
 import cn.ygyg.cloudpayment.utils.StringUtil
+import cn.ygyg.cloudpayment.utils.UserUtil
 import com.cn.lib.basic.BasePresenterImpl
 import com.cn.lib.retrofit.network.callback.ResultCallback
 import com.cn.lib.retrofit.network.config.Optional
@@ -265,6 +266,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
                     override fun onSuccess(tag: Any?, result: UserEntity?) {
                         if (result != null && !TextUtils.isEmpty(result.cellPhone)) { //微信第一次登录没有用户信息，需要去绑定手机号生成用户信息
                             SharePreUtil.saveBeanByFastJson(USER_INFO, result)
+                            UserUtil.saveUser(user = result)
                             mvpView?.loginSuccess()
                         } else {
                             mvpView?.toBindingPhone(result)
@@ -294,7 +296,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
             override fun onSuccess(tag: Any?, result: UserEntity?) {
                 if (result != null) { //微信第一次登录没有用户信息，需要去绑定手机号生成用户信息
                     SharePreUtil.putBoolean(Constants.IntentKey.IS_LOGIN, true)
-                    SharePreUtil.saveBeanByFastJson(USER_INFO, result)
+                    UserUtil.saveUser(result)
                     mvpView?.loginSuccess()
                 } else {
                     mvpView?.showToast("登录失败")

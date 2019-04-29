@@ -331,10 +331,10 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
             if (mCookieJar != null) {
                 newBuilder.cookieJar(mCookieJar!!)
             }
-            if (mHeaders.isEmpty()) {
+            if (mHeaders.isNotEmpty()) {
                 addHeaderInterceptor(newBuilder)
             }
-            if (mInterceptorList.size > 0) {
+            if (mInterceptorList.isNotEmpty()) {
                 for (interceptor in mInterceptorList) {
                     newBuilder.addInterceptor(interceptor)
                 }
