@@ -140,7 +140,7 @@
                     android:textSize="@dimen/ts_content" />
 
                 <TextView
-                    android:id="@+id/account_funds"
+                    android:id="@+id/account_balance"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

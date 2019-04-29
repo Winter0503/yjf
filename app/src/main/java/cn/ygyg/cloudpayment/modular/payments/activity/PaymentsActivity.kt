@@ -148,10 +148,10 @@ class PaymentsActivity :
     }
 
     override fun onLoadDeviceSuccess(response: DeviceVM) {
-        user_name.text = response.userName()
+        user_name.text = UserUtil.getUserName()
         user_account.text = deviceCode
-        user_name.text = response.deviceAddress()
-        user_name.text = response.deviceBalance()
+        address.text = response.deviceAddress()
+        account_balance.text = response.deviceBalance()
     }
 
     override fun onCreateOrderSuccess() {

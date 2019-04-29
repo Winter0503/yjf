@@ -48,7 +48,7 @@ class DeviceResponseEntity : Serializable, DeviceVM {
     }
 
     override fun deviceBalance(): String {
-        return if (contractBalance.isNullOrEmpty()) "" else contractBalance!!
+        return if (contractBalance.isNullOrEmpty()) "" else contractBalance!! + "元"
     }
 
     override fun companyCode(): String {

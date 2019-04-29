@@ -45,4 +45,8 @@ class PaymentsHistoryActivity :
             }
         })
     }
+
+    override fun initData() {
+        mPresenter?.loadPage(1,pageSize)
+    }
 }

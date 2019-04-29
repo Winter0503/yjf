@@ -73,6 +73,10 @@ object UrlConstants {
      * 解除绑定物联网表
      */
     const val createOrder = "api/customer/payment/createOrder"
+    /**
+     * 缴费
+     */
+    const val rechargeQuery = "api/customer/payment/rechargeQuery"
 
 
 }
