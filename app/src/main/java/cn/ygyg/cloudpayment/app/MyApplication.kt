@@ -11,12 +11,10 @@ import cn.ygyg.cloudpayment.widget.ProgressHeaderView
 import com.alibaba.fastjson.support.retrofit.Retrofit2ConverterFactory
 import com.cn.lib.retrofit.network.RxHttp
 import com.cn.lib.util.ToastUtil
-import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import com.tencent.mm.opensdk.openapi.IWXAPI
 import com.tencent.mm.opensdk.openapi.WXAPIFactory
-import com.lcodecore.tkrefreshlayout.footer.BallPulseView
-import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
-import com.lcodecore.tkrefreshlayout.header.SinaRefreshView
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 
 
 /**
