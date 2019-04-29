@@ -74,5 +74,10 @@ object UrlConstants {
      */
     const val createOrder = "api/customer/payment/createOrder"
 
+    /**
+     * 刷新Token
+     */
+    const val refreshToken = ""
+
 
 }

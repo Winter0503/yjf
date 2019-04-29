@@ -18,6 +18,18 @@ object UserUtil {
         }
     }
 
+    fun saveUser(user: UserEntity) {
+        userEntity = user
+        token = user.token
+        SharePreUtil.putString(TOKEN, user.token)
+        SharePreUtil.saveBeanByFastJson(Constants.IntentKey.USER_INFO, user)
+    }
+
+    fun refreshToken(refreshToken: String) {
+        this.token = refreshToken
+        this.userEntity?.token = refreshToken
+    }
+
     fun getUser(): UserEntity? {
         checkUserEmpty()
         return userEntity
@@ -39,15 +51,16 @@ object UserUtil {
         return !TextUtils.isEmpty(userEntity?.mid)
     }
 
-    fun getToken(): String? {
+    fun getToken(): String {
         if (TextUtils.isEmpty(token)) {
             token = SharePreUtil.getString(TOKEN)
         }
-        return token
+        return token ?: ""
     }
 
     fun clear() {
         userEntity = null
+        token = null
     }
 
 }

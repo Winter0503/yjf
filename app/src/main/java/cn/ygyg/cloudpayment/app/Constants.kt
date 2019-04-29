@@ -14,6 +14,7 @@ object Constants {
         const val COMPANY_CODE = "companyCode"
         const val TOKEN = "token"
         const val OPEN_ID = "openId"
+        const val TOKEN_KEY = "Authorization"
 
     }
 

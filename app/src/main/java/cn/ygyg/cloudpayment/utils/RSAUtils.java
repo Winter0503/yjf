@@ -19,6 +19,8 @@ package cn.ygyg.cloudpayment.utils;
  */
 
 
+import android.util.Base64;
+
 import javax.crypto.Cipher;
 import java.io.*;
 import java.nio.charset.Charset;
@@ -106,14 +108,12 @@ public class RSAUtils {
 
 
     private static String Base64Encoder(byte[] data) {
-        return android.util.Base64.encodeToString(data, android.util.Base64.NO_WRAP);
+        return android.util.Base64.encodeToString(data, Base64.URL_SAFE);
     }
 
     private static byte[] Base64Decoder(String data){
         try{
-            byte[] decode = android.util.Base64.decode(data, android.util.Base64.NO_WRAP);
-
-            return decode;
+            return android.util.Base64.decode(data, android.util.Base64.NO_WRAP);
         }catch (Exception e){
             e.printStackTrace();
             return null;

@@ -4,6 +4,8 @@ import cn.ygyg.cloudpayment.api.request.ResultDeleteRequest
 import cn.ygyg.cloudpayment.api.request.ResultGetRequest
 import cn.ygyg.cloudpayment.api.request.ResultPostRequest
 import cn.ygyg.cloudpayment.api.request.ResultPutRequest
+import cn.ygyg.cloudpayment.app.Constants.IntentKey.TOKEN_KEY
+import cn.ygyg.cloudpayment.utils.UserUtil
 
 /**
  * 请求管理类
@@ -11,18 +13,18 @@ import cn.ygyg.cloudpayment.api.request.ResultPutRequest
  */
 object RequestManager {
     fun post(url: String): ResultPostRequest {
-        return ResultPostRequest(url)
+        return ResultPostRequest(url).addHeader(TOKEN_KEY, UserUtil.getToken()) as ResultPostRequest
     }
 
     fun delete(url: String): ResultDeleteRequest {
-        return ResultDeleteRequest(url)
+        return ResultDeleteRequest(url).addHeader(TOKEN_KEY, UserUtil.getToken()) as ResultDeleteRequest
     }
 
     fun put(url: String): ResultPutRequest {
-        return ResultPutRequest(url)
+        return ResultPutRequest(url).addHeader(TOKEN_KEY, UserUtil.getToken()) as ResultPutRequest
     }
 
     fun get(url: String): ResultGetRequest {
-        return ResultGetRequest(url)
+        return ResultGetRequest(url).addHeader(TOKEN_KEY, UserUtil.getToken()) as ResultGetRequest
     }
 }

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Application
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.api.ParamInterceptor
+import cn.ygyg.cloudpayment.api.TokenInterceptor
 import cn.ygyg.cloudpayment.utils.SharePreUtil
 import cn.ygyg.cloudpayment.widget.LoadMoreView
 import cn.ygyg.cloudpayment.widget.ProgressHeaderView
@@ -64,6 +65,7 @@ open class MyApplication : Application() {
                 .retryDelay(500)
                 .retryIncreaseDelay(500)
                 .cancelEncryption(true)
+                .addNetworkInterceptor(TokenInterceptor())
                 .addInterceptor(ParamInterceptor())
                 .callAdapterFactory(RxJava2CallAdapterFactory.create())
                 .converterFactory(Retrofit2ConverterFactory())
