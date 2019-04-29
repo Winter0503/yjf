@@ -46,7 +46,7 @@ class PaymentsActivityPresenter(view: PaymentsActivityContract.View) :
 
     override fun createOrder(amount: String, deviceCode: String, phone: String, payMode: String, payType: String) {
         RequestManager.post(UrlConstants.createOrder)
-                .param("amount", amount)
+                .param("payAmount", amount)
                 .param("contractCode", deviceCode)
                 .param("mobile", phone)
                 .param("paymentMethod", payMode)
