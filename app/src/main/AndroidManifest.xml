@@ -54,7 +54,7 @@
         <activity
             android:name=".modular.home.activity.MainTabActivity"
             android:launchMode="singleTask" />
-        <activity android:name=".TestActivity">
+        <activity android:name=".modular.home.activity.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

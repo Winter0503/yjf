@@ -33,7 +33,7 @@ interface ApiManager {
 
     @FormUrlEncoded
     @POST
-    fun postMap(@Url mUrl: String, @FieldMap(encoded = true) maps: Map<String, String>): Observable<ResponseBody>
+    fun postMap(@Url mUrl: String, @FieldMap(encoded = false) maps: Map<String, String>): Observable<ResponseBody>
 
     @Multipart
     @POST

@@ -72,10 +72,11 @@ abstract class BaseRequest<R : BaseRequest<R>>(internal var mUrl: String) {
         this.mRetryDelay = rxHttp.retryDelay
         this.mRetryIncreaseDelay = rxHttp.retryIncreaseDelay
         if (mBaseUrl == null && (mUrl.startsWith("http://") || mUrl.startsWith("https://"))) {
-            val httpUrl = HttpUrl.parse(mUrl!!)
+            val httpUrl = HttpUrl.parse(mUrl)
             if (httpUrl != null)
                 mBaseUrl = httpUrl.url().protocol + "://" + httpUrl.url().host + "/"
         }
+        this.mCancelEncryption = rxHttp.mCancelEncryption
         this.mRequestParamInterceptor = rxHttp.requestParamInterceptor
     }
 

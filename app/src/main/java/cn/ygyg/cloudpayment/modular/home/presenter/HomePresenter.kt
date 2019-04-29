@@ -2,6 +2,7 @@ package cn.ygyg.cloudpayment.modular.home.presenter
 
 import cn.ygyg.cloudpayment.api.RequestManager
 import cn.ygyg.cloudpayment.api.UrlConstants
+import cn.ygyg.cloudpayment.app.Constants.IntentKey.COMPANY_CODE
 import cn.ygyg.cloudpayment.modular.home.contract.HomeContract
 import cn.ygyg.cloudpayment.modular.home.entity.DeviceListResponseEntity
 import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
@@ -18,6 +19,7 @@ class HomePresenter(view: HomeContract.View) : BasePresenterImpl<HomeContract.Vi
 
     override fun loaderData() {
         RequestManager.post(UrlConstants.deviceList)
+                .param("companyCode", COMPANY_CODE)
                 .param("username", UserUtil.getUserName())
                 .execute("", object : ResultCallback<DeviceListResponseEntity>() {
                     override fun onStart(tag: Any?) {
@@ -33,9 +35,7 @@ class HomePresenter(view: HomeContract.View) : BasePresenterImpl<HomeContract.Vi
                     }
 
                     override fun onSuccess(tag: Any?, result: DeviceListResponseEntity?) {
-                        result?.let {
-                            mvpView?.loaderSuccess(it.list)
-                        }
+                        mvpView?.loaderSuccess(result?.list)
                     }
 
                 })

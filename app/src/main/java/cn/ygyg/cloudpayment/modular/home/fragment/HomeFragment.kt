@@ -109,7 +109,6 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
 
 
     override fun loaderSuccess(response: ArrayList<out DeviceVM>?) {
-        refreshLayout.finishRefreshing()
         if (mAdapter.getFooterLayoutCount() == 0) {
             //为空时执行
             mAdapter.addFooterView(firstView)
@@ -126,6 +125,7 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
             //不为空时执行
             mAdapter.setNewList(it.toMutableList())
         }
+        refreshLayout.finishRefreshing()
         setHasLoadedOnce(true)
     }
 
