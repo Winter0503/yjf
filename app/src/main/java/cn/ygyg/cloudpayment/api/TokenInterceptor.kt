@@ -16,9 +16,6 @@ import okhttp3.Response
  * token刷新
  */
 class TokenInterceptor : BaseExpiredInterceptor() {
-    init {
-        Log.e("TAG","===============TokenInterceptor======>>>>>>>>>>")
-    }
 
     /**
      * 判定token过期

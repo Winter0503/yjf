@@ -18,10 +18,11 @@ object WXUtil {
      * 初始化配置信息
      */
     fun registerToWX() {
+        val wxAppId = ConfigUtil.getWXAppId()
         //第二个参数是指你应用在微信开放平台上的AppID
-        mWxApi = WXAPIFactory.createWXAPI(MyApplication.getApplication(), ConfigUtil.getAlyPayAppId(), false)
+        mWxApi = WXAPIFactory.createWXAPI(MyApplication.getApplication(), wxAppId, false)
         // 将该app注册到微信
-        mWxApi.registerApp(Constants.WX.WEIXIN_APP_ID)
+        mWxApi.registerApp(wxAppId)
     }
 
     /**

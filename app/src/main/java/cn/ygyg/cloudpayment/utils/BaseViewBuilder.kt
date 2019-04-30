@@ -13,7 +13,7 @@ abstract class BaseViewBuilder(parent: ViewGroup) {
     /**
      * 跟布局
      */
-    private lateinit var root: View
+    private var root: View
 
     private var tag: Any? = null
     private var tagMap: SparseArray<Any>? = null

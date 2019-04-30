@@ -1,6 +1,7 @@
 package cn.ygyg.cloudpayment.utils
 
 import android.text.TextUtils
+import cn.ygyg.cloudpayment.BuildConfig
 import cn.ygyg.cloudpayment.app.Constants
 import java.io.Serializable
 
@@ -19,7 +20,7 @@ object ConfigUtil {
 
     fun getCompanyCode(): String {
         checkEmpty()
-        return configEntity?.companyCode ?: ""
+        return configEntity?.companyCode ?: BuildConfig.COMPANY_CODE
     }
 
     fun getCompanyName(): String {
@@ -44,7 +45,7 @@ object ConfigUtil {
                 return it[0].appId
             }
         }
-        return ""
+        return Constants.WX.WEIXIN_APP_ID
     }
 
     /**
