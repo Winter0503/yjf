@@ -21,7 +21,6 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
  * Created by Admin on 2019/4/13.
  */
 open class MyApplication : Application() {
-    open lateinit var mWxApi: IWXAPI
 
     companion object {
         @SuppressLint("StaticFieldLeak")
@@ -36,18 +35,10 @@ open class MyApplication : Application() {
         super.onCreate()
         mApp = this
         initRequestBase()
-        registerToWX()
         ToastUtil.initResId(R.mipmap.toast_success, 0)
         SharePreUtil.init(context = baseContext)
         TwinklingRefreshLayout.setDefaultHeader(ProgressHeaderView::class.java.name)
         TwinklingRefreshLayout.setDefaultFooter(LoadMoreView::class.java.name)
-    }
-
-    private fun registerToWX() {
-        //第二个参数是指你应用在微信开放平台上的AppID
-        mWxApi = WXAPIFactory.createWXAPI(this, Constants.WX.WEIXIN_APP_ID, false)
-        // 将该app注册到微信
-        mWxApi.registerApp(Constants.WX.WEIXIN_APP_ID)
     }
 
     private fun initRequestBase() {

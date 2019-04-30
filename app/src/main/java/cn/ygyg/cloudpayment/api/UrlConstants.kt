@@ -82,6 +82,10 @@ object UrlConstants {
      * 刷新Token
      */
     const val refreshToken = ""
+    /**
+     * 获取厂家配置
+     */
+    const val getPaymentInformation = "customerApi/payment/getPaymentInformation"
 
 
 }
