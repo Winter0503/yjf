@@ -153,7 +153,7 @@ abstract class BaseIndicatorActivity : BaseActivity(), OnPageChangeListener, Tab
     /**
      * 切换选项卡监听器(没有ViewPager时不用重写这个方法)
      */
-    protected fun onViewPagerSwitch(index: Int, fragment: Fragment) {
+    fun onViewPagerSwitch(index: Int, fragment: Fragment) {
 
     }
 

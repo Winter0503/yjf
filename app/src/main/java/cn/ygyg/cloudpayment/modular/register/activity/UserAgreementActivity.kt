@@ -57,7 +57,7 @@ class UserAgreementActivity : BaseActivity() {
         try {
             val assetManager = context.assets
             val bf = BufferedReader(InputStreamReader(assetManager.open(fileName)))
-            var line: String? =null
+            var line: String?
             line = bf.readLine()
             while (line != null) {
                 stringBuilder.append(line)

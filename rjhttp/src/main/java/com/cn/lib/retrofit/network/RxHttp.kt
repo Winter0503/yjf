@@ -24,19 +24,19 @@ import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.X509TrustManager
 
 open class RxHttp private constructor() {
-    private val okHttpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()                 //okhttp请求的客户端
-    internal val retrofitBuilder: Retrofit.Builder                         //Retrlofit请求Builder
-    private var mCacheMaxSize: Long = 0                                       //最大缓存
-    private val headers = HashMap<String, String>()            //公共请求头
-    private val parameters = HashMap<String, String>()         //公共请求参数
-    var httpClient: OkHttpClient? = null
-        private set                                  //自定义OkHttpClient
-    var retryCount = DEFAULT_RETRY_COUNT
-        private set                    //重试次数默认3次
-    var retryDelay = DEFAULT_RETRY_DELAY
-        private set                    //延迟xxms重试
-    var retryIncreaseDelay = DEFAULT_RETRY_INCREASEDELAY
-        private set    //叠加延迟
+    private val okHttpClientBuilder: OkHttpClient.Builder = OkHttpClient.Builder()//okhttp请求的客户端
+    internal val retrofitBuilder: Retrofit.Builder//Retrlofit请求Builder
+    private var mCacheMaxSize: Long = 0//最大缓存
+    private val headers = HashMap<String, String>()//公共请求头
+    private val parameters = HashMap<String, String>()//公共请求参数
+    var httpClient: OkHttpClient? = null//自定义OkHttpClient
+        private set
+    var retryCount = DEFAULT_RETRY_COUNT//重试次数默认3次
+        private set
+    var retryDelay = DEFAULT_RETRY_DELAY //延迟xxms重试
+        private set
+    var retryIncreaseDelay = DEFAULT_RETRY_INCREASEDELAY //叠加延迟
+        private set
     private val interceptorList = ArrayList<Interceptor>()
     private val networkInterceptorList = ArrayList<Interceptor>()
     private lateinit var context: Context
@@ -116,16 +116,14 @@ open class RxHttp private constructor() {
     }
 
     /**
-     * 全局拦截器
+     * 全局拦截器，如果添加的是请求头拦截器则放到第一位，以方便后面的拦截器使用头信息
      */
-    fun addInterceptor(interceptor: Interceptor?): RxHttp {
-        if (!interceptorList.contains(Util.checkNotNull(interceptor, "interceptor is null"))) {
-            interceptor?.run {
-                if (this is HeaderInterceptor)
-                    interceptorList.add(0, this)
-                else
-                    interceptorList.add(this)
-            }
+    fun addInterceptor(interceptor: Interceptor): RxHttp {
+        if (!interceptorList.contains(interceptor)) {
+            if (interceptor is HeaderInterceptor)
+                interceptorList.add(0, interceptor)
+            else
+                interceptorList.add(interceptor)
         }
         return this
     }
@@ -220,6 +218,9 @@ open class RxHttp private constructor() {
         return this
     }
 
+    /**
+     * 设置SSLSocketFactory
+     */
     fun sslSocketFactory(sslSocketFactory: SSLSocketFactory): RxHttp {
         okHttpClientBuilder.sslSocketFactory(sslSocketFactory)
         return this
@@ -259,6 +260,9 @@ open class RxHttp private constructor() {
         return this
     }
 
+    /**
+     * 根据key删除某个请求头
+     */
     fun removeHeader(key: String): RxHttp {
         if (headers.containsKey(key)) {
             headers.remove(key)
@@ -267,6 +271,9 @@ open class RxHttp private constructor() {
         return this
     }
 
+    /**
+     * 清空请求头
+     */
     fun clearAllHeaders(): RxHttp {
         headers.clear()
         this.baseHeaderInterceptor?.clearAll()
@@ -281,15 +288,24 @@ open class RxHttp private constructor() {
         return this
     }
 
+    /**
+     * 获取所有的参数
+     */
     fun getParameters(): Map<String, String> {
         return parameters
     }
 
+    /**
+     * 添加公共的请求参数
+     */
     fun parameters(parameters: Map<String, String>): RxHttp {
         this.parameters.putAll(parameters)
         return this
     }
 
+    /**
+     * 添加公共的请求参数
+     */
     fun addParam(key: String, value: String): RxHttp {
         this.parameters[key] = value
         return this
@@ -327,19 +343,31 @@ open class RxHttp private constructor() {
         return this
     }
 
+    /**
+     * 获取拦截器列表
+     */
     fun getInterceptorList(): List<Interceptor> {
         return interceptorList
     }
 
+    /**
+     * 添加全局拦截器
+     */
     fun interceptorList(interceptorList: List<Interceptor>): RxHttp {
         this.interceptorList.addAll(interceptorList)
         return this
     }
 
+    /**
+     * 获取网络拦截器列表
+     */
     fun getNetworkInterceptorList(): List<Interceptor> {
         return networkInterceptorList
     }
 
+    /**
+     * 添加全局网络拦截器
+     */
     fun networkInterceptorList(networkInterceptorList: List<Interceptor>): RxHttp {
         this.networkInterceptorList.addAll(networkInterceptorList)
         return this
@@ -349,6 +377,9 @@ open class RxHttp private constructor() {
         return context
     }
 
+    /**
+     * 是否需要签名
+     */
     fun isSign(isSign: Boolean): RxHttp {
         this.isSign = isSign
         return this
@@ -370,7 +401,10 @@ open class RxHttp private constructor() {
         return this
     }
 
-    fun accessToken(accessToken: Boolean) {
+    /**
+     * 是否添加Token
+     */
+    fun isAccessToken(accessToken: Boolean) {
         this.isAccessToken = accessToken
     }
 
@@ -405,16 +439,14 @@ open class RxHttp private constructor() {
     fun getOkHttpClientBuilder(): OkHttpClient.Builder {
         addHeaderInterceptor()
         if (interceptorList.size > 0) {
-            for (interceptor in interceptorList) {
-                if (!okHttpClientBuilder.interceptors().contains(interceptor))
-                    okHttpClientBuilder.addInterceptor(interceptor)
-            }
+            interceptorList
+                    .filterNot { okHttpClientBuilder.interceptors().contains(it) }
+                    .forEach { okHttpClientBuilder.addInterceptor(it) }
         }
         if (networkInterceptorList.size > 0) {
-            for (interceptor in networkInterceptorList) {
-                if (!okHttpClientBuilder.networkInterceptors().contains(interceptor))
-                    okHttpClientBuilder.addNetworkInterceptor(interceptor)
-            }
+            networkInterceptorList
+                    .filterNot { okHttpClientBuilder.networkInterceptors().contains(it) }
+                    .forEach { okHttpClientBuilder.addNetworkInterceptor(it) }
         }
         return okHttpClientBuilder
     }
@@ -426,9 +458,10 @@ open class RxHttp private constructor() {
                 addHeaderMap(headers)
                 return
             }
-            baseHeaderInterceptor = HeaderInterceptor(headers)
+            val headerInterceptor = HeaderInterceptor(headers)
+            this.baseHeaderInterceptor = headerInterceptor
             //将添加统一头内容的拦截器放在第一位方便后面的拦截器使用
-            addInterceptor(baseHeaderInterceptor)
+            addInterceptor(headerInterceptor)
         }
     }
 
