@@ -61,7 +61,10 @@ android {
             def suffix = ".apk"
             def appName = "cloudpayment_V${variant.versionName}"
             def git = getGitHeadRefsSuffix() == null ? "" : getGitHeadRefsSuffix()
-            appName = "${appName}_${variant.flavorName}${git}${suffix}"
+            if (git != "") {
+                appName = "${appName}_${variant.flavorName}${git}"
+            }
+            appName = "${appName}$suffix"
             output.outputFileName = new File(appName)
         }
     }
