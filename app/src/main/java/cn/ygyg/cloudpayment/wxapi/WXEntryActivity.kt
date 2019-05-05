@@ -9,6 +9,7 @@ import com.tencent.mm.opensdk.modelmsg.SendAuth
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler
 
 import cn.ygyg.cloudpayment.app.MyApplication
+import cn.ygyg.cloudpayment.utils.WXUtil
 import com.cn.lib.basic.BaseActivity
 import com.cn.lib.util.ToastUtil
 import com.hwangjr.rxbus.RxBus
@@ -30,8 +31,7 @@ class WXEntryActivity : BaseActivity(), IWXAPIEventHandler {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //这句没有写,是不能执行回调的方法的
-        MyApplication.getApplication()
-                .mWxApi
+        WXUtil.mWxApi
                 .handleIntent(intent, this)
     }
 

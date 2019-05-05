@@ -1,5 +1,7 @@
 package cn.ygyg.cloudpayment.utils
 
+import android.text.TextUtils
+import cn.ygyg.cloudpayment.BuildConfig
 import cn.ygyg.cloudpayment.app.Constants
 import java.io.Serializable
 
@@ -12,7 +14,18 @@ object ConfigUtil {
     }
 
     fun getConfigEntity(): ConfigEntity? {
+        checkEmpty()
         return configEntity
+    }
+
+    fun getCompanyCode(): String {
+        checkEmpty()
+        return configEntity?.companyCode ?: BuildConfig.COMPANY_CODE
+    }
+
+    fun getCompanyName(): String {
+        checkEmpty()
+        return this.configEntity?.companyName ?: ""
     }
 
     private fun checkEmpty() {
@@ -21,12 +34,67 @@ object ConfigUtil {
         }
     }
 
+    /**
+     * 获取微信APPID
+     */
+    fun getWXAppId(): String {
+        val paymentDetails = configEntity?.paymentDetails
+        val list = paymentDetails?.filter { it.paymentMethod == "Q" && it.paymentType == "APP" }
+        list?.let {
+            if (it.isNotEmpty()) {
+                return it[0].appId
+            }
+        }
+        return Constants.WX.WEIXIN_APP_ID
+    }
+
+    /**
+     * 获取支付宝APPID
+     */
+    fun getAlyPayAppId(): String {
+        val paymentDetails = configEntity?.paymentDetails
+        val list = paymentDetails?.filter { it.paymentMethod == "A" && it.paymentType == "APP" }
+        list?.let {
+            if (it.isNotEmpty()) {
+                return it[0].appId
+            }
+        }
+        return ""
+    }
+
+    fun isNotEmpty(): Boolean {
+        checkEmpty()
+        if (configEntity == null) {
+            return false
+        } else {
+            val paymentDetails = configEntity?.paymentDetails
+            if (paymentDetails != null && paymentDetails.size > 0) {
+                return true
+            }
+        }
+        return false
+    }
+
     fun clear() {
         configEntity = null
     }
 
     data class ConfigEntity(
-            var companyCode: String = ""
+            var companyCode: String = "",
+            var appId: String = "",
+            var applicationName: String = "",
+            var applicationType: String = "",
+            var companyId: String = "",
+            var companyName: String = "",
+            var groupName: String = "",
+            var paymentDetails: MutableList<PaymentEntity> = mutableListOf()
+
+    ) : Serializable
+
+    data class PaymentEntity(
+            var appId: String = "",
+            var paymentType: String = "",
+            var paymentMethod: String = ""
     ) : Serializable
 }
 

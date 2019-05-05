@@ -16,7 +16,6 @@ open class CacheInterceptor(protected var context: Context, protected var cacheC
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
         val originalResponse = chain.proceed(chain.request())
         val cacheControl = originalResponse.header("Cache-Control")
         //String cacheControl = request.cacheControl().toString();

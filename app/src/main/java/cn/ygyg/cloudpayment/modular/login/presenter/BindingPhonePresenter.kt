@@ -9,6 +9,7 @@ import cn.ygyg.cloudpayment.api.UrlConstants
 import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.modular.login.contract.BindingPhoneContract
 import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
+import cn.ygyg.cloudpayment.utils.ConfigUtil
 import cn.ygyg.cloudpayment.utils.ProgressUtil
 import cn.ygyg.cloudpayment.utils.SharePreUtil
 import cn.ygyg.cloudpayment.utils.StringUtil
@@ -31,7 +32,7 @@ class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl
      * 手机号码输入框过滤器
      */
     override fun getPhoneInputFilter(): InputFilter {
-        return InputFilter { source, start, end, dest, dstart, dend ->
+        return InputFilter { source, _, end, dest, dstart, dend ->
             var result: CharSequence? = null
             if (dstart == dend && !source.isEmpty()) { //当两者相等说明是输入
                 if (dstart == 0 && "1" != source) { //输入的第一位必须是"1"，如果不是则不添加
@@ -153,10 +154,10 @@ class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl
 
     override fun confirm(phone: String, code: String, openId: String?) {
         RequestManager.post(UrlConstants.bindPhone)
-                .baseUrl("http://10.2.152.153:8130")
                 .param("captcha", code)
                 .param("openId", openId ?: "")
                 .param("username", phone)
+                .param("appId", ConfigUtil.getWXAppId())
                 .execute("bindPhone", object : ResultCallback<UserEntity>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.getViewContext()?.let {

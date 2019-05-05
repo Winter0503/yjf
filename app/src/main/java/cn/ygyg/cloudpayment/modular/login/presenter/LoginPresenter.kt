@@ -9,16 +9,11 @@ import cn.ygyg.cloudpayment.api.RequestManager
 import cn.ygyg.cloudpayment.api.UrlConstants
 import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.app.Constants.IntentKey.OPEN_ID
-import cn.ygyg.cloudpayment.app.Constants.IntentKey.TOKEN_KEY
-import cn.ygyg.cloudpayment.app.Constants.IntentKey.USER_INFO
 import cn.ygyg.cloudpayment.app.Constants.WX.WEIXIN_APP_ID
 import cn.ygyg.cloudpayment.modular.login.contract.LoginContract
 import cn.ygyg.cloudpayment.modular.login.entity.TokenEntity
 import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
-import cn.ygyg.cloudpayment.utils.ProgressUtil
-import cn.ygyg.cloudpayment.utils.SharePreUtil
-import cn.ygyg.cloudpayment.utils.StringUtil
-import cn.ygyg.cloudpayment.utils.UserUtil
+import cn.ygyg.cloudpayment.utils.*
 import com.cn.lib.basic.BasePresenterImpl
 import com.cn.lib.retrofit.network.callback.ResultCallback
 import com.cn.lib.retrofit.network.config.Optional
@@ -88,7 +83,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
         return InputFilter { source, start, end, dest, dstart, dend ->
             var result: CharSequence? = null
             if (dstart == dend && !source.isEmpty()) { //当两者相等说明是输入
-                if (dstart == 0 && "1" != source) { //输入的第一位必须是"1"，如果不是则不添加
+                if (dstart == 0 && "1" != source && source.length != 11) { //输入的第一位必须是"1"，如果不是则不添加
                     isLegalPhone = false
                     result = ""
                 }
@@ -233,20 +228,19 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
         RequestManager.post(UrlConstants.getToken)
                 .param("code", code)
                 .param("appId", WEIXIN_APP_ID)
-                .param("companyCode", "10467")
+                .param("companyCode", ConfigUtil.getCompanyCode())
                 .execute(TokenEntity::class.java)
                 .flatMap(object : Function<Optional<TokenEntity>, ObservableSource<Optional<UserEntity>>> {
                     override fun apply(optional: Optional<TokenEntity>): ObservableSource<Optional<UserEntity>> {
                         val entity = optional.get()
                         SharePreUtil.putString(OPEN_ID, entity.openid)
-                        SharePreUtil.putString(TOKEN_KEY, entity.access_token)
                         return RequestManager.post(UrlConstants.getMemberInfo)
                                 .param("appId", WEIXIN_APP_ID)
                                 .param("openId", entity.openid)
                                 .execute(UserEntity::class.java)
                     }
                 })
-                .subscribeWith(ResultCallbackSubscriber("wxUser", object : ResultCallback<UserEntity>() {
+                .subscribeWith(ResultCallbackSubscriber("wxLogin", object : ResultCallback<UserEntity>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.getViewContext()?.let {
                             ProgressUtil.showProgressDialog(it, "登录中...")
@@ -265,7 +259,6 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
 
                     override fun onSuccess(tag: Any?, result: UserEntity?) {
                         if (result != null && !TextUtils.isEmpty(result.cellPhone)) { //微信第一次登录没有用户信息，需要去绑定手机号生成用户信息
-                            SharePreUtil.saveBeanByFastJson(USER_INFO, result)
                             UserUtil.saveUser(user = result)
                             mvpView?.loginSuccess()
                         } else {

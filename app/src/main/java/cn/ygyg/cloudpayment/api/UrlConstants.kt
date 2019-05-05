@@ -50,7 +50,7 @@ object UrlConstants {
     /**
      * 绑定手机号码
      */
-    const val bindPhone = "customerApi/weixin/device/bindPhone"
+    const val bindPhone = "customerApi/device/bindPhone"
 
     /**
      * 获取物联网表 信息
@@ -82,6 +82,10 @@ object UrlConstants {
      * 刷新Token
      */
     const val refreshToken = ""
+    /**
+     * 获取厂家配置
+     */
+    const val getPaymentInformation = "customerApi/payment/getPaymentInformation"
 
 
 }

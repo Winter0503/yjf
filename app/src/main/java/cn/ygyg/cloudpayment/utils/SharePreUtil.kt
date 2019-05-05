@@ -55,7 +55,7 @@ object SharePreUtil {
      */
     fun putBoolean(key: String, value: Boolean) {
         booleanMap.put(key, value)
-        sp.edit().putBoolean(key, value).commit()
+        sp.edit().putBoolean(key, value).apply()
     }
 
     /**
@@ -80,7 +80,7 @@ object SharePreUtil {
      */
     fun putInt(key: String, value: Int) {
         intMap.put(key, value)
-        sp.edit().putInt(key, value).commit()
+        sp.edit().putInt(key, value).apply()
     }
 
 
@@ -92,7 +92,7 @@ object SharePreUtil {
      */
     fun putString(key: String, value: String) {
         stringMap.put(key, value)
-        sp.edit().putString(key, value).commit()
+        sp.edit().putString(key, value).apply()
     }
 
     /**
