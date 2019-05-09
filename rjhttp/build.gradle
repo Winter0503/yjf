@@ -1,15 +1,14 @@
 apply plugin: 'com.android.library'
-apply from: 'versioninfo.gradle'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion compile_sdk_version
+    compileSdkVersion rootProject.ext.compile_sdk_version
 
     defaultConfig {
-        minSdkVersion min_sdk_version
-        targetSdkVersion target_sdk_version
-        versionCode version_code
-        versionName version_name
+        minSdkVersion rootProject.ext.min_sdk_version
+        targetSdkVersion rootProject.ext.target_sdk_version
+        versionCode rootProject.ext.version_code
+        versionName rootProject.ext.version_name
     }
 
     buildTypes {
@@ -25,25 +24,25 @@ android {
     }
 
     compileOptions {
-        targetCompatibility 1.8
-        sourceCompatibility 1.8
+        targetCompatibility rootProject.ext.javaVersion
+        sourceCompatibility rootProject.ext.javaVersion
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation "com.android.support:appcompat-v7:$support_version"
+    implementation rootProject.ext.libs.libSupport
     /*MVP: RxJava+OKHttp+FastJson 需要使用的一些系列包*/
-    api "com.squareup.retrofit2:retrofit:$retrofit_version"
-    api "io.reactivex.rxjava2:rxjava:$rxjava_version"
-    api "com.squareup.retrofit2:adapter-rxjava2:$adapter_rxjava_version"
-    api "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
-    api "com.alibaba:fastjson:$fastjson_version"
-    api "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
-    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    api "com.android.support:design:$support_version"
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    api "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    api rootProject.ext.libs.libDesign
+    api rootProject.ext.libs.libRetrofit
+    api rootProject.ext.libs.libRxjava
+    api rootProject.ext.libs.libRxjavaAdapter
+    api rootProject.ext.libs.libInterceptor
+    api rootProject.ext.libs.libJson
+    api rootProject.ext.libs.libRxandroid
+    api rootProject.ext.libs.libKotlinJdk
+    api rootProject.ext.libs.libKotlinReflect
+    api rootProject.ext.libs.libGlide
 }
 repositories {
     mavenCentral()
