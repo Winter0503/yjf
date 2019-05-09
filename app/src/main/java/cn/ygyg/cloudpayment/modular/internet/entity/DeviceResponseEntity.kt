@@ -43,6 +43,10 @@ class DeviceResponseEntity : Serializable, DeviceVM {
         return if (meterNo.isNullOrEmpty()) "" else meterNo!!
     }
 
+    override fun contractCode(): String {
+        return if (contractNo.isNullOrEmpty()) "" else contractNo!!
+    }
+
     override fun deviceAddress(): String {
         return if (housePropertyName.isNullOrEmpty()) "" else housePropertyName!!
     }

@@ -10,11 +10,14 @@ import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsActivityContract
+import cn.ygyg.cloudpayment.modular.payments.entity.CreateOrderResponseEntity
 import cn.ygyg.cloudpayment.modular.payments.presenter.PaymentsActivityPresenter
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
 import cn.ygyg.cloudpayment.utils.UserUtil
 import cn.ygyg.cloudpayment.utils.ViewUtils
+import cn.ygyg.cloudpayment.utils.WXUtil
 import com.cn.lib.basic.BaseMvpActivity
+import com.tencent.mm.opensdk.modelpay.PayReq
 import kotlinx.android.synthetic.main.activity_payments.*
 
 class PaymentsActivity :
@@ -23,6 +26,7 @@ class PaymentsActivity :
     override fun createPresenter(): PaymentsActivityContract.Presenter = PaymentsActivityPresenter(this)
 
     override fun getContentViewResId(): Int = R.layout.activity_payments
+    private var contractCode = ""
     private var deviceCode = ""
     private val companyCode = Constants.WX.COMPANY_CODE
     private var payMode = ""
@@ -115,7 +119,7 @@ class PaymentsActivity :
             if (checkPay()) {
                 mPresenter?.createOrder(
                         amount,
-                        deviceCode,
+                        contractCode,
                         UserUtil.getUserName(),
                         payMode,
                         "APP")
@@ -140,7 +144,7 @@ class PaymentsActivity :
             showToast("支付方式不能为空")
             return false
         }
-        if (deviceCode.isEmpty()) {
+        if (contractCode.isEmpty()) {
             showToast("支付账户不能为空")
             return false
         }
@@ -148,12 +152,26 @@ class PaymentsActivity :
     }
 
     override fun onLoadDeviceSuccess(response: DeviceVM) {
-        user_name.text = UserUtil.getUserName()
+        contractCode = response.contractCode()
+        user_name.text = response.userName()
         user_account.text = deviceCode
         address.text = response.deviceAddress()
         account_balance.text = response.deviceBalance()
     }
 
-    override fun onCreateOrderSuccess() {
+    override fun onCreateOrderSuccess(response: CreateOrderResponseEntity) {
+        when (response.paymentMethod) {
+            "Q" -> {
+                val request = PayReq()
+                request.appId = response.appid
+                request.partnerId = response.partnerid
+                request.prepayId = response.prepayId
+                request.packageValue = response.packages
+                request.nonceStr = response.noncestr
+                request.timeStamp = response.timestamp
+                request.sign = response.sign
+                WXUtil.mWxApi.sendReq(request)
+            }
+        }
     }
 }

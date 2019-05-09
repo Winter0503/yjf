@@ -37,7 +37,7 @@ class PaymentsHistoryActivity :
     override fun initListener() {
         refresh_layout.setOnRefreshListener(object : RefreshListenerAdapter() {
             override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
-                mPresenter?.loadPage(1, pageSize)
+                mPresenter?.loadPage(0, pageSize)
             }
 
             override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
@@ -47,6 +47,6 @@ class PaymentsHistoryActivity :
     }
 
     override fun initData() {
-        mPresenter?.loadPage(1,pageSize)
+        mPresenter?.loadPage(0, pageSize)
     }
 }

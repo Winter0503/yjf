@@ -9,7 +9,6 @@ import cn.ygyg.cloudpayment.api.RequestManager
 import cn.ygyg.cloudpayment.api.UrlConstants
 import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.app.Constants.IntentKey.OPEN_ID
-import cn.ygyg.cloudpayment.app.Constants.WX.WEIXIN_APP_ID
 import cn.ygyg.cloudpayment.modular.login.contract.LoginContract
 import cn.ygyg.cloudpayment.modular.login.entity.TokenEntity
 import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
@@ -227,19 +226,17 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
     override fun loginByCode(code: String) {
         RequestManager.post(UrlConstants.getToken)
                 .param("code", code)
-                .param("appId", WEIXIN_APP_ID)
+                .param("appId", ConfigUtil.getWXAppId())
                 .param("companyCode", ConfigUtil.getCompanyCode())
                 .execute(TokenEntity::class.java)
-                .flatMap(object : Function<Optional<TokenEntity>, ObservableSource<Optional<UserEntity>>> {
-                    override fun apply(optional: Optional<TokenEntity>): ObservableSource<Optional<UserEntity>> {
-                        val entity = optional.get()
-                        SharePreUtil.putString(OPEN_ID, entity.openid)
-                        return RequestManager.post(UrlConstants.getMemberInfo)
-                                .param("appId", WEIXIN_APP_ID)
-                                .param("openId", entity.openid)
-                                .execute(UserEntity::class.java)
-                    }
-                })
+                .flatMap { optional ->
+                    val entity = optional.get()
+                    SharePreUtil.putString(OPEN_ID, entity.openid)
+                    RequestManager.post(UrlConstants.getMemberInfo)
+                            .param("appId", ConfigUtil.getWXAppId())
+                            .param("openId", entity.openid)
+                            .execute(UserEntity::class.java)
+                }
                 .subscribeWith(ResultCallbackSubscriber("wxLogin", object : ResultCallback<UserEntity>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.getViewContext()?.let {
