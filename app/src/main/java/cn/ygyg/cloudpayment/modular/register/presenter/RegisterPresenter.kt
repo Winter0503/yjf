@@ -74,7 +74,7 @@ class RegisterPresenter(view: RegisterContract.View) : RegisterContract.Presente
      * 手机号码输入框过滤器
      */
     override fun getPhoneInputFilter(): InputFilter {
-        return InputFilter { source, start, end, dest, dstart, dend ->
+        return InputFilter { source, _, end, dest, dstart, dend ->
             var result: CharSequence? = null
             if (dstart == dend && !source.isEmpty()) { //当两者相等说明是输入
                 if (dstart == 0 && "1" != source) { //输入的第一位必须是"1"，如果不是则不添加
@@ -174,7 +174,7 @@ class RegisterPresenter(view: RegisterContract.View) : RegisterContract.Presente
                         }
                     }
 
-                    override fun onSuccess(tag: Any?, t: String?) {
+                    override fun onSuccess(tag: Any?, result: String?) {
                         mvpView?.showToast("验证码发送成功")
                         mvpView?.checkPhoneSuccess()
                     }

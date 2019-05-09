@@ -30,7 +30,7 @@ class ResetPasswordPresenter(view: ResetPasswordContract.View) : BasePresenterIm
      * 手机号码输入框过滤器
      */
     override fun getPhoneInputFilter(): InputFilter {
-        return InputFilter { source, start, end, dest, dstart, dend ->
+        return InputFilter { source, _, end, dest, dstart, dend ->
             var result: CharSequence? = null
             if (dstart == dend && !source.isEmpty()) { //当两者相等说明是输入
                 if (dstart == 0 && "1" != source) { //输入的第一位必须是"1"，如果不是则不添加

@@ -97,7 +97,7 @@ object ProgressUtil {
         if (mProgressDialog == null) {
             try {
                 mProgressDialog = createLoadingDialog(context, msg)
-                mProgressDialog?.setOnKeyListener(DialogInterface.OnKeyListener { dialog, keyCode, event ->
+                mProgressDialog?.setOnKeyListener(DialogInterface.OnKeyListener { _, keyCode, _ ->
                     if (keyCode == KeyEvent.KEYCODE_BACK) {
                         if (TextUtils.isEmpty(msg) && isShow()) {
                             cancelTimer()

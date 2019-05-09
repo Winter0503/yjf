@@ -18,6 +18,7 @@ class RequestInterceptor(private val tag: Any) : Interceptor {
         if (method == "GET") {
             val httpUrl = request.url()
             val urlStr = httpUrl.toString()
+            val urlSplit = urlSplit(urlStr)
 
         } else if (method == "POST" && body is FormBody) {
             val size = body.size()
@@ -32,23 +33,19 @@ class RequestInterceptor(private val tag: Any) : Interceptor {
         return chain.proceed(request.newBuilder().method(request.method(), newBodyBuilder.build()).build())
     }
 
-    fun urlSplit(url: String): Map<String, String> {
+    private fun urlSplit(url: String): Map<String, String> {
         val map = hashMapOf<String, String>()
         val start = url.indexOf("?")
         if (start != -1) {
             val str: String = url.substring(start)
             if (str.contains("&")) {
                 val split = str.split("&")
-                for (s in split) {
-                    val split1 = s.split("=")
-                    map[split1[0]] = split1[1]
-                }
+                split.map { it.split("=") }
+                        .forEach { map[it[0]] = it[1] }
             } else if (str.contains("&")) {
                 val split = str.split("&")
-                for (s in split) {
-                    val split1 = s.split("=")
-                    map[split1[0]] = split1[1]
-                }
+                split.map { it.split("=") }
+                        .forEach { map[it[0]] = it[1] }
             }
         }
         return map
