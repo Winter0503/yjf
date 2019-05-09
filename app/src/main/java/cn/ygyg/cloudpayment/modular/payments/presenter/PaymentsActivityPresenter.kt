@@ -3,12 +3,11 @@ package cn.ygyg.cloudpayment.modular.payments.presenter
 import cn.ygyg.cloudpayment.api.RequestManager
 import cn.ygyg.cloudpayment.api.UrlConstants
 import cn.ygyg.cloudpayment.modular.internet.entity.DeviceResponseEntity
-import com.cn.lib.basic.BasePresenterImpl
-
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsActivityContract
-import cn.ygyg.cloudpayment.modular.payments.entity.CreateOrderResposneEntity
+import cn.ygyg.cloudpayment.modular.payments.entity.CreateOrderResponseEntity
 import cn.ygyg.cloudpayment.utils.ProgressUtil
 import cn.ygyg.cloudpayment.utils.UserUtil
+import com.cn.lib.basic.BasePresenterImpl
 import com.cn.lib.retrofit.network.callback.ResultCallback
 import com.cn.lib.retrofit.network.exception.ApiThrowable
 
@@ -19,6 +18,7 @@ class PaymentsActivityPresenter(view: PaymentsActivityContract.View) :
         RequestManager.post(UrlConstants.getDevice)
                 .param("meterCode", deviceCode)
                 .param("companyCode", companyCode)
+                .param("userName ", UserUtil.getUserName())
                 .execute("", object : ResultCallback<DeviceResponseEntity>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.getViewContext()?.let {
@@ -34,6 +34,7 @@ class PaymentsActivityPresenter(view: PaymentsActivityContract.View) :
 
                     override fun onError(tag: Any?, e: ApiThrowable) {
                         e.message?.let { mvpView?.showToast(it) }
+                        mvpView?.finish()
                     }
 
                     override fun onSuccess(tag: Any?, result: DeviceResponseEntity?) {
@@ -44,14 +45,14 @@ class PaymentsActivityPresenter(view: PaymentsActivityContract.View) :
                 })
     }
 
-    override fun createOrder(amount: String, deviceCode: String, phone: String, payMode: String, payType: String) {
+    override fun createOrder(amount: String, contractCode: String, phone: String, payMode: String, payType: String) {
         RequestManager.post(UrlConstants.createOrder)
-                .param("payAmount", amount)
-                .param("contractCode", deviceCode)
+                .param("amount", "0.01")
+                .param("contractCode", contractCode)
                 .param("mobile", phone)
                 .param("paymentMethod", payMode)
                 .param("paymentType", payType)
-                .execute("", object : ResultCallback<CreateOrderResposneEntity>() {
+                .execute("", object : ResultCallback<CreateOrderResponseEntity>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.getViewContext()?.let {
                             ProgressUtil.showProgressDialog(it, "加载中...")
@@ -68,12 +69,11 @@ class PaymentsActivityPresenter(view: PaymentsActivityContract.View) :
                         e.message?.let { mvpView?.showToast(it) }
                     }
 
-                    override fun onSuccess(tag: Any?, result: CreateOrderResposneEntity?) {
+                    override fun onSuccess(tag: Any?, result: CreateOrderResponseEntity?) {
                         result?.let {
-                            mvpView?.onCreateOrderSuccess()
+                            mvpView?.onCreateOrderSuccess(result)
                         }
                     }
                 })
     }
-
 }

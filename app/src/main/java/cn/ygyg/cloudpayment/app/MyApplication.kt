@@ -12,8 +12,6 @@ import com.alibaba.fastjson.support.retrofit.Retrofit2ConverterFactory
 import com.cn.lib.retrofit.network.RxHttp
 import com.cn.lib.util.ToastUtil
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
-import com.tencent.mm.opensdk.openapi.IWXAPI
-import com.tencent.mm.opensdk.openapi.WXAPIFactory
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 
 

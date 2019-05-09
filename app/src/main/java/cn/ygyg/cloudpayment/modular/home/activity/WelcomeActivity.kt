@@ -26,11 +26,11 @@ class WelcomeActivity : BaseMvpActivity<WelcomeContract.Presenter, WelcomeContra
 
     override fun initViews() {
         super.initViews()
-//        if (ConfigUtil.isNotEmpty()) {
+        if (ConfigUtil.isNotEmpty()) {
             defaultMode()
-//        } else {
-//            mPresenter?.loaderPaymentConfig(this)
-//        }
+        } else {
+            mPresenter?.loaderPaymentConfig(this)
+        }
     }
 
     override fun initListener() {

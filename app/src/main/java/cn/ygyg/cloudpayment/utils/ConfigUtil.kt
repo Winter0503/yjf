@@ -1,6 +1,5 @@
 package cn.ygyg.cloudpayment.utils
 
-import android.text.TextUtils
 import cn.ygyg.cloudpayment.BuildConfig
 import cn.ygyg.cloudpayment.app.Constants
 import java.io.Serializable
@@ -45,7 +44,7 @@ object ConfigUtil {
                 return it[0].appId
             }
         }
-        return Constants.WX.WEIXIN_APP_ID
+        return Constants.WX.DEF_WEI_XIN_APP_ID
     }
 
     /**
