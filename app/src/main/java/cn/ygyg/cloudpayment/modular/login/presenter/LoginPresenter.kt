@@ -227,6 +227,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
         RequestManager.post(UrlConstants.getToken)
                 .param("code", code)
                 .param("appId", ConfigUtil.getWXAppId())
+                .param("applicationId",ConfigUtil.getApplicationId())
                 .param("companyCode", ConfigUtil.getCompanyCode())
                 .execute(TokenEntity::class.java)
                 .flatMap { optional ->

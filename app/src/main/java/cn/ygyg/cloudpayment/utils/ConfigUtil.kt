@@ -37,6 +37,7 @@ object ConfigUtil {
      * 获取微信APPID
      */
     fun getWXAppId(): String {
+        checkEmpty()
         val paymentDetails = configEntity?.paymentDetails
         val list = paymentDetails?.filter { it.paymentMethod == "Q" && it.paymentType == "APP" }
         list?.let {
@@ -51,6 +52,7 @@ object ConfigUtil {
      * 获取支付宝APPID
      */
     fun getAlyPayAppId(): String {
+        checkEmpty()
         val paymentDetails = configEntity?.paymentDetails
         val list = paymentDetails?.filter { it.paymentMethod == "A" && it.paymentType == "APP" }
         list?.let {
@@ -59,6 +61,11 @@ object ConfigUtil {
             }
         }
         return ""
+    }
+
+    fun getApplicationId(): String {
+        checkEmpty()
+        return configEntity?.applicationId ?: ""
     }
 
     fun isNotEmpty(): Boolean {
@@ -83,6 +90,7 @@ object ConfigUtil {
             var appId: String = "",
             var applicationName: String = "",
             var applicationType: String = "",
+            var applicationId: String = "",
             var companyId: String = "",
             var companyName: String = "",
             var groupName: String = "",
