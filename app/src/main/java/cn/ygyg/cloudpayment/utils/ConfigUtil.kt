@@ -45,7 +45,7 @@ object ConfigUtil {
                 return it[0].appId
             }
         }
-        return Constants.WX.DEF_WEI_XIN_APP_ID
+        return Constants.DEF_WEI_XIN_APP_ID
     }
 
     /**

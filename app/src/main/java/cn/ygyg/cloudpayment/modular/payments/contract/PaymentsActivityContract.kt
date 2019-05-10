@@ -1,5 +1,6 @@
 package cn.ygyg.cloudpayment.modular.payments.contract
 
+import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.payments.entity.CreateOrderResponseEntity
 import com.cn.lib.basic.IBasePresenter
@@ -19,10 +20,10 @@ class PaymentsActivityContract {
          * @param amount 支付金额
          * @param contractCode 物联网表编号
          * @param phone 手机号/账户名
-         * @param payMode 支付方式
+         * @param paymentMethod 支付方式
          * @param payType 泛起支付的平台类型 APP
          *
          */
-        fun createOrder(amount: String, contractCode: String, phone: String, payMode: String, payType: String)
+        fun createOrder(amount: String, contractCode: String, phone: String, paymentMethod: Constants.PaymentMethod, payType: String)
     }
 }

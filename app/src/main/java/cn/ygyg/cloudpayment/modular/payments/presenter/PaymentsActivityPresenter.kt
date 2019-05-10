@@ -2,9 +2,11 @@ package cn.ygyg.cloudpayment.modular.payments.presenter
 
 import cn.ygyg.cloudpayment.api.RequestManager
 import cn.ygyg.cloudpayment.api.UrlConstants
+import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.modular.internet.entity.DeviceResponseEntity
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsActivityContract
 import cn.ygyg.cloudpayment.modular.payments.entity.CreateOrderResponseEntity
+import cn.ygyg.cloudpayment.utils.ConfigUtil
 import cn.ygyg.cloudpayment.utils.ProgressUtil
 import cn.ygyg.cloudpayment.utils.UserUtil
 import com.cn.lib.basic.BasePresenterImpl
@@ -45,12 +47,13 @@ class PaymentsActivityPresenter(view: PaymentsActivityContract.View) :
                 })
     }
 
-    override fun createOrder(amount: String, contractCode: String, phone: String, payMode: String, payType: String) {
+    override fun createOrder(amount: String, contractCode: String, phone: String, paymentMethod: Constants.PaymentMethod, payType: String) {
         RequestManager.post(UrlConstants.createOrder)
                 .param("amount", "0.01")
+                .param("applicationId ", ConfigUtil.getApplicationId())
                 .param("contractCode", contractCode)
                 .param("mobile", phone)
-                .param("paymentMethod", payMode)
+                .param("paymentMethod", paymentMethod.string())
                 .param("paymentType", payType)
                 .execute("", object : ResultCallback<CreateOrderResponseEntity>() {
                     override fun onStart(tag: Any?) {

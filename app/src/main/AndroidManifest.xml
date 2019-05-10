@@ -70,6 +70,7 @@
         <activity android:name=".modular.internet.activity.AddressSelectorActivity" />
         <activity
             android:name=".modular.payments.activity.PaymentsActivity"
+            android:launchMode="singleTask"
             android:windowSoftInputMode="adjustResize|stateUnchanged" />
         <activity android:name=".modular.payments.activity.PaymentsHistoryActivity" />
         <activity android:name=".modular.payments.activity.PaymentsCompleteActivity" />

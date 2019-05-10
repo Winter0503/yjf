@@ -20,18 +20,23 @@ class WXPayEntryActivity : BaseActivity(), IWXAPIEventHandler {
         WXUtil.mWxApi.handleIntent(intent, this)
     }
 
+    companion object {
+        var amount = ""
+    }
+
     override fun initData() {
         WXUtil.mWxApi.handleIntent(intent, this)
     }
 
     override fun onResp(baseResp: BaseResp) {
-        val type = baseResp.type //类型：分享还是登录
+        val type = baseResp.type
         Log.i("onResp", type.toString())
         Log.i("onResp", baseResp.errCode.toString())
         if (baseResp.type == ConstantsAPI.COMMAND_PAY_BY_WX) {
             startActivity(Intent(this, PaymentsCompleteActivity::class.java).apply {
                 putExtra(BaseActivity.ACTIVITY_BUNDLE, Bundle().apply {
                     putBoolean(Constants.IntentKey.IS_SUCCESS, BaseResp.ErrCode.ERR_OK == baseResp.errCode)
+                    putString(Constants.IntentKey.AMOUNT, amount)
                 })
             })
         }

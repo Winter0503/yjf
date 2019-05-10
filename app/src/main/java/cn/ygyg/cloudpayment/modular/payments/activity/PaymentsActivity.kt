@@ -12,10 +12,8 @@ import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsActivityContract
 import cn.ygyg.cloudpayment.modular.payments.entity.CreateOrderResponseEntity
 import cn.ygyg.cloudpayment.modular.payments.presenter.PaymentsActivityPresenter
-import cn.ygyg.cloudpayment.utils.HeaderBuilder
-import cn.ygyg.cloudpayment.utils.UserUtil
-import cn.ygyg.cloudpayment.utils.ViewUtils
-import cn.ygyg.cloudpayment.utils.WXUtil
+import cn.ygyg.cloudpayment.utils.*
+import cn.ygyg.cloudpayment.wxapi.WXPayEntryActivity
 import com.cn.lib.basic.BaseMvpActivity
 import com.tencent.mm.opensdk.modelpay.PayReq
 import kotlinx.android.synthetic.main.activity_payments.*
@@ -28,9 +26,16 @@ class PaymentsActivity :
     override fun getContentViewResId(): Int = R.layout.activity_payments
     private var contractCode = ""
     private var deviceCode = ""
-    private val companyCode = Constants.WX.COMPANY_CODE
-    private var payMode = ""
+    private val companyCode = ConfigUtil.getCompanyCode()
+    private var paymentMethod: Constants.PaymentMethod = Constants.PaymentMethod.WX_PAY
     private var amount = ""
+    override fun onNewIntent(intent: Intent?) {
+        bundle?.let {
+            deviceCode = it.getString(Constants.IntentKey.DEVICE_CODE, "")
+            mPresenter?.getBindDevice(deviceCode, companyCode)
+        } ?: finish()
+        initData()
+    }
 
     override fun initViews() {
         HeaderBuilder(this).apply {
@@ -105,13 +110,12 @@ class PaymentsActivity :
         ali_pay.setOnClickListener {
             wx_pay_select.visibility = View.GONE
             ali_pay_select.visibility = View.VISIBLE
-            payMode = "A"
+            paymentMethod = Constants.PaymentMethod.ALI_PAY
         }
         wx_pay.setOnClickListener {
             ali_pay_select.visibility = View.GONE
             wx_pay_select.visibility = View.VISIBLE
-            payMode = "Q"
-
+            paymentMethod = Constants.PaymentMethod.WX_PAY
         }
 
 
@@ -121,7 +125,7 @@ class PaymentsActivity :
                         amount,
                         contractCode,
                         UserUtil.getUserName(),
-                        payMode,
+                        paymentMethod,
                         "APP")
             }
         }
@@ -138,10 +142,6 @@ class PaymentsActivity :
     private fun checkPay(): Boolean {
         if (amount.isEmpty()) {
             showToast("充值金额不能为空")
-            return false
-        }
-        if (payMode.isEmpty()) {
-            showToast("支付方式不能为空")
             return false
         }
         if (contractCode.isEmpty()) {
@@ -161,7 +161,8 @@ class PaymentsActivity :
 
     override fun onCreateOrderSuccess(response: CreateOrderResponseEntity) {
         when (response.paymentMethod) {
-            "Q" -> {
+            Constants.PaymentMethod.WX_PAY.string() -> {
+                WXPayEntryActivity.amount = response.amount.toString()
                 val request = PayReq()
                 request.appId = response.appid
                 request.partnerId = response.partnerid

@@ -3,6 +3,7 @@ package cn.ygyg.cloudpayment.modular.payments.activity
 import android.view.View
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.app.Constants
+import cn.ygyg.cloudpayment.modular.home.activity.MainTabActivity
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
 import com.cn.lib.basic.BaseActivity
 import kotlinx.android.synthetic.main.activity_payments_complete.*
@@ -14,6 +15,8 @@ class PaymentsCompleteActivity : BaseActivity() {
         var isSuccess = false
         bundle?.let {
             isSuccess = it.getBoolean(Constants.IntentKey.IS_SUCCESS)
+            amount_num.text = it.getString(Constants.IntentKey.AMOUNT)
+
         }
         val builder = HeaderBuilder(this)
         builder.setLeftImageRes(R.mipmap.back)
@@ -33,10 +36,11 @@ class PaymentsCompleteActivity : BaseActivity() {
             builder.setTitle(R.string.payment_failed)
 
         }
-        amount_num.text = "500.00"
     }
 
     override fun initListener() {
-        super.initListener()
+        to_payments_history.setOnClickListener { toActivity(PaymentsHistoryActivity::class.java) }
+        payment_again.setOnClickListener { toActivity(PaymentsActivity::class.java) }
+        back_to_main.setOnClickListener { toActivity(MainTabActivity::class.java) }
     }
 }

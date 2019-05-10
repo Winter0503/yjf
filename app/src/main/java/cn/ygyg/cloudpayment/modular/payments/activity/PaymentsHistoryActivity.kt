@@ -5,6 +5,7 @@ import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.modular.payments.adapter.PaymentsHistoryAdapter
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsHistoryActivityContract
 import cn.ygyg.cloudpayment.modular.payments.presenter.PaymentsHistoryActivityPresenter
+import cn.ygyg.cloudpayment.modular.payments.vm.HistoryVM
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
 import cn.ygyg.cloudpayment.widget.LoadMoreView
 import cn.ygyg.cloudpayment.widget.ProgressHeaderView
@@ -18,6 +19,7 @@ class PaymentsHistoryActivity :
         PaymentsHistoryActivityContract.View {
     private val pageSize = 10
     private val pageNum = 1
+    private var isLastPage = false
     private val adapter: PaymentsHistoryAdapter by lazy { PaymentsHistoryAdapter() }
 
     override fun createPresenter(): PaymentsHistoryActivityContract.Presenter = PaymentsHistoryActivityPresenter(this)
@@ -37,16 +39,35 @@ class PaymentsHistoryActivity :
     override fun initListener() {
         refresh_layout.setOnRefreshListener(object : RefreshListenerAdapter() {
             override fun onRefresh(refreshLayout: TwinklingRefreshLayout?) {
-                mPresenter?.loadPage(0, pageSize)
+                mPresenter?.loadPage(1, pageSize)
             }
 
             override fun onLoadMore(refreshLayout: TwinklingRefreshLayout?) {
-                mPresenter?.loadPage(pageNum + 1, pageSize)
+                if (!isLastPage) {
+                    mPresenter?.loadPage(pageNum + 1, pageSize)
+                } else {
+                    refresh_layout.finishLoadmore()
+                    showToast("没有更多了")
+                }
             }
         })
     }
 
     override fun initData() {
-        mPresenter?.loadPage(0, pageSize)
+        mPresenter?.loadPage(1, pageSize)
+    }
+
+    override fun onLoadCompleted() {
+        refresh_layout.finishLoadmore()
+        refresh_layout.finishRefreshing()
+    }
+
+    override fun onLoadSuccess(list: ArrayList<out HistoryVM>?, firstPage: Boolean, lastPage: Boolean) {
+        if (firstPage) {
+            adapter.setData(list)
+        } else {
+            adapter.addData(list)
+        }
+        isLastPage = lastPage
     }
 }

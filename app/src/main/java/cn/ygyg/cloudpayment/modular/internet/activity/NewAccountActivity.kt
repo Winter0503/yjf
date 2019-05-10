@@ -12,6 +12,7 @@ import cn.ygyg.cloudpayment.modular.internet.helper.InquireAccountDialog
 import cn.ygyg.cloudpayment.modular.internet.presenter.NewAccountActivityPresenter
 import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.register.activity.UserAgreementActivity
+import cn.ygyg.cloudpayment.utils.ConfigUtil
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
 import com.cn.lib.basic.BaseMvpActivity
 import kotlinx.android.synthetic.main.activity_new_account.*
@@ -20,7 +21,7 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
         NewAccountActivityContract.View {
     private val headerBuilder: HeaderBuilder by lazy { HeaderBuilder(this) }
     private var deviceCode = ""
-    private val companyCode = Constants.WX.COMPANY_CODE
+    private val companyCode = ConfigUtil.getCompanyCode()
     private val accountDialog: ConfirmAccountDialog by lazy {
         ConfirmAccountDialog(this).apply {
             setOnConformClick(View.OnClickListener {
@@ -71,7 +72,7 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
     }
 
     override fun initData() {
-        pay_cost_company.text = Constants.WX.COMPANY_NAME
+        pay_cost_company.text = ConfigUtil.getCompanyName()
     }
 
     override fun onLoadDeviceSuccess(result: DeviceVM, deviceCode: String) {

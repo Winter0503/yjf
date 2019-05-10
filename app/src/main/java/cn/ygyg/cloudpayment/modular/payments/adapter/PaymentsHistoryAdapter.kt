@@ -13,7 +13,7 @@ class PaymentsHistoryAdapter : RecyclerView.Adapter<BaseViewHolder>() {
     private val list = ArrayList<HistoryVM>()
 
 
-    fun setData(list: ArrayList<HistoryVM>?) {
+    fun setData(list: ArrayList<out HistoryVM>?) {
         this.list.clear()
         list?.let {
             this.list.addAll(it)
@@ -21,7 +21,7 @@ class PaymentsHistoryAdapter : RecyclerView.Adapter<BaseViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun addData(list: ArrayList<HistoryVM>?) {
+    fun addData(list: ArrayList<out HistoryVM>?) {
         list?.let {
             this.list.addAll(it)
         }
