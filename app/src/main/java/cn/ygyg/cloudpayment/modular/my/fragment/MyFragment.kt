@@ -90,8 +90,8 @@ class MyFragment : BaseMvpFragment<MyContract.Presenter, MyContract.View>(), MyC
 
     @SuppressLint("SetTextI18n")
     override fun loaderPageDataSuccess(entity: UserEntity?) {
-        entity?.let {
-            val phone = StringUtil.blurPhone(entity.cellPhone)
+        entity?.cellPhone?.let {
+            val phone = StringUtil.blurPhone(it)
             tv_phone.text = "Hello,$phone"
         }
         setHasLoadedOnce(true)

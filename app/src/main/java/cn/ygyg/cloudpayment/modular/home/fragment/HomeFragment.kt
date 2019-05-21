@@ -146,6 +146,7 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
         RxBus.get().unregister(this)
     }
 
+    @Suppress("unused", "UNUSED_PARAMETER")
     @Subscribe(thread = EventThread.MAIN_THREAD, tags = [Tag("refreshDevice")])
     fun refreshList(isRefresh: String) {
         refreshLayout.startRefresh()

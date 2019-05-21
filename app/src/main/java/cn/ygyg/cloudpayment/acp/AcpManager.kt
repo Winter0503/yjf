@@ -236,6 +236,7 @@ internal class AcpManager(private val mContext: Context) {
      * @param resultCode  返回码
      * @param data        返回数据
      */
+    @Suppress("UNUSED_PARAMETER")
     @Synchronized
     fun onActivityResult(activity: Activity, requestCode: Int, resultCode: Int, data: Intent) {
         if (mCallback == null || mOptions == null
