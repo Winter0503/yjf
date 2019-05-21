@@ -219,12 +219,14 @@ object StringUtil {
         return matcher.matches()
     }
 
-    fun blurPhone(phone: String): String {
-        var tempPhone = phone
-        val phoneBlurReplaceRegex = "$1****$2"
-        val phoneBlurRegex = "(\\d{3})\\d{4}(\\d{4})"
-        if (checkCellPhone(phone)) {
-            tempPhone =  phone.replace(phoneBlurRegex.toRegex(), phoneBlurReplaceRegex)
+    fun blurPhone(phone: String?): String {
+        var tempPhone = phone ?: ""
+        phone?.let {
+            val phoneBlurReplaceRegex = "$1****$2"
+            val phoneBlurRegex = "(\\d{3})\\d{4}(\\d{4})"
+            if (checkCellPhone(phone)) {
+                tempPhone =  phone.replace(phoneBlurRegex.toRegex(), phoneBlurReplaceRegex)
+            }
         }
         return tempPhone
     }

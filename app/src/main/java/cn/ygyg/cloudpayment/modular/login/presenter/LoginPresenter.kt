@@ -229,10 +229,10 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
                 .execute(TokenEntity::class.java)
                 .flatMap { optional ->
                     val entity = optional.get()
-                    SharePreUtil.putString(OPEN_ID, entity.openid)
+                    SharePreUtil.putString(OPEN_ID, entity.openid ?: "")
                     RequestManager.post(UrlConstants.getMemberInfo)
                             .param("appId", ConfigUtil.getWXAppId())
-                            .param("openId", entity.openid)
+                            .param("openId", entity.openid?: "")
                             .execute(UserEntity::class.java)
                 }
                 .subscribeWith(ResultCallbackSubscriber("wxLogin", object : ResultCallback<UserEntity>() {

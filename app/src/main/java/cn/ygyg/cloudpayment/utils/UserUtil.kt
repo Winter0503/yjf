@@ -22,7 +22,7 @@ object UserUtil {
         userEntity = user
         token = user.token
         token?.let {
-            SharePreUtil.putString(TOKEN_KEY, user.token)
+            SharePreUtil.putString(TOKEN_KEY, it)
         }
         SharePreUtil.saveBeanByFastJson(Constants.IntentKey.USER_INFO, user)
     }

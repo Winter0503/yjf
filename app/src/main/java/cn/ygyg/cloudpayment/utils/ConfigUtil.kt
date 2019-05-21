@@ -42,7 +42,7 @@ object ConfigUtil {
         val list = paymentDetails?.filter { it.paymentMethod == "Q" && it.paymentType == "APP" }
         list?.let {
             if (it.isNotEmpty()) {
-                return it[0].appId
+                return it[0].appId ?: ""
             }
         }
         return Constants.DEF_WEI_XIN_APP_ID
@@ -57,7 +57,7 @@ object ConfigUtil {
         val list = paymentDetails?.filter { it.paymentMethod == "A" && it.paymentType == "APP" }
         list?.let {
             if (it.isNotEmpty()) {
-                return it[0].appId
+                return it[0].appId ?: ""
             }
         }
         return ""
@@ -85,22 +85,23 @@ object ConfigUtil {
         configEntity = null
     }
 }
- class ConfigEntity: Serializable {
-     var companyCode: String = ""
-     var appId: String = ""
-     var applicationName: String = ""
-     var applicationType: String = ""
-     var applicationId: String = ""
-     var companyId: String = ""
-     var companyName: String = ""
-     var groupName: String = ""
-     var paymentDetails: MutableList<PaymentEntity> = mutableListOf()
 
- }
+class ConfigEntity : Serializable {
+    var companyCode: String? = null
+    var appId: String? = null
+    var applicationName: String? = null
+    var applicationType: String? = null
+    var applicationId: String? = null
+    var companyId: String? = null
+    var companyName: String? = null
+    var groupName: String? = null
+    var paymentDetails: MutableList<PaymentEntity> = mutableListOf()
 
-class PaymentEntity: Serializable {
-    var appId: String = ""
-    var paymentType: String = ""
-    var paymentMethod: String = ""
+}
+
+class PaymentEntity : Serializable {
+    var appId: String? = null
+    var paymentType: String? = null
+    var paymentMethod: String? = null
 }
 

@@ -26,22 +26,22 @@ import java.io.Serializable
 
  */
  class UserEntity : Serializable {
-    var cellPhone: String = ""
-    var mid: String = ""
-    var userPassword: String = ""
-    var nickName: String = ""
-    var userName: String = ""
-    var gender: String = ""
-    var identityCard: String = ""
-    var email: String = ""
-    var address: String = ""
-    var appId: String = ""
-    var validStatus: String = ""
-    var signInNum: String = ""
-    var deleted: String = ""
-    var createUser: String = ""
-    var openId: String = ""
-    var postDate: String = ""
-    var updateUser: String = ""
-    var token: String = ""
+    var cellPhone: String? =null
+    var mid: String? =null
+    var userPassword: String? =null
+    var nickName: String? =null
+    var userName: String? =null
+    var gender: String? =null
+    var identityCard: String? =null
+    var email: String? =null
+    var address: String? =null
+    var appId: String? =null
+    var validStatus: String? =null
+    var signInNum: String? =null
+    var deleted: String? =null
+    var createUser: String? =null
+    var openId: String? =null
+    var postDate: String? =null
+    var updateUser: String? =null
+    var token: String? =null
 }
