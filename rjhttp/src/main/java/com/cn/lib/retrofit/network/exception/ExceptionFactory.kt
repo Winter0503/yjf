@@ -2,6 +2,7 @@ package com.cn.lib.retrofit.network.exception
 
 import android.net.ParseException
 import android.text.TextUtils
+import android.util.Log
 
 import com.cn.lib.retrofit.network.util.LogUtil
 import com.cn.lib.retrofit.network.config.ResultConfigLoader
@@ -31,7 +32,7 @@ class ExceptionFactory {
          */
         const val UNKNOWN = "1000"
         /**
-         * 解析错误
+         * mTabs
          */
         const val PARSE_ERROR = "1001"
         /**
@@ -127,6 +128,11 @@ class ExceptionFactory {
             } else if (e is com.alibaba.fastjson.JSONException
                     || e is JSONException
                     || e is ParseException) {
+                Log.e("TAG", "===>>>>>>" + e.printStackTrace())
+                Log.e("TAG", "===>>>>>>" + e.localizedMessage)
+                Log.e("TAG", "===>>>>>>" + e.fillInStackTrace())
+                Log.e("TAG", "===>>>>>>" + e.message)
+                Log.e("TAG", "===>>>>>>" + e.toString())
                 ex = ApiThrowable(e, ERROR.PARSE_ERROR)
                 ex.message = "解析错误"
                 return ex

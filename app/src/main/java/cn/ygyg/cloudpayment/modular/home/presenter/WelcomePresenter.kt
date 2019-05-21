@@ -2,10 +2,10 @@ package cn.ygyg.cloudpayment.modular.home.presenter
 
 import android.content.Context
 import cn.ygyg.cloudpayment.BuildConfig
-import cn.ygyg.cloudpayment.api.RequestManager
-import cn.ygyg.cloudpayment.api.UrlConstants
+import cn.ygyg.cloudpayment.net.RequestManager
+import cn.ygyg.cloudpayment.net.UrlConstants
 import cn.ygyg.cloudpayment.modular.home.contract.WelcomeContract
-import cn.ygyg.cloudpayment.utils.AppUtil
+import cn.ygyg.cloudpayment.utils.ConfigEntity
 import cn.ygyg.cloudpayment.utils.ConfigUtil
 import com.cn.lib.basic.BasePresenterImpl
 import com.cn.lib.retrofit.network.callback.ResultCallback
@@ -18,7 +18,7 @@ class WelcomePresenter(view: WelcomeContract.View) : BasePresenterImpl<WelcomeCo
     override fun loaderPaymentConfig(context: Context) {
         RequestManager.get(UrlConstants.getPaymentInformation)
                 .param("configurationName", BuildConfig.APPLICATION_ID)
-                .execute("getCompany", object : ResultCallback<ConfigUtil.ConfigEntity>() {
+                .execute("getCompany", object : ResultCallback<ConfigEntity>() {
 
                     override fun onStart(tag: Any?) {
 
@@ -32,7 +32,7 @@ class WelcomePresenter(view: WelcomeContract.View) : BasePresenterImpl<WelcomeCo
                         mvpView?.loaderConfigError()
                     }
 
-                    override fun onSuccess(tag: Any?, result: ConfigUtil.ConfigEntity?) {
+                    override fun onSuccess(tag: Any?, result: ConfigEntity?) {
                         result?.apply {
                             ConfigUtil.saveConfig(this)
                             if (ConfigUtil.isNotEmpty()) {

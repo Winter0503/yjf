@@ -1,9 +1,9 @@
-package cn.ygyg.cloudpayment.api
+package cn.ygyg.cloudpayment.net
 
-import cn.ygyg.cloudpayment.api.request.ResultDeleteRequest
-import cn.ygyg.cloudpayment.api.request.ResultGetRequest
-import cn.ygyg.cloudpayment.api.request.ResultPostRequest
-import cn.ygyg.cloudpayment.api.request.ResultPutRequest
+import cn.ygyg.cloudpayment.net.request.ResultDeleteRequest
+import cn.ygyg.cloudpayment.net.request.ResultGetRequest
+import cn.ygyg.cloudpayment.net.request.ResultPostRequest
+import cn.ygyg.cloudpayment.net.request.ResultPutRequest
 import cn.ygyg.cloudpayment.app.Constants.IntentKey.TOKEN_KEY
 import cn.ygyg.cloudpayment.utils.UserUtil
 

@@ -84,24 +84,23 @@ object ConfigUtil {
     fun clear() {
         configEntity = null
     }
+}
+ class ConfigEntity: Serializable {
+     var companyCode: String = ""
+     var appId: String = ""
+     var applicationName: String = ""
+     var applicationType: String = ""
+     var applicationId: String = ""
+     var companyId: String = ""
+     var companyName: String = ""
+     var groupName: String = ""
+     var paymentDetails: MutableList<PaymentEntity> = mutableListOf()
 
-    data class ConfigEntity(
-            var companyCode: String = "",
-            var appId: String = "",
-            var applicationName: String = "",
-            var applicationType: String = "",
-            var applicationId: String = "",
-            var companyId: String = "",
-            var companyName: String = "",
-            var groupName: String = "",
-            var paymentDetails: MutableList<PaymentEntity> = mutableListOf()
+ }
 
-    ) : Serializable
-
-    data class PaymentEntity(
-            var appId: String = "",
-            var paymentType: String = "",
-            var paymentMethod: String = ""
-    ) : Serializable
+class PaymentEntity: Serializable {
+    var appId: String = ""
+    var paymentType: String = ""
+    var paymentMethod: String = ""
 }
 

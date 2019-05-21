@@ -1,29 +1,22 @@
 package cn.ygyg.cloudpayment.modular.register.presenter
 
 import android.annotation.SuppressLint
-import android.os.AsyncTask.execute
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
-import android.util.Log
-import cn.ygyg.cloudpayment.api.RequestManager
-import cn.ygyg.cloudpayment.api.UrlConstants
+import cn.ygyg.cloudpayment.net.RequestManager
+import cn.ygyg.cloudpayment.net.UrlConstants
 import cn.ygyg.cloudpayment.modular.register.contract.RegisterContract
 import cn.ygyg.cloudpayment.utils.ProgressUtil
 import cn.ygyg.cloudpayment.utils.StringUtil
-import com.alibaba.fastjson.JSONObject
 import com.cn.lib.basic.BasePresenterImpl
-import com.cn.lib.retrofit.network.RxHttp
 import com.cn.lib.retrofit.network.callback.ResultCallback
 import com.cn.lib.retrofit.network.exception.ApiThrowable
-import com.cn.lib.retrofit.network.subscriber.BaseSubscriber
 import com.cn.lib.retrofit.network.subscriber.ResultCallbackSubscriber
-import com.tencent.mm.opensdk.diffdev.a.e
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
-import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 

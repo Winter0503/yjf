@@ -1,11 +1,12 @@
-package cn.ygyg.cloudpayment.api
+package cn.ygyg.cloudpayment.net
 
 import com.cn.lib.retrofit.network.entity.ApiResultEntity
+import java.io.Serializable
 
 /**
  * Created by Admin on 2019/4/18.
  */
-class BaseApiResultEntity<T> : ApiResultEntity<T>() {
+class BaseApiResultEntity<T> : ApiResultEntity<T>(),Serializable {
 
     override var code: String = "-1"
         get() = retCode

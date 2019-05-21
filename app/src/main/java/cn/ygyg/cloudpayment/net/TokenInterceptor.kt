@@ -1,7 +1,6 @@
-package cn.ygyg.cloudpayment.api
+package cn.ygyg.cloudpayment.net
 
 import android.content.Intent
-import android.util.Log
 import cn.ygyg.cloudpayment.app.Constants.IntentKey.TOKEN_KEY
 import cn.ygyg.cloudpayment.modular.login.activity.LoginActivity
 import cn.ygyg.cloudpayment.utils.UserUtil

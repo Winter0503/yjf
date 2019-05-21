@@ -1,7 +1,7 @@
 package cn.ygyg.cloudpayment.modular.payments.presenter
 
-import cn.ygyg.cloudpayment.api.RequestManager
-import cn.ygyg.cloudpayment.api.UrlConstants
+import cn.ygyg.cloudpayment.net.RequestManager
+import cn.ygyg.cloudpayment.net.UrlConstants
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsHistoryActivityContract
 import cn.ygyg.cloudpayment.modular.payments.entity.HistoryPageResponseEntity
 import cn.ygyg.cloudpayment.utils.UserUtil

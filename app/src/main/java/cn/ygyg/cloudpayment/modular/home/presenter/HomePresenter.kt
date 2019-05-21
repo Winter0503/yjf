@@ -1,7 +1,7 @@
 package cn.ygyg.cloudpayment.modular.home.presenter
 
-import cn.ygyg.cloudpayment.api.RequestManager
-import cn.ygyg.cloudpayment.api.UrlConstants
+import cn.ygyg.cloudpayment.net.RequestManager
+import cn.ygyg.cloudpayment.net.UrlConstants
 import cn.ygyg.cloudpayment.modular.home.contract.HomeContract
 import cn.ygyg.cloudpayment.modular.home.entity.DeviceListResponseEntity
 import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM

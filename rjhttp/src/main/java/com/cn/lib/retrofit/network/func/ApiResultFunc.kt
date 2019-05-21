@@ -28,7 +28,7 @@ class ApiResultFunc<T>(private val type: Type) : Function<ResponseBody, ApiResul
             }
         }
         if (apiResult.code == "-1") {
-            throw JSONException()
+            throw JSONException(apiResult.msg)
         }
         return apiResult
     }

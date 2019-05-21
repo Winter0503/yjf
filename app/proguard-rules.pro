@@ -56,6 +56,15 @@
 # 这个过滤器是谷歌推荐的算法，一般不做更改
 -optimizations !code/simplification/cast,!field/*,!class/merging/*
 
+# apk 包内所有 class 的内部结构
+-dump class_files.txt
+# 未混淆的类和成员
+-printseeds seeds.txt
+# 列出从 apk 中删除的代码
+-printusage unused.txt
+# 混淆前后的映射
+-printmapping mapping.txt
+
 
 #############################################
 #
@@ -76,9 +85,10 @@
 -keep public class * extends android.view.View
 -keep public class com.android.vending.licensing.ILicensingService
 
+-ignorewarnings -keep class * { public private *; }
 
 # 保留support下的所有类及其内部类
--keep class android.support.** {*;}
+-keep class android.support.** { *; }
 
 # 保留继承的
 -keep public class * extends android.support.v4.**
@@ -123,12 +133,9 @@
 -keep class * implements android.os.Parcelable {
     public static final android.os.Parcelable$Creator *;
 }
--keepclassmembers class * implements android.os.Parcelable {
- public <fields>;
- private <fields>;
-}
 
 # 保留Serializable序列化的类不被混淆
+-keepnames class * implements java.io.Serializable
 -keepclassmembers class * implements java.io.Serializable {
     static final long serialVersionUID;
     private static final java.io.ObjectStreamField[] serialPersistentFields;
@@ -170,8 +177,8 @@
 
 #okhttp
 -dontwarn okhttp3.**
--keep class okhttp3.**{*;}
--keep interface okhttp3.**{*;}
+-keep class okhttp3.**{ *; }
+-keep interface okhttp3.**{ *; }
 
 #okio
 -dontwarn okio.**
@@ -185,7 +192,7 @@
 -keepattributes Signature
 -keepattributes Exceptions
 -dontwarn rx.**
--keep class rx.**{*;}
+-keep class rx.**{ *; }
 
 # RxJava RxAndroid
 -dontwarn sun.misc.**
@@ -199,6 +206,7 @@
 -keepclassmembers class rx.internal.util.unsafe.BaseLinkedQueueConsumerNodeRef {
     rx.internal.util.atomic.LinkedQueueNode consumerNode;
 }
+-keepclassmembers class rx.android.**{ *; }
 
 #微信混淆开始
 -keep class com.tencent.mm.opensdk.** {
@@ -238,5 +246,10 @@
 
 
 #高德地图 --end
+
+#实体类
+-keep class com.cn.lib.retrofit.network.entity.**{ *; }
+-keep class cn.ygyg.cloudpayment.net.BaseApiResultEntity{ *; }
+-keep class cn.ygyg.cloudpayment.modular.login.entity.**{ *; }
 
 

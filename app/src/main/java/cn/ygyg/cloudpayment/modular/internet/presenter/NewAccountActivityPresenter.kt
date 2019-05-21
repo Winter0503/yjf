@@ -1,7 +1,7 @@
 package cn.ygyg.cloudpayment.modular.internet.presenter
 
-import cn.ygyg.cloudpayment.api.RequestManager
-import cn.ygyg.cloudpayment.api.UrlConstants
+import cn.ygyg.cloudpayment.net.RequestManager
+import cn.ygyg.cloudpayment.net.UrlConstants
 import cn.ygyg.cloudpayment.modular.internet.contract.NewAccountActivityContract
 import cn.ygyg.cloudpayment.modular.internet.entity.DeviceResponseEntity
 import cn.ygyg.cloudpayment.utils.ProgressUtil

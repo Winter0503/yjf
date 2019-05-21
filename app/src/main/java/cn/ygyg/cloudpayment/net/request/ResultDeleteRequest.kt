@@ -1,6 +1,6 @@
-package cn.ygyg.cloudpayment.api.request
+package cn.ygyg.cloudpayment.net.request
 
-import cn.ygyg.cloudpayment.api.BaseApiResultEntity
+import cn.ygyg.cloudpayment.net.BaseApiResultEntity
 import com.cn.lib.retrofit.network.callback.ResultCallback
 import com.cn.lib.retrofit.network.config.Optional
 import com.cn.lib.retrofit.network.proxy.ResultCallbackProxy

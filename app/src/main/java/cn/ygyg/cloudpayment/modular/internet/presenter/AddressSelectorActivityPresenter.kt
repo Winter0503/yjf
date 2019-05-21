@@ -1,8 +1,8 @@
 package cn.ygyg.cloudpayment.modular.internet.presenter
 
 import android.util.ArrayMap
-import cn.ygyg.cloudpayment.api.RequestManager
-import cn.ygyg.cloudpayment.api.UrlConstants
+import cn.ygyg.cloudpayment.net.RequestManager
+import cn.ygyg.cloudpayment.net.UrlConstants
 import cn.ygyg.cloudpayment.modular.internet.contract.AddressSelectorActivityContract
 import cn.ygyg.cloudpayment.modular.internet.entity.CityListResponseEntity
 import cn.ygyg.cloudpayment.modular.internet.entity.CityTitle

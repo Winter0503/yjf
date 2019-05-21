@@ -3,8 +3,8 @@ package cn.ygyg.cloudpayment.app
 import android.annotation.SuppressLint
 import android.app.Application
 import cn.ygyg.cloudpayment.R
-import cn.ygyg.cloudpayment.api.ParamInterceptor
-import cn.ygyg.cloudpayment.api.TokenInterceptor
+import cn.ygyg.cloudpayment.net.ParamInterceptor
+import cn.ygyg.cloudpayment.net.TokenInterceptor
 import cn.ygyg.cloudpayment.utils.SharePreUtil
 import cn.ygyg.cloudpayment.widget.LoadMoreView
 import cn.ygyg.cloudpayment.widget.ProgressHeaderView

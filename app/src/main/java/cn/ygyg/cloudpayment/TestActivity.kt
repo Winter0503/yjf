@@ -1,7 +1,7 @@
 package cn.ygyg.cloudpayment
 
 import android.util.Log
-import cn.ygyg.cloudpayment.api.RequestManager
+import cn.ygyg.cloudpayment.net.RequestManager
 import com.cn.lib.basic.BaseActivity
 import com.cn.lib.retrofit.network.callback.ResultCallback
 import com.cn.lib.retrofit.network.exception.ApiThrowable
