@@ -18,7 +18,7 @@ class NewAccountActivityPresenter(view: NewAccountActivityContract.View) :
         RequestManager.post(UrlConstants.getDevice)
                 .param("meterCode", deviceCode)
                 .param("companyCode", companyCode)
-                .param("userName ", UserUtil.getUserName())
+                .param("userName", UserUtil.getUserName())
                 .execute("", object : ResultCallback<DeviceResponseEntity>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.getViewContext()?.let {

@@ -2,7 +2,11 @@ package cn.ygyg.cloudpayment.modular.payments.activity
 
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import cn.ygyg.cloudpayment.R
@@ -14,6 +18,8 @@ import cn.ygyg.cloudpayment.modular.payments.entity.CreateOrderResponseEntity
 import cn.ygyg.cloudpayment.modular.payments.presenter.PaymentsActivityPresenter
 import cn.ygyg.cloudpayment.utils.*
 import cn.ygyg.cloudpayment.wxapi.WXPayEntryActivity
+import com.alipay.sdk.app.PayTask
+import com.cn.lib.basic.BaseActivity
 import com.cn.lib.basic.BaseMvpActivity
 import com.tencent.mm.opensdk.modelpay.PayReq
 import kotlinx.android.synthetic.main.activity_payments.*
@@ -172,6 +178,22 @@ class PaymentsActivity :
                 request.timeStamp = response.timestamp
                 request.sign = response.sign
                 WXUtil.mWxApi.sendReq(request)
+            }
+            Constants.PaymentMethod.ALI_PAY.string() -> {
+                Thread(Runnable {
+                    val result = PayTask(this).payV2(response.alipayAPPStr, true)
+                    Handler(Looper.getMainLooper()).post {
+                        val payResult = AliPayResult(result)
+                        val resultStatus = payResult.resultStatus
+                        // 判断resultStatus 为9000则代表支付成功
+                        startActivity(Intent(this, PaymentsCompleteActivity::class.java).apply {
+                            putExtra(BaseActivity.ACTIVITY_BUNDLE, Bundle().apply {
+                                putBoolean(Constants.IntentKey.IS_SUCCESS, TextUtils.equals("9000", resultStatus))
+                                putString(Constants.IntentKey.AMOUNT, response.amount.toString())
+                            })
+                        })
+                    }
+                }).start()
             }
         }
     }
