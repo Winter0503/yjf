@@ -254,7 +254,7 @@
                     android:focusableInTouchMode="true"
                     android:gravity="center_vertical|end"
                     android:hint="@string/input_amount_hint"
-                    android:inputType="number"
+                    android:inputType="numberDecimal"
                     android:lines="1"
                     android:textColor="@color/text_color"
                     android:textColorHint="@color/text_hint_color"

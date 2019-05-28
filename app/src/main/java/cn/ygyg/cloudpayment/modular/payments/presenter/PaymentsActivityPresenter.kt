@@ -49,7 +49,7 @@ class PaymentsActivityPresenter(view: PaymentsActivityContract.View) :
 
     override fun createOrder(amount: String, contractCode: String, phone: String, paymentMethod: Constants.PaymentMethod, payType: String) {
         RequestManager.post(UrlConstants.createOrder)
-                .param("amount", "0.01")
+                .param("amount", amount)
                 .param("applicationId", ConfigUtil.getApplicationId())
                 .param("contractCode", contractCode)
                 .param("mobile", phone)
