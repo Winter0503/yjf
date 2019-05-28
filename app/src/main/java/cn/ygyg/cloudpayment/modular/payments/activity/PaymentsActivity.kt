@@ -8,9 +8,12 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
+import cn.ygego.vientiane.util.PermissionUtil
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.app.Constants
+import cn.ygyg.cloudpayment.app.MyApplication
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsActivityContract
@@ -180,20 +183,35 @@ class PaymentsActivity :
                 WXUtil.mWxApi.sendReq(request)
             }
             Constants.PaymentMethod.ALI_PAY.string() -> {
-                Thread(Runnable {
-                    val result = PayTask(this).payV2(response.alipayAPPStr, true)
-                    Handler(Looper.getMainLooper()).post {
-                        val payResult = AliPayResult(result)
-                        val resultStatus = payResult.resultStatus
-                        // 判断resultStatus 为9000则代表支付成功
-                        startActivity(Intent(this, PaymentsCompleteActivity::class.java).apply {
-                            putExtra(BaseActivity.ACTIVITY_BUNDLE, Bundle().apply {
-                                putBoolean(Constants.IntentKey.IS_SUCCESS, TextUtils.equals("9000", resultStatus))
-                                putString(Constants.IntentKey.AMOUNT, response.amount.toString())
-                            })
-                        })
-                    }
-                }).start()
+
+                PermissionUtil.Builder()
+                        .setContext(MyApplication.getApplication())
+                        .addPermissionName(PermissionUtil.READ_PHONE_STATE)
+                        .addPermissionName(PermissionUtil.WRITE_EXTERNAL_STORAGE)
+                        .setCallback(object : PermissionUtil.CheckPermissionCallback {
+                            override fun onGranted() {
+                                Thread(Runnable {
+                                    Log.i("PayTask", response.alipayAPPStr)
+                                    val result = PayTask(this@PaymentsActivity).payV2(response.alipayAPPStr, true)
+                                    Handler(Looper.getMainLooper()).post {
+                                        val payResult = AliPayResult(result)
+                                        val resultStatus = payResult.resultStatus
+                                        // 判断resultStatus 为9000则代表支付成功
+                                        startActivity(Intent(this@PaymentsActivity, PaymentsCompleteActivity::class.java).apply {
+                                            putExtra(BaseActivity.ACTIVITY_BUNDLE, Bundle().apply {
+                                                putBoolean(Constants.IntentKey.IS_SUCCESS, TextUtils.equals("9000", resultStatus))
+                                                putString(Constants.IntentKey.AMOUNT, response.amount.toString())
+                                            })
+                                        })
+                                    }
+                                }).start()
+                            }
+
+                            override fun onDenied(permissions: List<String>) {
+                            }
+
+                        }).build()
+
             }
         }
     }
