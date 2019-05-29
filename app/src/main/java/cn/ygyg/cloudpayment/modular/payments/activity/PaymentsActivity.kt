@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
@@ -56,6 +57,7 @@ class PaymentsActivity :
             deviceCode = it.getString(Constants.IntentKey.DEVICE_CODE, "")
             mPresenter?.getBindDevice(deviceCode, companyCode)
         } ?: finish()
+        input_amount.filters= arrayOf(DigitsFilter(2))
     }
 
     override fun initListener() {
