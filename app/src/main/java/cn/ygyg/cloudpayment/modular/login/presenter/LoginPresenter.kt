@@ -201,11 +201,6 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
     @SuppressLint("CheckResult")
     override fun login(loginType: Int, username: String, password: String) {
         if (loginType == 0) { //密码登录
-            val reg = "^(?![a-zA-Z]+\$)(?!\\d+\$)\\S{6,}\$"
-            if (!StringUtil.match(reg, password)) {
-                mvpView?.showToast("密码必须包含数字和字母")
-                return
-            }
             RequestManager.post(UrlConstants.login)
                     .param("password", password)
                     .param("username", username)
