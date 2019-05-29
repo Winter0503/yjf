@@ -39,7 +39,6 @@ class NewAccountActivityPresenter(view: NewAccountActivityContract.View) :
                     override fun onSuccess(tag: Any?, result: DeviceResponseEntity?) {
                         result?.let {
                             mvpView?.onLoadDeviceSuccess(it, deviceCode)
-                            RxBus.get().post("refreshDevice", "")
                         }
                     }
                 })
@@ -69,6 +68,7 @@ class NewAccountActivityPresenter(view: NewAccountActivityContract.View) :
 
                     override fun onSuccess(tag: Any?, result: String?) {
                         mvpView?.onBindDeviceSuccess(deviceCode, companyCode)
+                        RxBus.get().post("refreshDevice", "")
                     }
                 })
     }
