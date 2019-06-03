@@ -58,10 +58,10 @@ android {
     }
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
-            def suffix = ".apk"
-            def appName = "cloudpayment_V${variant.versionName}"
+            def suffix = '.apk'
+            def appName = "${variant.applicationId}_V${variant.versionName}"
             def git = getGitHeadRefsSuffix() == null ? "" : getGitHeadRefsSuffix()
-            if (git != "") {
+            if (git != null && git.length() != 0) {
                 appName = "${appName}_${variant.flavorName}${git}"
             }
             appName = "${appName}$suffix"
@@ -99,7 +99,7 @@ android {
 }
 
 dependencies {
-    implementation fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+    implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
     implementation project(':rjhttp')
     implementation 'com.lcodecorex:tkrefreshlayout:1.0.7'

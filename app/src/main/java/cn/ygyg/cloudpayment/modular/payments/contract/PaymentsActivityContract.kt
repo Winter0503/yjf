@@ -5,11 +5,15 @@ import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.payments.entity.CreateOrderResponseEntity
 import com.cn.lib.basic.IBasePresenter
 import com.cn.lib.basic.IBaseView
+import com.cn.lib.retrofit.network.exception.ApiThrowable
 
 class PaymentsActivityContract {
     interface View : IBaseView {
         fun onLoadDeviceSuccess(response: DeviceVM)
         fun onCreateOrderSuccess(response: CreateOrderResponseEntity)
+
+        fun onLoadDeviceError(err: ApiThrowable)
+        fun onCreateOrderError(err: ApiThrowable)
         fun finish()
     }
 

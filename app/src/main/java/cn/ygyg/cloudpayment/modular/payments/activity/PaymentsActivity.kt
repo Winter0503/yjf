@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Editable
-import android.text.InputFilter
 import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
@@ -25,6 +24,7 @@ import cn.ygyg.cloudpayment.wxapi.WXPayEntryActivity
 import com.alipay.sdk.app.PayTask
 import com.cn.lib.basic.BaseActivity
 import com.cn.lib.basic.BaseMvpActivity
+import com.cn.lib.retrofit.network.exception.ApiThrowable
 import com.tencent.mm.opensdk.modelpay.PayReq
 import kotlinx.android.synthetic.main.activity_payments.*
 
@@ -57,7 +57,7 @@ class PaymentsActivity :
             deviceCode = it.getString(Constants.IntentKey.DEVICE_CODE, "")
             mPresenter?.getBindDevice(deviceCode, companyCode)
         } ?: finish()
-        input_amount.filters= arrayOf(DigitsFilter(2))
+        input_amount.filters = arrayOf(DigitsFilter(2))
     }
 
     override fun initListener() {
@@ -216,5 +216,34 @@ class PaymentsActivity :
 
             }
         }
+    }
+
+    override fun onLoadDeviceError(err: ApiThrowable) {
+        DefaultPromptDialog.builder()
+                .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
+                .setContext(this)
+                .setTitleText("提示")
+                .setContentText(err.message)
+                .setAffirmText("确定")
+                .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
+                    override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
+                        dialog.dismiss()
+                        finish()
+                        return super.clickPositiveButton(dialog)
+                    }
+                })
+                .build()
+                .show()
+    }
+
+    override fun onCreateOrderError(err: ApiThrowable) {
+        DefaultPromptDialog.builder()
+                .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
+                .setContext(this)
+                .setTitleText("提示")
+                .setContentText(err.message)
+                .setAffirmText("确定")
+                .build()
+                .show()
     }
 }

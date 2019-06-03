@@ -35,8 +35,7 @@ class PaymentsActivityPresenter(view: PaymentsActivityContract.View) :
                     }
 
                     override fun onError(tag: Any?, e: ApiThrowable) {
-                        e.message?.let { mvpView?.showToast(it) }
-                        mvpView?.finish()
+                        mvpView?.onLoadDeviceError(e)
                     }
 
                     override fun onSuccess(tag: Any?, result: DeviceResponseEntity?) {
@@ -69,7 +68,7 @@ class PaymentsActivityPresenter(view: PaymentsActivityContract.View) :
                     }
 
                     override fun onError(tag: Any?, e: ApiThrowable) {
-                        e.message?.let { mvpView?.showToast(it) }
+                        mvpView?.onCreateOrderError(e)
                     }
 
                     override fun onSuccess(tag: Any?, result: CreateOrderResponseEntity?) {
