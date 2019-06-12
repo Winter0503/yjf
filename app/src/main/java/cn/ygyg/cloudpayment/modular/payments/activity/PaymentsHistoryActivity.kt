@@ -1,6 +1,7 @@
 package cn.ygyg.cloudpayment.modular.payments.activity
 
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.modular.payments.adapter.PaymentsHistoryAdapter
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsHistoryActivityContract
@@ -60,6 +61,11 @@ class PaymentsHistoryActivity :
     override fun onLoadCompleted() {
         refresh_layout.finishLoadmore()
         refresh_layout.finishRefreshing()
+        if (adapter.itemCount != 0) {
+            empty_view.visibility = View.GONE
+        } else {
+            empty_view.visibility = View.VISIBLE
+        }
     }
 
     override fun onLoadSuccess(list: ArrayList<out HistoryVM>?, firstPage: Boolean, lastPage: Boolean) {

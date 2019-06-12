@@ -396,7 +396,8 @@
                     android:paddingRight="10dp"
                     android:text="@string/contact_customer_service"
                     android:textColor="@color/text_green_color"
-                    android:textSize="@dimen/ts_content" />
+                    android:textSize="@dimen/ts_content"
+                    android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
