@@ -1,9 +1,9 @@
 package cn.ygyg.cloudpayment.modular.internet.presenter
 
-import cn.ygyg.cloudpayment.net.RequestManager
-import cn.ygyg.cloudpayment.net.UrlConstants
 import cn.ygyg.cloudpayment.modular.internet.contract.NewAccountActivityContract
 import cn.ygyg.cloudpayment.modular.internet.entity.DeviceResponseEntity
+import cn.ygyg.cloudpayment.net.RequestManager
+import cn.ygyg.cloudpayment.net.UrlConstants
 import cn.ygyg.cloudpayment.utils.ProgressUtil
 import cn.ygyg.cloudpayment.utils.UserUtil
 import com.cn.lib.basic.BasePresenterImpl
@@ -33,7 +33,7 @@ class NewAccountActivityPresenter(view: NewAccountActivityContract.View) :
                     }
 
                     override fun onError(tag: Any?, e: ApiThrowable) {
-                        e.message?.let { mvpView?.showToast(it) }
+                        mvpView?.onBindDeviceError(e)
                     }
 
                     override fun onSuccess(tag: Any?, result: DeviceResponseEntity?) {
@@ -63,7 +63,7 @@ class NewAccountActivityPresenter(view: NewAccountActivityContract.View) :
                     }
 
                     override fun onError(tag: Any?, e: ApiThrowable) {
-                        e.message?.let { mvpView?.showToast(it) }
+                        mvpView?.onBindDeviceError(e)
                     }
 
                     override fun onSuccess(tag: Any?, result: String?) {

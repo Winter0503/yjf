@@ -6,6 +6,7 @@ import android.text.TextWatcher
 import android.view.View
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.app.Constants
+import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.internet.contract.NewAccountActivityContract
 import cn.ygyg.cloudpayment.modular.internet.helper.ConfirmAccountDialog
 import cn.ygyg.cloudpayment.modular.internet.helper.InquireAccountDialog
@@ -15,6 +16,7 @@ import cn.ygyg.cloudpayment.modular.register.activity.UserAgreementActivity
 import cn.ygyg.cloudpayment.utils.ConfigUtil
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
 import com.cn.lib.basic.BaseMvpActivity
+import com.cn.lib.retrofit.network.exception.ApiThrowable
 import kotlinx.android.synthetic.main.activity_new_account.*
 
 class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter, NewAccountActivityContract.View>(),
@@ -51,7 +53,7 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
         next_step.setOnClickListener { v ->
             if (v.isSelected) {
                 deviceCode = pay_account.text.toString()
-                mPresenter?.getDevice(deviceCode,companyCode)
+                mPresenter?.getDevice(deviceCode, companyCode)
             }
         }
         input_account_help.setOnClickListener { dialog.show() }
@@ -76,7 +78,7 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
     }
 
     override fun onLoadDeviceSuccess(result: DeviceVM, deviceCode: String) {
-        accountDialog.setData(result,deviceCode)
+        accountDialog.setData(result, deviceCode)
         accountDialog.show()
     }
 
@@ -85,6 +87,17 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
             putString(Constants.IntentKey.DEVICE_CODE, deviceCode)
             putString(Constants.IntentKey.COMPANY_KEY, companyCode)
         })
+    }
+
+    override fun onBindDeviceError(e: ApiThrowable) {
+        DefaultPromptDialog.builder()
+                .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
+                .setContext(this)
+                .setTitleText("提示")
+                .setContentText(e.message)
+                .setAffirmText("确定")
+                .build()
+                .show()
     }
 
     private fun canDoNext(canDo: Boolean) {

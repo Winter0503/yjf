@@ -150,7 +150,7 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
         /**
          * 提示语文本(竖向时可以作为按钮使用)
          */
-        fun setContentText(content: String): DefaultPromptDialog.Builder {
+        fun setContentText(content: String?): DefaultPromptDialog.Builder {
             this.content = content
             return this
         }
