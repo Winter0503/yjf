@@ -86,6 +86,8 @@ object UrlConstants {
      * 获取厂家配置
      */
     const val getPaymentInformation = "customerApi/payment/getPaymentInformation"
-
-
+    /**
+     * 获取用户信息
+     */
+    const val getMemberInfo2 = "customerApi/user/getMemberInfo"
 }

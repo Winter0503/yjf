@@ -103,10 +103,9 @@ class ResetPasswordPresenter(view: ResetPasswordContract.View) : BasePresenterIm
 
     @SuppressLint("CheckResult")
     override fun getVerificationCode(phone: String) {
-        RequestManager.post(UrlConstants.captcha)
-                .param("phone", phone)
-                .execute(String::class.java)
-                .subscribeWith(ResultCallbackSubscriber("register", object : ResultCallback<String>() {
+        RequestManager.post(UrlConstants.getMemberInfo2)
+                .param("username", phone)
+                .execute("", object : ResultCallback<String>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.let {
                             ProgressUtil.showProgressDialog(it.getViewContext(), "获取验证码中...")
@@ -114,23 +113,48 @@ class ResetPasswordPresenter(view: ResetPasswordContract.View) : BasePresenterIm
                     }
 
                     override fun onCompleted(tag: Any?) {
-                        mvpView?.let {
-                            ProgressUtil.dismissProgressDialog()
-                        }
+
                     }
 
                     override fun onError(tag: Any?, e: ApiThrowable) {
                         e.message?.let {
                             mvpView?.showToast(it)
                         }
+                        mvpView?.let {
+                            ProgressUtil.dismissProgressDialog()
+                        }
                     }
 
                     override fun onSuccess(tag: Any?, result: String?) {
-                        mvpView?.showToast("验证码发送成功")
-                        //获取验证码成功开始倒计时
-                        startCountDown()
+                        RequestManager.post(UrlConstants.captcha)
+                                .param("phone", phone)
+                                .execute(String::class.java)
+                                .subscribeWith(ResultCallbackSubscriber("register", object : ResultCallback<String>() {
+                                    override fun onStart(tag: Any?) {
+
+                                    }
+
+                                    override fun onCompleted(tag: Any?) {
+                                        mvpView?.let {
+                                            ProgressUtil.dismissProgressDialog()
+                                        }
+                                    }
+
+                                    override fun onError(tag: Any?, e: ApiThrowable) {
+                                        e.message?.let {
+                                            mvpView?.showToast(it)
+                                        }
+                                    }
+
+                                    override fun onSuccess(tag: Any?, result: String?) {
+                                        mvpView?.showToast("验证码发送成功")
+                                        //获取验证码成功开始倒计时
+                                        startCountDown()
+                                    }
+                                }))
                     }
-                }))
+
+                })
     }
 
     /**
@@ -167,10 +191,10 @@ class ResetPasswordPresenter(view: ResetPasswordContract.View) : BasePresenterIm
 
     override fun forgetPwd(code: String, username: String, password: String) {
         RequestManager.post(UrlConstants.forgetPwd)
-                .param("password",password)
-                .param("phone",username)
-                .param("captcha",code)
-                .execute("forgetPwd", object : ResultCallback<String>(){
+                .param("password", password)
+                .param("phone", username)
+                .param("captcha", code)
+                .execute("forgetPwd", object : ResultCallback<String>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.getViewContext()?.let {
                             ProgressUtil.showProgressDialog(it, "提交数据中...")
