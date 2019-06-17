@@ -56,6 +56,11 @@ android {
             buildConfigField("String", "PUBLIC_KEY", '"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAp72DvNhc6p5daTujEtvsh2w0++P8XJNgc/4yeL4JXjLy4Y1bXmGdn97ykQy0LbRoiKXqziNTS9nuCvj/Hs5sdxr03DZOpI/eHSty6/4HzS7PXZg8/9pQTSf081oJIAuE8zI5tMeMTTi1LLLR16APJB+5ckWCgUlGEenPrT83zbS+SMGa4tmV/3RUTHMNJsPr06BPJTWN3PAS2qy0QUwCV0BjaIWT2bmL2aYRd0OqnnSvS99Is+HZUjB98ik6m0m7YnFPWFwAUR2c7koc/wOrUfKvZE7P375/q7EQTLNnalkPvLM4ZpOthkMf8oxFgOLWycEtCNbmovW0eIuNmA+UcwIDAQAB"')
         }
     }
+
+    compileOptions {
+        sourceCompatibility javaVersion
+        targetCompatibility javaVersion
+    }
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def suffix = '.apk'
@@ -67,38 +72,29 @@ android {
             } else {
                 outputName = "${appName}${suffix}"
             }
-            println("git：${git}")
-            println("outputName：${outputName}")
             output.outputFileName = new File(outputName)
         }
     }
-    compileOptions {
-        sourceCompatibility javaVersion
-        targetCompatibility javaVersion
-    }
-
     ext.getGitHeadRefsSuffix = {
         try {
             // .git/HEAD描述当前目录所指向的分支信息，内容示例："ref: refs/heads/master\n"
-            def headFile = new File('.git/HEAD')
+            def headFile = new File(rootDir, '.git/HEAD')
             if (headFile.exists()) {
-                String[] strings = headFile.getText('UTF-8').split(": ")
+                String[] strings = headFile.getText('UTF-8').split(" ")
                 if (strings.size() > 1) {
                     String refFilePath = '.git/' + strings[1]
                     // 根据HEAD读取当前指向的hash值，路径示例为：".git/refs/heads/master"
-                    def refFile = new File(refFilePath.replace("\n", ""))
+                    def refFile = new File(rootDir, refFilePath.replace("\n", ""))
                     // 索引文件内容为hash值+"\n"，
                     // 示例："90312cd9157587d11779ed7be776e3220050b308\n"
                     return "(${refFile.getText('UTF-8').substring(0, 7)})"
                 }
             }
-
         } catch (Exception e) {
             e.printStackTrace()
         }
         return ""
     }
-
 }
 dependencies {
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
