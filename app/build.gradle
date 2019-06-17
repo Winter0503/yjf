@@ -60,12 +60,16 @@ android {
         variant.outputs.each { output ->
             def suffix = '.apk'
             def appName = "${variant.applicationId}_V${variant.versionName}"
-            def git = getGitHeadRefsSuffix() == null ? "" : getGitHeadRefsSuffix()
-            if (git != null && git.length() != 0) {
-                appName = "${appName}_${variant.flavorName}${git}"
+            def git = getGitHeadRefsSuffix()
+            String outputName
+            if (git.length() != 0) {
+                outputName = "${appName}_${variant.flavorName}${git}${suffix}"
+            } else {
+                outputName = "${appName}${suffix}"
             }
-            appName = "${appName}$suffix"
-            output.outputFileName = new File(appName)
+            println("git：${git}")
+            println("outputName：${outputName}")
+            output.outputFileName = new File(outputName)
         }
     }
     compileOptions {
@@ -85,7 +89,7 @@ android {
                     def refFile = new File(refFilePath.replace("\n", ""))
                     // 索引文件内容为hash值+"\n"，
                     // 示例："90312cd9157587d11779ed7be776e3220050b308\n"
-                    return "(" + refFile.getText('UTF-8').substring(0, 7) + ")"
+                    return "(${refFile.getText('UTF-8').substring(0, 7)})"
                 }
             }
 
@@ -96,7 +100,6 @@ android {
     }
 
 }
-
 dependencies {
     implementation fileTree(include: ['*.jar', '*.aar'], dir: 'libs')
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
