@@ -92,7 +92,7 @@ android {
         } catch (Exception e) {
             e.printStackTrace()
         }
-        return "00000000"
+        return ""
     }
 
 }
