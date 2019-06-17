@@ -59,10 +59,10 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def suffix = '.apk'
-            def appName = "${variant.applicationId}_V_${variant.versionName}"
+            def appName = "${variant.applicationId}_V${variant.versionName}"
             def git = getGitHeadRefsSuffix() == null ? "" : getGitHeadRefsSuffix()
             if (git != null && git.length() != 0) {
-                appName = "${appName}_${variant.flavorName}${git}".replace(".", "_")
+                appName = "${appName}_${variant.flavorName}${git}"
             }
             appName = "${appName}$suffix"
             output.outputFileName = new File(appName)
