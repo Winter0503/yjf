@@ -62,7 +62,7 @@ android {
             def appName = "${variant.applicationId}_V${variant.versionName}"
             def git = getGitHeadRefsSuffix() == null ? "" : getGitHeadRefsSuffix()
             if (git != null && git.length() != 0) {
-                appName = "${appName}_${variant.flavorName}${git}"
+                appName = "${appName}_${variant.flavorName}${git}".replace(".", "_")
             }
             appName = "${appName}$suffix"
             output.outputFileName = new File(appName)
