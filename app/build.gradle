@@ -59,7 +59,7 @@ android {
     applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def suffix = '.apk'
-            def appName = "${variant.applicationId}_V${variant.versionName}"
+            def appName = "${variant.applicationId}_V_${variant.versionName}"
             def git = getGitHeadRefsSuffix() == null ? "" : getGitHeadRefsSuffix()
             if (git != null && git.length() != 0) {
                 appName = "${appName}_${variant.flavorName}${git}".replace(".", "_")
@@ -75,7 +75,6 @@ android {
 
     ext.getGitHeadRefsSuffix = {
         try {
-
             // .git/HEAD描述当前目录所指向的分支信息，内容示例："ref: refs/heads/master\n"
             def headFile = new File('.git/HEAD')
             if (headFile.exists()) {
@@ -93,7 +92,7 @@ android {
         } catch (Exception e) {
             e.printStackTrace()
         }
-        return ""
+        return "00000000"
     }
 
 }
