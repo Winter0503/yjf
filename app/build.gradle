@@ -79,7 +79,7 @@ android {
             // .git/HEAD描述当前目录所指向的分支信息，内容示例："ref: refs/heads/master\n"
             def headFile = new File('.git/HEAD')
             if (headFile.exists()) {
-                String[] strings = headFile.getText('UTF-8').split(" ")
+                String[] strings = headFile.getText('UTF-8').split(": ")
                 if (strings.size() > 1) {
                     String refFilePath = '.git/' + strings[1]
                     // 根据HEAD读取当前指向的hash值，路径示例为：".git/refs/heads/master"
