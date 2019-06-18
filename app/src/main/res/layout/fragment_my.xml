@@ -70,15 +70,14 @@
         android:textSize="15sp" />
 
     <View
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@color/line_color" />
+        android:background="@color/line_color"
+        android:visibility="gone" />
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/btn_customer_service"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -93,7 +92,8 @@
         android:paddingTop="15dp"
         android:text="@string/contact_customer_service"
         android:textColor="@color/text_color"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:visibility="gone" />
 
     <View
         android:layout_width="match_parent"
@@ -117,7 +117,8 @@
         android:paddingTop="15dp"
         android:text="@string/about"
         android:textColor="@color/text_color"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:visibility="gone" />
 
     <View
         android:layout_width="match_parent"

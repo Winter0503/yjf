@@ -34,7 +34,7 @@ import kotlinx.android.synthetic.main.include_activity_header.*
  */
 class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.View>(), LoginContract.View {
 
-    private var loginType: Int = 0
+    private var loginType: Int = 1
     private var hashToMainActivity: Int = 0
 
     override fun getContentViewResId(): Int = R.layout.activity_login
@@ -51,7 +51,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
         tv_right.text = ResourceUtil.getString(getViewContext(), R.string.register)
         tv_right.setTextColor(ResourceUtil.getColor(getViewContext(), R.color.text_green_color))
         tv_right.visibility = View.VISIBLE
-        inputTypePassword()
+        inputTypeVerificationCode()
         RxBus.get().register(this)
     }
 
@@ -155,7 +155,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
     }
 
     /**
-     * 验证码登录设置文本输入类型为铭文数字
+     * 验证码登录设置文本输入类型为明文数字
      */
     private fun inputTypeVerificationCode() {
         loginType = 1

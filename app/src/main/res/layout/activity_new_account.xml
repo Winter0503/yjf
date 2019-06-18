@@ -30,7 +30,6 @@
             android:layout_height="match_parent"
             android:layout_marginStart="20dp"
             android:layout_weight="1"
-            android:drawableEnd="@mipmap/right_arrow"
             android:drawablePadding="10dp"
             android:gravity="center_vertical"
             android:text="北京燃气集团"
@@ -72,6 +71,7 @@
             android:lines="1"
             android:textColor="@color/text_color"
             android:textColorHint="@color/text_hint_color"
+            android:textCursorDrawable="@drawable/edit_cursor_drawable"
             android:textSize="@dimen/ts_content" />
 
         <TextView

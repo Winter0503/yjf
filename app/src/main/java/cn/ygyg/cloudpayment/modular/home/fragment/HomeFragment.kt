@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SimpleItemAnimator
 import android.view.View
+import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.R.layout
 import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
@@ -13,6 +14,7 @@ import cn.ygyg.cloudpayment.modular.home.presenter.HomePresenter
 import cn.ygyg.cloudpayment.modular.internet.activity.NewAccountActivity
 import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.payments.activity.PaymentsActivity
+import cn.ygyg.cloudpayment.utils.HeaderBuilder
 import com.cn.lib.basic.BaseMvpFragment
 import com.cn.lib.util.ToastUtil
 import com.hwangjr.rxbus.RxBus
@@ -47,6 +49,7 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
 
 
     override fun initViews(v: View) {
+        activity?.let { HeaderBuilder(it).setTitle(R.string.app_name) }
         recycler_view.let {
             it.clearAnimation()
             (it.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false
