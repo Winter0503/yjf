@@ -31,7 +31,7 @@
     <string name="cancel">取消</string>
     <string name="search">搜索</string>
     <string name="add_account_success">账户添加成功</string>
-    <string name="to_payments">立即充值</string>
+    <string name="to_payments">去充值</string>
     <string name="no_payments">暂不充值</string>
     <string name="payments_alert_msg">目前仅支持物联表用户缴费，给您带来不便敬请谅解</string>
     <string name="account_name">用户名</string>
