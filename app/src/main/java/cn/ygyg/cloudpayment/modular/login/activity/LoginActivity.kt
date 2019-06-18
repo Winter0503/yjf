@@ -19,6 +19,7 @@ import cn.ygyg.cloudpayment.modular.password.activity.ResetPasswordActivity
 import cn.ygyg.cloudpayment.modular.register.activity.RegisterActivity
 import cn.ygyg.cloudpayment.utils.WXUtil
 import com.cn.lib.basic.BaseMvpActivity
+import com.cn.lib.retrofit.network.exception.ApiThrowable
 import com.cn.lib.util.ResourceUtil
 import com.hwangjr.rxbus.RxBus
 import com.hwangjr.rxbus.annotation.Subscribe
@@ -53,6 +54,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
         tv_right.visibility = View.VISIBLE
         inputTypeVerificationCode()
         RxBus.get().register(this)
+        div_bottom.setBackgroundColor(0x00000000)
     }
 
     override fun initListener() {
@@ -71,20 +73,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
 
         btn_retrieve_password.setOnClickListener {
             //找回密码
-            DefaultPromptDialog.builder()
-                    .setAffirmText("确认")
-                    .setCancelText("取消")
-                    .setContentText("找回密码")
-                    .setContext(getViewContext())
-                    .setButtonOrientation(typeEnum = DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
-                    .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
-                        override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
-                            toActivity(ResetPasswordActivity::class.java)
-                            return super.clickPositiveButton(dialog)
-                        }
-                    })
-                    .build()
-                    .show()
+            toActivity(ResetPasswordActivity::class.java)
         }
         btn_login_code.setOnClickListener {
             mPresenter?.getVerificationCode(edit_login_phone.text.toString())
@@ -213,6 +202,22 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
         }
     }
 
+    override fun errorPassword(e: ApiThrowable) {
+        DefaultPromptDialog.builder()
+                .setAffirmText("重置密码")
+                .setCancelText("确定")
+                .setContentText(e.message)
+                .setContext(getViewContext())
+                .setButtonOrientation(typeEnum = DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
+                .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
+                    override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
+                        toActivity(ResetPasswordActivity::class.java)
+                        return super.clickPositiveButton(dialog)
+                    }
+                })
+                .build()
+                .show()
+    }
 
     companion object {
         private const val REQUEST_CODE_REGISTER = 0x11

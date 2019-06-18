@@ -5,6 +5,7 @@ import android.text.TextWatcher
 import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
 import com.cn.lib.basic.IBasePresenter
 import com.cn.lib.basic.IBaseView
+import com.cn.lib.retrofit.network.exception.ApiThrowable
 
 /**
  * Created by Admin on 2019/4/13.
@@ -23,6 +24,11 @@ class LoginContract {
          * 跳转绑定手机号码页面
          */
         fun toBindingPhone(entity: UserEntity?)
+
+        /**
+         * 密码登陆失败
+         */
+        fun errorPassword(e: ApiThrowable)
 
     }
 

@@ -219,7 +219,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
         RequestManager.post(UrlConstants.getToken)
                 .param("code", code)
                 .param("appId", ConfigUtil.getWXAppId())
-                .param("applicationId",ConfigUtil.getApplicationId())
+                .param("applicationId", ConfigUtil.getApplicationId())
                 .param("companyCode", ConfigUtil.getCompanyCode())
                 .execute(TokenEntity::class.java)
                 .flatMap { optional ->
@@ -227,7 +227,7 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
                     SharePreUtil.putString(OPEN_ID, entity.openid ?: "")
                     RequestManager.post(UrlConstants.getMemberInfo)
                             .param("appId", ConfigUtil.getWXAppId())
-                            .param("openId", entity.openid?: "")
+                            .param("openId", entity.openid ?: "")
                             .execute(UserEntity::class.java)
                 }
                 .subscribeWith(ResultCallbackSubscriber("wxLogin", object : ResultCallback<UserEntity>() {
@@ -271,9 +271,14 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
             }
 
             override fun onError(tag: Any?, e: ApiThrowable) {
-                e.message?.let {
-                    mvpView?.showToast(it)
+                if (TextUtils.equals("login", tag.toString()) && TextUtils.equals("ER014", e.code)) {
+                    mvpView?.errorPassword(e)
+                } else {
+                    e.message?.let {
+                        mvpView?.showToast(it)
+                    }
                 }
+
             }
 
             override fun onSuccess(tag: Any?, result: UserEntity?) {
