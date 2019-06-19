@@ -23,7 +23,7 @@ class HistoryPageResponseEntity : Serializable {
         }
 
         override fun payAmount(): String {
-            return if (rechargedSum == null) "0.00" else rechargedSum!!.toString()
+            return if (rechargedSum == null) "0.00元" else rechargedSum!!.toString() + "元"
         }
 
         override fun payState(): String {

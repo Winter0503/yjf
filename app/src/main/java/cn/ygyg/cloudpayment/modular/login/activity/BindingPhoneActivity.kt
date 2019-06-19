@@ -1,7 +1,6 @@
 package cn.ygyg.cloudpayment.modular.login.activity
 
 import android.annotation.SuppressLint
-import android.text.TextUtils
 import android.view.View
 import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.app.Constants.IntentKey.OPEN_ID
@@ -9,7 +8,6 @@ import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.home.activity.MainTabActivity
 import cn.ygyg.cloudpayment.modular.login.contract.BindingPhoneContract
 import cn.ygyg.cloudpayment.modular.login.presenter.BindingPhonePresenter
-import cn.ygyg.cloudpayment.modular.password.activity.ResetPasswordActivity
 import cn.ygyg.cloudpayment.utils.SharePreUtil
 import com.cn.lib.basic.BaseMvpActivity
 import com.cn.lib.util.ResourceUtil

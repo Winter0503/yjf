@@ -248,8 +248,10 @@ class LoginPresenter(view: LoginContract.View) : BasePresenterImpl<LoginContract
                     }
 
                     override fun onSuccess(tag: Any?, result: UserEntity?) {
+                        result?.let {
+                            UserUtil.saveUser(it)
+                        }
                         if (result != null && !TextUtils.isEmpty(result.cellPhone)) { //微信第一次登录没有用户信息，需要去绑定手机号生成用户信息
-                            UserUtil.saveUser(user = result)
                             mvpView?.loginSuccess()
                         } else {
                             mvpView?.toBindingPhone(result)

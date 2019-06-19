@@ -10,7 +10,6 @@ import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import cn.ygyg.cloudpayment.R
-import cn.ygyg.cloudpayment.app.MyApplication
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
 import cn.ygyg.cloudpayment.modular.home.activity.MainTabActivity
 import cn.ygyg.cloudpayment.modular.login.contract.LoginContract
