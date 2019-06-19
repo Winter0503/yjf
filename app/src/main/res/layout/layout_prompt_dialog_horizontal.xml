@@ -1,41 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_gravity="center"
     android:background="@drawable/shape_solid_white"
     android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/dialog_title_layout"
+    <TextView
+        android:id="@+id/dialog_hint_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/dialog_hint_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="设置头像"
-            android:textColor="@color/text_color"
-            android:textSize="17sp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/line_color"
-            android:visibility="invisible" />
-
-    </LinearLayout>
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:lineSpacingMultiplier="1"
+        android:text="设置头像"
+        android:textColor="@color/text_color"
+        android:textSize="17sp" />
 
     <TextView
         android:id="@+id/dialog_hint_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"

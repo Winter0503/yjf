@@ -31,6 +31,7 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
         var view: View? = null
         if (this.typeEnum == TypeEnum.BUTTON_HORIZONTAL) {
             view = inflater.inflate(R.layout.layout_prompt_dialog_horizontal, null, false)
+            view.layoutParams
         } else if (this.typeEnum == TypeEnum.BUTTON_VERTICAL) {
             view = inflater.inflate(R.layout.layout_prompt_dialog_vertical, null, false)
         }
@@ -47,7 +48,7 @@ class DefaultPromptDialog private constructor(context: Context, private val titl
             val manager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             manager.defaultDisplay?.getMetrics(dm)
             val wlp = dialogWindow.attributes
-            wlp.width = if (this.typeEnum == TypeEnum.BUTTON_VERTICAL) dm.widthPixels else dm.widthPixels * 4 / 5
+            wlp.width = if (this.typeEnum == TypeEnum.BUTTON_VERTICAL) dm.widthPixels else dm.widthPixels * 7 / 10
             if (this.typeEnum == TypeEnum.BUTTON_VERTICAL) {
                 wlp.horizontalMargin = 10f
             }
