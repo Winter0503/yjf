@@ -70,7 +70,6 @@ class BindingPhoneActivity : BaseMvpActivity<BindingPhoneContract.Presenter, Bin
     }
 
     override fun loginSuccess() {
-
         DefaultPromptDialog.builder()
                 .setTitleText("绑定成功")
                 .setAffirmText("我知道了")

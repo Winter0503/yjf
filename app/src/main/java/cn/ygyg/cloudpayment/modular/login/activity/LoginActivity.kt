@@ -205,7 +205,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
     override fun errorPassword(e: ApiThrowable) {
         DefaultPromptDialog.builder()
                 .setAffirmText("找回密码")
-                .setCancelText("确定")
+                .setCancelText("确认")
                 .setContentText(if (TextUtils.equals("ER014", e.code)) "用户名或密码不正确" else e.message)
                 .setContext(getViewContext())
                 .setButtonOrientation(typeEnum = DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)

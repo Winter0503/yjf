@@ -9,10 +9,7 @@ import cn.ygyg.cloudpayment.net.UrlConstants
 import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.modular.login.contract.BindingPhoneContract
 import cn.ygyg.cloudpayment.modular.login.entity.UserEntity
-import cn.ygyg.cloudpayment.utils.ConfigUtil
-import cn.ygyg.cloudpayment.utils.ProgressUtil
-import cn.ygyg.cloudpayment.utils.SharePreUtil
-import cn.ygyg.cloudpayment.utils.StringUtil
+import cn.ygyg.cloudpayment.utils.*
 import com.cn.lib.basic.BasePresenterImpl
 import com.cn.lib.retrofit.network.callback.ResultCallback
 import com.cn.lib.retrofit.network.exception.ApiThrowable
@@ -175,8 +172,7 @@ class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl
 
                     override fun onSuccess(tag: Any?, result: UserEntity?) {
                         if (result != null) {
-                            mvpView?.showToast("绑定手机号码成功")
-                            SharePreUtil.saveBeanByFastJson(Constants.IntentKey.USER_INFO, result)
+                            UserUtil.saveUser(result)
                             mvpView?.loginSuccess()
                         }
                     }

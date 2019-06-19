@@ -5,6 +5,7 @@ import cn.ygyg.cloudpayment.net.UrlConstants
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsHistoryActivityContract
 import cn.ygyg.cloudpayment.modular.payments.entity.HistoryPageResponseEntity
 import cn.ygyg.cloudpayment.utils.ConfigUtil
+import cn.ygyg.cloudpayment.utils.ProgressUtil
 import cn.ygyg.cloudpayment.utils.UserUtil
 import com.cn.lib.basic.BasePresenterImpl
 import com.cn.lib.retrofit.network.callback.ResultCallback
@@ -21,9 +22,13 @@ class PaymentsHistoryActivityPresenter(view: PaymentsHistoryActivityContract.Vie
                 .param("pageSize", pageSize.toString())
                 .execute("", object : ResultCallback<HistoryPageResponseEntity>() {
                     override fun onStart(tag: Any?) {
+                        mvpView?.let {
+                            ProgressUtil.showProgressDialog(it.getViewContext(), "加载中...")
+                        }
                     }
 
                     override fun onCompleted(tag: Any?) {
+                        ProgressUtil.dismissProgressDialog()
                         mvpView?.onLoadCompleted()
                     }
 

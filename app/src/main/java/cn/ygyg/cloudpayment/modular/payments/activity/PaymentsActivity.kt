@@ -223,7 +223,7 @@ class PaymentsActivity :
                 .setContext(this)
                 .setTitleText("提示")
                 .setContentText(if (TextUtils.equals("ER033", err.code)) "该缴费户号异常，请联系客服" else err.message)
-                .setAffirmText("确定")
+                .setAffirmText("确认")
                 .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
                     override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
                         dialog.dismiss()
@@ -241,7 +241,7 @@ class PaymentsActivity :
                 .setContext(this)
                 .setTitleText("提示")
                 .setContentText(err.message)
-                .setAffirmText("确定")
+                .setAffirmText("确认")
                 .build()
                 .show()
     }

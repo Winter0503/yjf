@@ -95,7 +95,7 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
                 .setContext(this)
                 .setTitleText("提示")
                 .setContentText(e.message)
-                .setAffirmText("确定")
+                .setAffirmText("确认")
                 .build()
                 .show()
     }

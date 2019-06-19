@@ -20,12 +20,13 @@
             android:padding="10dp"
             android:text="设置头像"
             android:textColor="@color/text_color"
-            android:textSize="14sp" />
+            android:textSize="17sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/line_color" />
+            android:background="@color/line_color"
+            android:visibility="invisible" />
 
     </LinearLayout>
 
@@ -40,7 +41,7 @@
         android:paddingRight="20dp"
         android:text="是否删除该记录？"
         android:textColor="@color/text_color"
-        android:textSize="17sp" />
+        android:textSize="14sp" />
 
     <View
         android:id="@+id/view1"
@@ -75,7 +76,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center"
-            android:text="确定"
+            android:text="确认"
             android:textColor="@color/text_blue_color"
             android:textSize="17sp" />
     </LinearLayout>

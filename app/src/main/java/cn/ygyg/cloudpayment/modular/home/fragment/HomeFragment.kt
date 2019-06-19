@@ -95,7 +95,7 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
                         .setContext(getViewContext())
                         .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
                         .setContentText("确定删除该账户信息吗？")
-                        .setAffirmText("确定")
+                        .setAffirmText("确认")
                         .setCancelText("取消")
                         .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
                             override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
