@@ -62,7 +62,6 @@ class PaymentsActivity :
 
     override fun initListener() {
         payments_history.setOnClickListener { toActivity(PaymentsHistoryActivity::class.java) }
-        payments.setOnClickListener { toActivity(PaymentsCompleteActivity::class.java) }
 
         val singleChose = View.OnClickListener { v ->
             if (v != null) {
@@ -223,7 +222,7 @@ class PaymentsActivity :
                 .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
                 .setContext(this)
                 .setTitleText("提示")
-                .setContentText(err.message)
+                .setContentText(if (TextUtils.equals("ER033", err.code)) "该缴费户号异常，请联系客服" else err.message)
                 .setAffirmText("确定")
                 .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
                     override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {

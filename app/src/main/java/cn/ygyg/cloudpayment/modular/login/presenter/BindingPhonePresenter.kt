@@ -157,7 +157,6 @@ class BindingPhonePresenter(view: BindingPhoneContract.View) : BasePresenterImpl
                 .param("captcha", code)
                 .param("openId", openId ?: "")
                 .param("username", phone)
-                .param("appId", ConfigUtil.getWXAppId())
                 .execute("bindPhone", object : ResultCallback<UserEntity>() {
                     override fun onStart(tag: Any?) {
                         mvpView?.getViewContext()?.let {

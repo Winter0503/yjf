@@ -57,6 +57,10 @@ object UrlConstants {
      */
     const val getDevice = "customerApi/device/getDevice"
     /**
+     * 获取物联网表 信息
+     */
+    const val getBind = "customerApi/device/getBind"
+    /**
      * 绑定物联网表
      */
     const val bindDevice = "customerApi/device/bindMeter"
@@ -70,7 +74,7 @@ object UrlConstants {
      */
     const val unbind = "customerApi/device/unbind"
     /**
-     * 解除绑定物联网表
+     * 创建预支付订单
      */
     const val createOrder = "customerApi/payment/createOrder"
     /**

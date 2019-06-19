@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.text.InputType
 import android.text.InputType.*
+import android.text.TextUtils
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import cn.ygyg.cloudpayment.R
@@ -204,9 +205,9 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
 
     override fun errorPassword(e: ApiThrowable) {
         DefaultPromptDialog.builder()
-                .setAffirmText("重置密码")
+                .setAffirmText("找回密码")
                 .setCancelText("确定")
-                .setContentText(e.message)
+                .setContentText(if (TextUtils.equals("ER014", e.code)) "用户名或密码不正确" else e.message)
                 .setContext(getViewContext())
                 .setButtonOrientation(typeEnum = DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
                 .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {

@@ -125,7 +125,8 @@
         android:layout_height="0.5dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:background="@color/line_color" />
+        android:background="@color/line_color"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/btn_logout"

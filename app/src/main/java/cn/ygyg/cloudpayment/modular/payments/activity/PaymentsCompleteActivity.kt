@@ -24,14 +24,14 @@ class PaymentsCompleteActivity : BaseActivity() {
             state_icon.setImageResource(R.mipmap.icon_success)
             state_name.setText(R.string.payment_success)
             to_payments_history.visibility = View.VISIBLE
-            payments_amount.visibility = View.INVISIBLE
+            payments_amount.visibility = View.VISIBLE
             payment_again.visibility = View.GONE
             builder.setTitle(R.string.payment_success)
         } else {
             state_icon.setImageResource(R.mipmap.icon_failed)
             state_name.setText(R.string.payment_failed)
             to_payments_history.visibility = View.GONE
-            payments_amount.visibility = View.VISIBLE
+            payments_amount.visibility = View.INVISIBLE
             payment_again.visibility = View.VISIBLE
             builder.setTitle(R.string.payment_failed)
 

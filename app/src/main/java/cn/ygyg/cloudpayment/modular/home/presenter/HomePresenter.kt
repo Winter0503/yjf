@@ -44,7 +44,7 @@ class HomePresenter(view: HomeContract.View) : BasePresenterImpl<HomeContract.Vi
     override fun unBindDevice(position: Int, device: DeviceVM) {
         RequestManager.post(UrlConstants.unbind)
                 .param("userName", UserUtil.getUserName())
-                .param("companyCode", "10467")
+                .param("companyCode", ConfigUtil.getCompanyCode())
                 .param("meterCode", device.deviceCode())
                 .execute("", object : ResultCallback<String>() {
                     override fun onStart(tag: Any?) {

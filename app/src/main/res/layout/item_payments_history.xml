@@ -96,7 +96,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="A9331659000"
-                android:textColor="@color/selector_gray_green"
+                android:textColor="@color/text_color"
                 android:textSize="@dimen/ts_content" />
         </LinearLayout>
 
@@ -123,7 +123,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="微信支付"
-                android:textColor="@color/selector_gray_green"
+                android:textColor="@color/text_color"
                 android:textSize="@dimen/ts_content" />
         </LinearLayout>
 
@@ -151,7 +151,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:text="2018.09.11 20:13"
-                android:textColor="@color/selector_gray_green"
+                android:textColor="@color/text_color"
                 android:textSize="@dimen/ts_content" />
         </LinearLayout>
     </LinearLayout>

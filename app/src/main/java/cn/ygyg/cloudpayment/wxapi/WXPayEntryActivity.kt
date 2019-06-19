@@ -29,9 +29,6 @@ class WXPayEntryActivity : BaseActivity(), IWXAPIEventHandler {
     }
 
     override fun onResp(baseResp: BaseResp) {
-        val type = baseResp.type
-        Log.i("onResp", type.toString())
-        Log.i("onResp", baseResp.errCode.toString())
         if (baseResp.type == ConstantsAPI.COMMAND_PAY_BY_WX) {
             startActivity(Intent(this, PaymentsCompleteActivity::class.java).apply {
                 putExtra(BaseActivity.ACTIVITY_BUNDLE, Bundle().apply {

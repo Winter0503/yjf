@@ -17,7 +17,7 @@ class PaymentsActivityPresenter(view: PaymentsActivityContract.View) :
         BasePresenterImpl<PaymentsActivityContract.View>(view),
         PaymentsActivityContract.Presenter {
     override fun getBindDevice(deviceCode: String, companyCode: String) {
-        RequestManager.post(UrlConstants.getDevice)
+        RequestManager.post(UrlConstants.getBind)
                 .param("meterCode", deviceCode)
                 .param("companyCode", companyCode)
                 .param("userName", UserUtil.getUserName())

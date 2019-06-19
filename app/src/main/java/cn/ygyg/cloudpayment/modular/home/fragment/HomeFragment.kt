@@ -24,6 +24,7 @@ import com.hwangjr.rxbus.thread.EventThread
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.include_activity_header.*
 
 
 class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(), HomeContract.View {
@@ -49,7 +50,10 @@ class HomeFragment : BaseMvpFragment<HomeContract.Presenter, HomeContract.View>(
 
 
     override fun initViews(v: View) {
-        activity?.let { HeaderBuilder(it).setTitle(R.string.app_name) }
+        activity?.let {
+            HeaderBuilder(it).setTitle(R.string.app_name)
+            div_bottom.setBackgroundResource(R.color.transparent)
+        }
         recycler_view.let {
             it.clearAnimation()
             (it.itemAnimator as SimpleItemAnimator).supportsChangeAnimations = false

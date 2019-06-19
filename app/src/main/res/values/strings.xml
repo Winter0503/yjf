@@ -14,7 +14,7 @@
     <string name="input_account_alert">目前仅支持物联卡表缴费</string>
     <string name="read_and_agree">我已阅读并同意</string>
     <string name="protocol_title">《云缴费用户协议》</string>
-    <string name="confirm_account">确认充值帐户</string>
+    <string name="confirm_account">账户信息</string>
     <string name="company_select">选择燃气集团</string>
     <string name="close">关闭</string>
     <string name="user_name">用户姓名</string>
@@ -46,7 +46,7 @@
     <string name="rmb_unit">元</string>
     <string name="pay_type">支付方式</string>
     <string name="wx_pay">微信支付</string>
-    <string name="ali_pay">支付宝服务</string>
+    <string name="ali_pay">支付宝支付</string>
     <string name="immediately_payments">立即充值</string>
     <string name="payments_history">充值记录</string>
     <string name="iot_card">物联网卡</string>
