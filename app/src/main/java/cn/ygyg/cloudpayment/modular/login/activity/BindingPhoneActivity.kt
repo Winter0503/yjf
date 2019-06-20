@@ -55,7 +55,7 @@ class BindingPhoneActivity : BaseMvpActivity<BindingPhoneContract.Presenter, Bin
 
     @SuppressLint("SetTextI18n")
     override fun changeCodeBtnText(aLong: Long) {
-        btn_binding_code.text = "${aLong}秒后重发"
+        btn_binding_code.text = "${aLong}秒后重新获取"
     }
 
     override fun changeConfirmBtnState(state: Boolean) {

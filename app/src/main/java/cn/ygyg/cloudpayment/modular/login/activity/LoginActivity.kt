@@ -173,7 +173,7 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
     }
 
     override fun changeCodeBtnText(aLong: Long) {
-        btn_login_code.text = "${aLong}秒后重发"
+        btn_login_code.text = "${aLong}秒后重新获取"
     }
 
     override fun loginSuccess() {

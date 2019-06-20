@@ -18,6 +18,7 @@ class HeaderBuilder(context: Context) : BaseViewBuilder(context) {
     private lateinit var tvRight: TextView
     private lateinit var ivLeft: ImageView
     private lateinit var ivRight: ImageView
+    private lateinit var divBottom: View
 
     override fun onCreateView(inflater: LayoutInflater, parent: ViewGroup): View {
         return parent.findViewById(R.id.include_header_layout)
@@ -31,7 +32,7 @@ class HeaderBuilder(context: Context) : BaseViewBuilder(context) {
 
         tvRight = findViewById(R.id.tv_right)
         ivRight = findViewById(R.id.iv_right)
-
+        divBottom = findViewById(R.id.div_bottom)
         var leftOnClick = View.OnClickListener {
             if (getContext() is Activity) {
                 var activity = getContext() as Activity
@@ -42,9 +43,27 @@ class HeaderBuilder(context: Context) : BaseViewBuilder(context) {
         ivLeft.setOnClickListener(leftOnClick)
     }
 
-    fun setLeftImageRes(@DrawableRes resId: Int) {
+    fun setRightOnclickListener(l: View.OnClickListener): HeaderBuilder {
+        tvRight.setOnClickListener(l)
+        ivRight.setOnClickListener(l)
+        return this
+    }
+
+    fun setRightOnclickListener(l: (v: View) -> Unit): HeaderBuilder {
+        tvRight.setOnClickListener(l)
+        ivRight.setOnClickListener(l)
+        return this
+    }
+//    fun setRightOnclickListener(l: View.OnClickListener): HeaderBuilder {
+//        tvRight.setOnClickListener(l)
+//        ivRight.setOnClickListener(l)
+//        return this
+//    }
+
+    fun setLeftImageRes(@DrawableRes resId: Int): HeaderBuilder {
         ivLeft.visibility = if (resId == 0) View.GONE else View.VISIBLE
         ivLeft.setImageResource(resId)
+        return this
     }
 
     fun setTitle(text: String) {
@@ -56,4 +75,26 @@ class HeaderBuilder(context: Context) : BaseViewBuilder(context) {
         title.visibility = if (resId == 0) View.GONE else View.VISIBLE
         title.setText(resId)
     }
+
+    fun setRightText(text: String): HeaderBuilder {
+        tvRight.text = text
+        title.visibility = if (TextUtils.isEmpty(text)) View.GONE else View.VISIBLE
+        return this
+    }
+
+    fun setRightTextColor(color: Int): HeaderBuilder {
+        tvRight.setTextColor(color)
+        return this
+    }
+
+    fun setBottomLine(b: Boolean): HeaderBuilder {
+        if (b) {
+            divBottom.visibility = View.VISIBLE
+        } else {
+            divBottom.visibility = View.INVISIBLE
+        }
+        return this
+    }
+
+
 }

@@ -7,6 +7,8 @@ import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.modular.login.activity.LoginActivity
 import cn.ygyg.cloudpayment.modular.password.contract.ResetPasswordContract
 import cn.ygyg.cloudpayment.modular.password.presenter.ResetPasswordPresenter
+import cn.ygyg.cloudpayment.modular.register.activity.RegisterActivity
+import cn.ygyg.cloudpayment.utils.HeaderBuilder
 import com.cn.lib.util.ResourceUtil
 import com.cn.lib.basic.BaseMvpActivity
 import com.cn.lib.util.ActivityListUtil
@@ -15,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_reset_password.*
 
 class ResetPasswordActivity : BaseMvpActivity<ResetPasswordContract.Presenter, ResetPasswordContract.View>(), ResetPasswordContract.View {
     override fun forgetPasswordSuccess() {
-       ToastUtil.showSuccessToast(getViewContext(), "重置密码成功")
+        ToastUtil.showSuccessToast(getViewContext(), "重置密码成功")
         ActivityListUtil.INSTANCE.finishAllActivity(true)
         toActivity(LoginActivity::class.java)
     }
@@ -37,6 +39,11 @@ class ResetPasswordActivity : BaseMvpActivity<ResetPasswordContract.Presenter, R
 
     override fun initViews() {
         super.initViews()
+        HeaderBuilder(this)
+                .setLeftImageRes(R.mipmap.back)
+                .setBottomLine(false)
+
+
         edit_reset_pwd.addTextChangedListener(mPresenter?.getPasswordTextChangeListener())
         edit_reset_code.addTextChangedListener(mPresenter?.getCodeTextChangeListener())
         edit_reset_phone.filters = arrayOf(mPresenter?.getPhoneInputFilter()) //添加手机号文本框的输入过滤器
@@ -44,9 +51,6 @@ class ResetPasswordActivity : BaseMvpActivity<ResetPasswordContract.Presenter, R
 
     override fun initListener() {
         super.initListener()
-        btn_back.setOnClickListener {
-            finish()
-        }
         btn_pwd.setOnClickListener {
             if (edit_reset_pwd.inputType != EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) { //显示密码
                 edit_reset_pwd.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
@@ -71,7 +75,7 @@ class ResetPasswordActivity : BaseMvpActivity<ResetPasswordContract.Presenter, R
 
     @SuppressLint("SetTextI18n")
     override fun changeCodeBtnText(aLong: Long) {
-        btn_reset_code.text = "${aLong}秒后重发"
+        btn_reset_code.text = "${aLong}秒后重新获取"
     }
 
 

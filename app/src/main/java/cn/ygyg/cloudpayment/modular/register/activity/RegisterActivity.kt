@@ -71,7 +71,7 @@ class RegisterActivity : BaseMvpActivity<RegisterContract.Presenter, RegisterCon
 
     @SuppressLint("SetTextI18n")
     override fun changeCodeBtnText(aLong: Long) {
-        btn_code.text = "${aLong}秒后重发"
+        btn_code.text = "${aLong}秒后重新获取"
     }
 
     override fun changeCodeBtnState(state: Boolean) {
