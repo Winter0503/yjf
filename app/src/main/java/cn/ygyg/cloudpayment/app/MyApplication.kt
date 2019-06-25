@@ -42,7 +42,7 @@ open class MyApplication : Application() {
     private fun initRequestBase() {
         RxHttp.INSTANCE
                 .init(context = baseContext)
-                .baseUrl("http://10.38.64.79:8088/")
+                .baseUrl("http://app.yunfuw.cn/")
 //                .baseUrl("http://10.2.152.202:8130")
                 .isLog(true)
                 .readTimeout(60 * 1000)

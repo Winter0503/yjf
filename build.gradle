@@ -9,7 +9,7 @@ buildscript {
         target_sdk_version = 26
         build_tools_version = '27.0.3'
         version_code = 1
-        version_name = '1.0.14'
+        version_name = '1.0.0'
         support_version = '27.1.1'
         kotlin_version = '1.2.50'
         javaVersion = JavaVersion.VERSION_1_8
