@@ -78,7 +78,7 @@ object UrlConstants {
      */
     const val createOrder = "customerApi/payment/createOrder"
     /**
-     * 缴费
+     * 缴费记录
      */
     const val rechargeQuery = "customerApi/payment/rechargeQuery"
 

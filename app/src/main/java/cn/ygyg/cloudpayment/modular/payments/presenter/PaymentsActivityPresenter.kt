@@ -50,6 +50,7 @@ class PaymentsActivityPresenter(view: PaymentsActivityContract.View) :
         RequestManager.post(UrlConstants.createOrder)
                 .param("amount", amount)
                 .param("applicationId", ConfigUtil.getApplicationId())
+                .param("companyCode", ConfigUtil.getCompanyCode())
                 .param("contractCode", contractCode)
                 .param("mobile", phone)
                 .param("paymentMethod", paymentMethod.string())
