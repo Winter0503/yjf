@@ -42,8 +42,8 @@ open class MyApplication : Application() {
     private fun initRequestBase() {
         RxHttp.INSTANCE
                 .init(context = baseContext)
-                .baseUrl("http://app.yunfuw.cn/")//域名
-//                .baseUrl("http://10.38.64.79:8088/")//dev
+//                .baseUrl("http://app.yunfuw.cn/")//域名
+                .baseUrl("http://10.38.64.79:8088/")//dev
 //                .baseUrl("http://10.240.0.106:8088/")//beta
 //                .baseUrl("http://10.240.0.111:8088")//prod
 //                .baseUrl("http://10.2.152.202:8130")
