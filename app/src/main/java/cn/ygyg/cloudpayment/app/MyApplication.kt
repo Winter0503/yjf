@@ -52,8 +52,9 @@ open class MyApplication : Application() {
                 .writeTimeout(60 * 1000)
                 .connectTimeout(60 * 1000)
                 .retryCount(3)
-                .retryDelay(500)
-                .retryIncreaseDelay(500)
+//                .retryDelay(500)
+                .retryIncreaseDelay(
+                        500)
                 .cancelEncryption(true)
                 .addNetworkInterceptor(TokenInterceptor())
                 .addInterceptor(ParamInterceptor())
