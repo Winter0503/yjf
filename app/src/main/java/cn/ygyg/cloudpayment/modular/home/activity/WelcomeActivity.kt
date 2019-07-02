@@ -68,7 +68,7 @@ class WelcomeActivity : BaseMvpActivity<WelcomeContract.Presenter, WelcomeContra
         initAppId()
         when {
             UserUtil.isLogin() -> toActivity(MainTabActivity::class.java)
-            !TextUtils.isEmpty(UserUtil.getToken()) -> toActivity(BindingPhoneActivity::class.java)
+//            !TextUtils.isEmpty(UserUtil.getToken()) -> toActivity(BindingPhoneActivity::class.java)
             else -> toActivity(LoginActivity::class.java)
         }
         this.finish()

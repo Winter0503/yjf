@@ -138,7 +138,7 @@ class ExceptionFactory {
                 return ex
             } else if (e is ConnectException) {
                 ex = ApiThrowable(e, ERROR.NETWORD_ERROR)
-                ex.message = "连接失败"
+                ex.message = "网络异常，请检查网络"
                 return ex
             } else if (e is SSLHandshakeException) {
                 ex = ApiThrowable(e, ERROR.SSL_ERROR)

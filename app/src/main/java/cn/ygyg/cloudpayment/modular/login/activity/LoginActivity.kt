@@ -198,7 +198,6 @@ class LoginActivity : BaseMvpActivity<LoginContract.Presenter, LoginContract.Vie
             val bundle = Bundle()
             bundle.putInt("sourceType", 1)
             toActivity(BindingPhoneActivity::class.java, bundle)
-            finish()
         }
     }
 
