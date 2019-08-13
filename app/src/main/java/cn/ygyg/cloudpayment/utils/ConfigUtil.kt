@@ -2,6 +2,7 @@ package cn.ygyg.cloudpayment.utils
 
 import cn.ygyg.cloudpayment.BuildConfig
 import cn.ygyg.cloudpayment.app.Constants
+import cn.ygyg.cloudpayment.modular.home.entity.CompanyEntity
 import java.io.Serializable
 
 object ConfigUtil {
@@ -84,6 +85,14 @@ object ConfigUtil {
     fun clear() {
         configEntity = null
     }
+
+    fun setCompanyInfo(entity: CompanyEntity) {
+        configEntity?.companyEntity = entity
+    }
+
+    fun getCompanyInfo(): CompanyEntity? {
+        return configEntity?.companyEntity
+    }
 }
 
 class ConfigEntity : Serializable {
@@ -95,8 +104,9 @@ class ConfigEntity : Serializable {
     var companyId: String? = null
     var companyName: String? = null
     var groupName: String? = null
+    var hotline: String? = null
     var paymentDetails: MutableList<PaymentEntity> = mutableListOf()
-
+    var companyEntity: CompanyEntity? = null
 }
 
 class PaymentEntity : Serializable {
@@ -104,4 +114,6 @@ class PaymentEntity : Serializable {
     var paymentType: String? = null
     var paymentMethod: String? = null
 }
+
+
 

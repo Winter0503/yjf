@@ -1,7 +1,10 @@
 package cn.ygyg.cloudpayment.modular.internet.activity
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.view.View
 import cn.ygyg.cloudpayment.R
@@ -15,6 +18,7 @@ import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.register.activity.UserAgreementActivity
 import cn.ygyg.cloudpayment.utils.ConfigUtil
 import cn.ygyg.cloudpayment.utils.HeaderBuilder
+import cn.ygyg.cloudpayment.utils.StringUtil
 import com.cn.lib.basic.BaseMvpActivity
 import com.cn.lib.retrofit.network.exception.ApiThrowable
 import kotlinx.android.synthetic.main.activity_new_account.*
@@ -90,12 +94,44 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
     }
 
     override fun onBindDeviceError(e: ApiThrowable) {
-        DefaultPromptDialog.builder()
+        val flag = TextUtils.equals("ER033", e.code) || TextUtils.equals("ER075", e.code) || TextUtils.equals("ER076", e.code)
+        val builder = DefaultPromptDialog.builder()
                 .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
                 .setContext(this)
                 .setTitleText("提示")
-                .setContentText(e.message)
-                .setAffirmText("确认")
+                .setContentText(if (flag) "该缴费户号异常" else e.message)
+        val companyInfo = ConfigUtil.getCompanyInfo()
+        val telephone = companyInfo?.hotline
+        if (flag && telephone != null && telephone != "") {
+            builder.setAffirmText("联系客服")
+                    .setCancelText("取消")
+                    .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
+                        override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
+                            showCompanyTelephone(builder, telephone)
+                            return super.clickPositiveButton(dialog)
+                        }
+                    })
+        } else {
+            builder.setAffirmText("确认")
+        }
+        builder.build()
+                .show()
+
+    }
+
+    private fun showCompanyTelephone(builder: DefaultPromptDialog.Builder, telephone: String) {
+        DefaultPromptDialog.builder()
+                .setContext(getViewContext())
+                .setAffirmText("呼叫")
+                .setCancelText("取消")
+                .setContentText(telephone)
+                .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
+                    override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
+                        val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$telephone"))
+                        startActivity(dialIntent)
+                        return super.clickPositiveButton(dialog)
+                    }
+                })
                 .build()
                 .show()
     }

@@ -94,4 +94,6 @@ object UrlConstants {
      * 获取用户信息
      */
     const val getMemberInfo2 = "customerApi/user/getMemberInfo"
+
+    const val getTelephone = "customerApi/company/getByCompanyCode"
 }

@@ -15,6 +15,7 @@ import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.app.MyApplication
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
+import cn.ygyg.cloudpayment.modular.home.entity.CompanyEntity
 import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsActivityContract
 import cn.ygyg.cloudpayment.modular.payments.entity.CreateOrderResponseEntity
@@ -218,16 +219,41 @@ class PaymentsActivity :
     }
 
     override fun onLoadDeviceError(err: ApiThrowable) {
-        DefaultPromptDialog.builder()
+        val flag = TextUtils.equals("ER033", err.code) || TextUtils.equals("ER075", err.code) || TextUtils.equals("ER076", err.code)
+        val builder = DefaultPromptDialog.builder()
                 .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
                 .setContext(this)
                 .setTitleText("提示")
-                .setContentText(if (TextUtils.equals("ER033", err.code)) "该缴费户号异常，请联系客服" else err.message)
-                .setAffirmText("确认")
+                .setContentText(if (flag) "该缴费户号异常" else err.message)
+        val companyInfo = ConfigUtil.getCompanyInfo()
+        val telephone = companyInfo?.hotline
+        if (flag && telephone != null && telephone != "") {
+            builder.setAffirmText("联系客服")
+                    .setCancelText("取消")
+                    .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
+                        override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
+                            showCompanyTelephone(builder, telephone)
+                            return super.clickPositiveButton(dialog)
+                        }
+                    })
+
+        } else {
+            builder.setAffirmText("确认")
+        }
+        builder.build()
+                .show()
+    }
+
+    private fun showCompanyTelephone(builder: DefaultPromptDialog.Builder, telephone: String) {
+        DefaultPromptDialog.builder()
+                .setContext(getViewContext())
+                .setAffirmText("呼叫")
+                .setCancelText("取消")
+                .setContentText(telephone)
                 .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
                     override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
-                        dialog.dismiss()
-                        finish()
+                        val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$telephone"))
+                        startActivity(dialIntent)
                         return super.clickPositiveButton(dialog)
                     }
                 })
@@ -236,13 +262,27 @@ class PaymentsActivity :
     }
 
     override fun onCreateOrderError(err: ApiThrowable) {
-        DefaultPromptDialog.builder()
+        val flag = TextUtils.equals("ER033", err.code) || TextUtils.equals("ER075", err.code) || TextUtils.equals("ER076", err.code)
+        val builder = DefaultPromptDialog.builder()
                 .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
                 .setContext(this)
                 .setTitleText("提示")
-                .setContentText(err.message)
-                .setAffirmText("确认")
-                .build()
+                .setContentText(if (flag) "该缴费户号异常" else err.message)
+        val companyInfo = ConfigUtil.getCompanyInfo()
+        val telephone = companyInfo?.hotline
+        if (flag && telephone != null && telephone != "") {
+            builder.setAffirmText("联系客服")
+                    .setCancelText("取消")
+                    .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
+                        override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
+                            showCompanyTelephone(builder, telephone)
+                            return super.clickPositiveButton(dialog)
+                        }
+                    })
+        } else {
+            builder.setAffirmText("确认")
+        }
+        builder.build()
                 .show()
     }
 }
