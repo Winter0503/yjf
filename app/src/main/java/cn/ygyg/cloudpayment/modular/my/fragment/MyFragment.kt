@@ -15,6 +15,7 @@ import cn.ygyg.cloudpayment.modular.my.activity.AboutActivity
 import cn.ygyg.cloudpayment.modular.my.contract.MyContract
 import cn.ygyg.cloudpayment.modular.my.presenter.MyPresenter
 import cn.ygyg.cloudpayment.modular.payments.activity.PaymentsHistoryActivity
+import cn.ygyg.cloudpayment.utils.ConfigUtil
 import cn.ygyg.cloudpayment.utils.SharePreUtil
 import cn.ygyg.cloudpayment.utils.StringUtil
 import cn.ygyg.cloudpayment.utils.UserUtil
@@ -39,20 +40,24 @@ class MyFragment : BaseMvpFragment<MyContract.Presenter, MyContract.View>(), MyC
             toActivity(PaymentsHistoryActivity::class.java)
         }
         btn_customer_service.setOnClickListener {
-            DefaultPromptDialog.builder()
-                    .setContext(getViewContext())
-                    .setAffirmText("呼叫")
-                    .setCancelText("取消")
-                    .setContentText("0317-20725341")
-                    .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
-                        override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
-                            val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:0317-20725341"))
-                            startActivity(dialIntent)
-                            return super.clickPositiveButton(dialog)
-                        }
-                    })
-                    .build()
-                    .show()
+            val companyInfo = ConfigUtil.getCompanyInfo()
+            val telephone = companyInfo?.hotline
+            telephone?.let {
+                DefaultPromptDialog.builder()
+                        .setContext(getViewContext())
+                        .setAffirmText("呼叫")
+                        .setCancelText("取消")
+                        .setContentText(it)
+                        .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
+                            override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
+                                val dialIntent = Intent(Intent.ACTION_DIAL, Uri.parse("tel:$it"))
+                                startActivity(dialIntent)
+                                return super.clickPositiveButton(dialog)
+                            }
+                        })
+                        .build()
+                        .show()
+            }
         }
         btn_logout.setOnClickListener {
             DefaultPromptDialog.builder()
