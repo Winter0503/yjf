@@ -32,7 +32,13 @@ class MyFragment : BaseMvpFragment<MyContract.Presenter, MyContract.View>(), MyC
 
 
     override fun initViews(v: View) {
-
+        val companyInfo = ConfigUtil.getCompanyInfo()
+        val telephone = companyInfo?.hotline
+        telephone?.let {
+            layout_customer_service.visibility = View.VISIBLE
+        } ?: let{
+            layout_customer_service.visibility = View.GONE
+        }
     }
 
     override fun initListener(v: View) {

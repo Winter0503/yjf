@@ -88,9 +88,13 @@ object ConfigUtil {
 
     fun setCompanyInfo(entity: CompanyEntity) {
         configEntity?.companyEntity = entity
+        configEntity?.let {
+            saveConfig(it)
+        }
     }
 
     fun getCompanyInfo(): CompanyEntity? {
+        checkEmpty()
         return configEntity?.companyEntity
     }
 }
