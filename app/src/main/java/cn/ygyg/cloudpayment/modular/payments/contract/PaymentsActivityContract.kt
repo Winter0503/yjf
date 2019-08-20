@@ -25,7 +25,7 @@ class PaymentsActivityContract {
          * @param contractCode 物联网表编号
          * @param phone 手机号/账户名
          * @param paymentMethod 支付方式
-         * @param payType 泛起支付的平台类型 APP
+         * @param payType 拉起支付的平台类型 APP
          *
          */
         fun createOrder(amount: String, contractCode: String, phone: String, paymentMethod: Constants.PaymentMethod, payType: String)
