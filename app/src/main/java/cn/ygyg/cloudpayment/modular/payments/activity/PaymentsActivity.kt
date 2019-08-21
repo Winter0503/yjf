@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
-import android.os.Looper
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -15,7 +14,6 @@ import cn.ygyg.cloudpayment.R
 import cn.ygyg.cloudpayment.app.Constants
 import cn.ygyg.cloudpayment.app.MyApplication
 import cn.ygyg.cloudpayment.dialog.DefaultPromptDialog
-import cn.ygyg.cloudpayment.modular.home.entity.CompanyEntity
 import cn.ygyg.cloudpayment.modular.internet.vm.DeviceVM
 import cn.ygyg.cloudpayment.modular.payments.contract.PaymentsActivityContract
 import cn.ygyg.cloudpayment.modular.payments.entity.CreateOrderResponseEntity
@@ -23,7 +21,6 @@ import cn.ygyg.cloudpayment.modular.payments.presenter.PaymentsActivityPresenter
 import cn.ygyg.cloudpayment.utils.*
 import cn.ygyg.cloudpayment.wxapi.WXPayEntryActivity
 import com.alipay.sdk.app.PayTask
-import com.cn.lib.basic.BaseActivity
 import com.cn.lib.basic.BaseMvpActivity
 import com.cn.lib.retrofit.network.exception.ApiThrowable
 import com.tencent.mm.opensdk.modelpay.PayReq
@@ -185,7 +182,7 @@ class PaymentsActivity :
                 WXUtil.mWxApi.sendReq(request)
             }
             Constants.PaymentMethod.ALI_PAY.string() -> {
-
+                val handler = Handler()
                 PermissionUtil.Builder()
                         .setContext(MyApplication.getApplication())
                         .addPermissionName(PermissionUtil.READ_PHONE_STATE)
@@ -193,23 +190,23 @@ class PaymentsActivity :
                         .setCallback(object : PermissionUtil.CheckPermissionCallback {
                             override fun onGranted() {
                                 Thread(Runnable {
-                                    Log.i("PayTask", response.alipayAPPStr)
                                     val result = PayTask(this@PaymentsActivity).payV2(response.alipayAPPStr, true)
-                                    Handler(Looper.getMainLooper()).post {
+                                    handler.postDelayed({
                                         val payResult = AliPayResult(result)
                                         val resultStatus = payResult.resultStatus
                                         // 判断resultStatus 为9000则代表支付成功
                                         startActivity(Intent(this@PaymentsActivity, PaymentsCompleteActivity::class.java).apply {
-                                            putExtra(BaseActivity.ACTIVITY_BUNDLE, Bundle().apply {
+                                            putExtra(ACTIVITY_BUNDLE, Bundle().apply {
                                                 putBoolean(Constants.IntentKey.IS_SUCCESS, TextUtils.equals("9000", resultStatus))
                                                 putString(Constants.IntentKey.AMOUNT, response.amount.toString())
                                             })
                                         })
-                                    }
+                                    }, 300)
                                 }).start()
                             }
 
                             override fun onDenied(permissions: List<String>) {
+                                showToast("打开支付宝失败")
                             }
 
                         }).build()
