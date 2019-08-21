@@ -216,7 +216,7 @@ class PaymentsActivity :
     }
 
     override fun onLoadDeviceError(err: ApiThrowable) {
-        val flag = TextUtils.equals("ER033", err.code) || TextUtils.equals("ER075", err.code) || TextUtils.equals("ER076", err.code)
+        val flag = TextUtils.equals("ER033", err.code) || TextUtils.equals("ER075", err.code) || TextUtils.equals("ER076", err.code) || TextUtils.equals("ER032", err.code)
         val builder = DefaultPromptDialog.builder()
                 .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
                 .setContext(this)
@@ -259,7 +259,7 @@ class PaymentsActivity :
     }
 
     override fun onCreateOrderError(err: ApiThrowable) {
-        val flag = TextUtils.equals("ER033", err.code) || TextUtils.equals("ER075", err.code) || TextUtils.equals("ER076", err.code)
+        val flag = TextUtils.equals("ER033", err.code) || TextUtils.equals("ER075", err.code) || TextUtils.equals("ER076", err.code) || TextUtils.equals("ER032", err.code)
         val builder = DefaultPromptDialog.builder()
                 .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
                 .setContext(this)

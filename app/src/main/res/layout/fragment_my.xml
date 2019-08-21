@@ -68,31 +68,40 @@
         android:textColor="@color/text_color"
         android:textSize="15sp" />
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:background="@color/line_color"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/btn_customer_service"
+    <LinearLayout
+        android:id="@+id/layout_customer_service"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:drawableEnd="@mipmap/right_arrow"
-        android:drawablePadding="10dp"
-        android:drawableStart="@mipmap/icon_customer_service"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingBottom="15dp"
-        android:paddingTop="15dp"
-        android:text="@string/contact_customer_service"
-        android:textColor="@color/text_color"
-        android:textSize="15sp"
-        android:visibility="visible" />
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@color/line_color"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/btn_customer_service"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:drawableEnd="@mipmap/right_arrow"
+            android:drawablePadding="10dp"
+            android:drawableStart="@mipmap/icon_customer_service"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="15dp"
+            android:paddingTop="15dp"
+            android:text="@string/contact_customer_service"
+            android:textColor="@color/text_color"
+            android:textSize="15sp"
+            android:visibility="visible" />
+
+
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"

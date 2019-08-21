@@ -3,6 +3,7 @@ package cn.ygyg.cloudpayment.modular.home.activity
 import android.annotation.SuppressLint
 import android.text.TextUtils
 import cn.ygyg.cloudpayment.R
+import cn.ygyg.cloudpayment.R.id.layout_btn
 import cn.ygyg.cloudpayment.modular.home.contract.WelcomeContract
 import cn.ygyg.cloudpayment.modular.home.presenter.WelcomePresenter
 import cn.ygyg.cloudpayment.modular.login.activity.BindingPhoneActivity
@@ -11,6 +12,7 @@ import cn.ygyg.cloudpayment.utils.ConfigUtil
 import cn.ygyg.cloudpayment.utils.UserUtil
 import cn.ygyg.cloudpayment.utils.WXUtil
 import com.cn.lib.basic.BaseMvpActivity
+import com.cn.lib.util.ToastUtil.showToast
 import io.reactivex.Observable
 import kotlinx.android.synthetic.main.activity_welcome.*
 import java.util.concurrent.TimeUnit
@@ -26,11 +28,11 @@ class WelcomeActivity : BaseMvpActivity<WelcomeContract.Presenter, WelcomeContra
 
     override fun initViews() {
         super.initViews()
-        if (ConfigUtil.isNotEmpty()) {
-            defaultMode()
-        } else {
+//        if (ConfigUtil.isNotEmpty()) {
+//            defaultMode()
+//        } else {
             mPresenter?.loaderPaymentConfig(this)
-        }
+//        }
     }
 
     override fun initListener() {
@@ -52,6 +54,7 @@ class WelcomeActivity : BaseMvpActivity<WelcomeContract.Presenter, WelcomeContra
      */
     @SuppressLint("CheckResult")
     private fun defaultMode() {
+        mPresenter?.loaderPaymentConfig(this)
         Observable.interval(0, 1, TimeUnit.SECONDS)
                 .take(3)
                 .subscribe { t ->
