@@ -7,6 +7,7 @@ import android.os.Handler
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import cn.ygego.vientiane.util.PermissionUtil
 import cn.ygyg.cloudpayment.R
@@ -215,7 +216,7 @@ class PaymentsActivity :
     }
 
     override fun onLoadDeviceError(err: ApiThrowable) {
-        val flag = TextUtils.equals("ER033", err.code) || TextUtils.equals("ER075", err.code) || TextUtils.equals("ER076", err.code) || TextUtils.equals("ER032", err.code)
+        val flag = TextUtils.equals("ER033", err.code) || TextUtils.equals("ER075", err.code) || TextUtils.equals("ER076", err.code) || TextUtils.equals("ER074", err.code) || TextUtils.equals("ER080", err.code)
         val builder = DefaultPromptDialog.builder()
                 .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
                 .setContext(this)
@@ -258,11 +259,7 @@ class PaymentsActivity :
     }
 
     override fun onCreateOrderError(err: ApiThrowable) {
-        val flag = TextUtils.equals("ER080", err.code) ||
-                TextUtils.equals("ER033", err.code) ||
-                TextUtils.equals("ER075", err.code) ||
-                TextUtils.equals("ER076", err.code) ||
-                TextUtils.equals("ER032", err.code)
+        val flag = TextUtils.equals("ER033", err.code) || TextUtils.equals("ER075", err.code) || TextUtils.equals("ER076", err.code) || TextUtils.equals("ER074", err.code) || TextUtils.equals("ER080", err.code)
         val builder = DefaultPromptDialog.builder()
                 .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
                 .setContext(this)

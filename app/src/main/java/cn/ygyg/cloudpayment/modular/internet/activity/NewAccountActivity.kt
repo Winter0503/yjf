@@ -94,7 +94,7 @@ class NewAccountActivity : BaseMvpActivity<NewAccountActivityContract.Presenter,
     }
 
     override fun onBindDeviceError(e: ApiThrowable) {
-        val flag = TextUtils.equals("ER033", e.code) || TextUtils.equals("ER075", e.code) || TextUtils.equals("ER076", e.code) || TextUtils.equals("ER032", e.code)
+        val flag = TextUtils.equals("ER033", e.code) || TextUtils.equals("ER075", e.code) || TextUtils.equals("ER076", e.code) || TextUtils.equals("ER074", e.code) || TextUtils.equals("ER080", e.code)
         val builder = DefaultPromptDialog.builder()
                 .setButtonOrientation(DefaultPromptDialog.TypeEnum.BUTTON_HORIZONTAL)
                 .setContext(this)
