@@ -229,7 +229,7 @@ class PaymentsActivity :
                     .setCancelText("取消")
                     .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
                         override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
-                            showCompanyTelephone(builder, telephone)
+                            showCompanyTelephone(telephone)
                             return super.clickPositiveButton(dialog)
                         }
                     })
@@ -241,7 +241,7 @@ class PaymentsActivity :
                 .show()
     }
 
-    private fun showCompanyTelephone(builder: DefaultPromptDialog.Builder, telephone: String) {
+    private fun showCompanyTelephone(telephone: String) {
         DefaultPromptDialog.builder()
                 .setContext(getViewContext())
                 .setAffirmText("呼叫")
@@ -272,7 +272,7 @@ class PaymentsActivity :
                     .setCancelText("取消")
                     .onPromptDialogButtonListener(object : DefaultPromptDialog.DefaultPromptDialogButtonListener() {
                         override fun clickPositiveButton(dialog: DefaultPromptDialog): Boolean {
-                            showCompanyTelephone(builder, telephone)
+                            showCompanyTelephone(telephone)
                             return super.clickPositiveButton(dialog)
                         }
                     })
