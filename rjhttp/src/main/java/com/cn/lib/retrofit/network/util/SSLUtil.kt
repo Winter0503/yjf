@@ -20,7 +20,7 @@ import javax.net.ssl.TrustManager
 import javax.net.ssl.TrustManagerFactory
 import javax.net.ssl.X509TrustManager
 
-object SSLUtil {
+object  SSLUtil {
 
     class SSLParams {
         lateinit var sSLSocketFactory: SSLSocketFactory

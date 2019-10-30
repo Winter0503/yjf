@@ -25,7 +25,7 @@ object SharePreUtil {
     lateinit var sp: SharedPreferences
 
     /**
-     * 初始化Sp文件
+     * 初始化Sp文件cf
      *
      * @param context
      */
